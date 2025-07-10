@@ -1,0 +1,65 @@
+//
+// _sass/custom/custom.scss
+//
+// Custom styles for "Just the Docs" theme
+//
+#top { background-color: #222; }
+#main-header {
+	display: block;
+	position: fixed;
+	z-index: 1000;
+	width: 50rem;
+	height: 3.75rem;
+}
+#main-content { margin-top: 3rem; }
+
+ul#markdown-toc {
+	padding-left: 0.75em;
+	li {
+		font-size: .875rem !important;
+		&::before { content: ''; }
+	}
+}
+
+// Move below the "fixed" #main-header
+.breadcrumb-nav { margin-top: 2.5rem; margin-bottom: -2.5rem; }
+//.breadcrumb-nav-list-item span { font-size: 2.25rem; font-weight: 300; color: #F5F6FA; }
+
+// Top-right aux nav with one or more links
+// Defined by aux_links in _config.yml
+.aux-nav {
+	float: left;
+	position: relative;
+	a { color: red; }
+}
+@media (max-width: 70rem) {
+	.aux-nav {
+		left: calc(-16rem + 1em);
+	}
+}
+@media (min-width: 70rem) {
+	.aux-nav {
+		left: 50rem;
+		top: -3.5rem;
+		z-index: 2000;
+	}
+}
+
+/**
+ * Just the Docs theme Screen Width modifiers:
+ *  xs  320px (20rem) and up
+ *  sm  500px (31.25rem) and up
+ *  md  740px (46.25rem) and up
+ *  lg  1120px (70rem) and up
+ *  xl  1400px (87.5rem) and up
+ */
+
+// With a wide enough window place on the right...
+// This is very rough and doesn't re-center the screen
+// It would help if Just the Docs theme added a class to BODY when a {:toc} has been emitted, but it doesn't.
+@media (min-width: 70rem) {
+	#main-content main details {
+		position: fixed;
+		margin-left: 800px;
+	}
+}

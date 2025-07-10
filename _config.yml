@@ -1,19 +1,20 @@
 name: 'Marlin Firmware'
-logo: '/assets/images/logo/marlin/small.png'
+title: 'Marlin Firmware'
+logo: '/assets/images/logo/marlin/text-night.png'
 description: 'Printing the planet, one layer at a time.'
 
 baseurl: ''
 url: 'https://marlinfw.org'
 js: '/assets/javascript/'
 pull_img: '/assets/images/docs/development/pull_images/'
-
-# Not used anymore
-enforce_ssl: marlinfw.org
-
-version: '1.0.0'
-environment: development
-
 destination: ./_site
+
+#theme: jekyll-theme-documentation
+#theme: jekyll-theme-minimal
+theme: just-the-docs
+#nav_enabled: true
+
+color_scheme: dark
 
 twitter:
   username: MarlinFirmware
@@ -28,10 +29,18 @@ social:
     - http://forums.reprap.org/list.php?415
     - https://discord.com/servers/marlin-firmware-461605380783472640
 
+#github:
+#  repository_name: 'MarlinFirmware/MarlinDocumentation'
+#  repository_url:
+
 repository:
   main: 'https://github.com/MarlinFirmware/Marlin'
   doc: 'https://github.com/MarlinFirmware/MarlinDocumentation'
   config: 'https://github.com/MarlinFirmware/Configurations'
+
+# Google Analytics Tracking (optional)
+ga_tracking: UA-76230130-10
+ga_tracking_anonymize_ip: true # Use GDPR compliant Google Analytics settings (true/nil by default)
 
 analytics:
   id: 'UA-76230130-1'
@@ -58,46 +67,6 @@ collections:
     output: true
     permalink: /docs/:collection/:path:output_ext
 
-  configuration:
-    output: true
-    title: Configuration
-    permalink: /docs/:collection/:path:output_ext
-
-  setting:
-    output: true
-    title: Settings
-    permalink: /docs/:collection/:path:output_ext
-
-  development:
-    output: true
-    title: Developer Guide
-    permalink: /docs/:collection/:path:output_ext
-
-  features:
-    output: true
-    title: Features
-    permalink: /docs/:collection/:path:output_ext
-
-  gcode:
-    output: true
-    title: G-code
-    permalink: /docs/:collection/:path:output_ext
-
-  hardware:
-    output: true
-    title: Hardware
-    permalink: /docs/:collection/:path:output_ext
-
-  meta:
-    output: true
-    permalink: /:collection/:path/
-
-  tools:
-    output: true
-    permalink: /:collection/:path:output_ext
-
-include: [ ".well-known" ]
-
 exclude:
   - _config.yml
   - Gemfile
@@ -107,12 +76,11 @@ exclude:
   - vendor
 
 plugins:
-  - jekyll-mentions
-  - jekyll-seo-tag
-  - jekyll-avatar
+  #- jekyll-toc
   - jekyll-bootstrap-sass
   - jekyll-tidy
-  - jekyll-redirect-from
+  - jekyll-feed
+  - jekyll-sitemap
 
 defaults:
   - # All types
@@ -131,53 +99,25 @@ defaults:
     scope:
       type: basics
     values:
-      layout: docs
+      layout: page
       category: [ Basics ]
 
-  - # Configuration collection
-    scope:
-      type: configuration
-    values:
-      layout: docs
-      category: [ configuration ]
+# SEO Stuff
+author: Marlin Firmware
+summary: Documentation for the Marlin Firmware project.
+lang: en
+locale: en_US
 
-  - # Settings collection
-    scope:
-      type: setting
-    values:
-      layout: setting
-      category: [ setting ]
+# RSS feeds
+feed:
+  posts_limit: 20
 
-  - # Development collection
-    scope:
-      type: development
-    values:
-      layout: docs
-      category: [ development ]
+# Obtrusive links not properly styled
+#aux_links:
+#  Just the Docs on GitHub:
+#    - https://github.com/just-the-docs/just-the-docs
 
-  - # Features collection
-    scope:
-      type: features
-    values:
-      layout: docs
-      category: [ features ]
-
-  - # G-code collection
-    scope:
-      type: gcode
-    values:
-      layout: gcode
-      category: [ gcode ]
-
-  - # Hardware collection
-    scope:
-      type: hardware
-    values:
-      layout: docs
-      category: [ hardware ]
-
-  - # Meta collection
-    scope:
-      type: meta
-    values:
-      category: [ meta ]
+# Just the Docs theme configuration
+aux_links:
+  🤓 GitHub: https://github.com/MarlinFirmware/Marlin
+  ❤️ Donate: /docs/contribute.html
