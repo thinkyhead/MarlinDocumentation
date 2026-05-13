@@ -55,21 +55,67 @@ ul#markdown-toc {
  *  xl  1400px (87.5rem) and up
  */
 
-// With a wide enough window place on the right...
-// This is very rough and doesn't re-center the screen
-// It would help if Just the Docs theme added a class to BODY when a {:toc} has been emitted, but it doesn't.
+// ============================================================
+// Three-column layout for mpage (TOC pages)
+// ============================================================
+// JTD's two-column layout: fixed sidebar + centered content
+// For pages with a TOC we want:  [sidebar]  [content]  [TOC]
+//
+// Strategy:
+//   - body.has-toc > .main-content-wrap becomes a CSS Grid
+//   - #toc-column = right column (fixed width)
+//   - .main-column  = center column (1fr)
+//   - TOC header "On this page" comes from SCSS ::before
+//   - Responsive: at md breakpoint TOC moves above content
+// ============================================================
+
+// TOC "On this page" label injected via CSS
+#toc-column::before {
+  content: 'On this page';
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
 @media (min-width: 70rem) {
-	#main-content main details, #table-of-contents {
-		position: fixed;
-		margin-left: 800px;
-	}
-	#table-of-contents:before {
-        content: 'On this page';
-        display: block;
-        font-size: 1.25rem;
-        font-weight: 500;
-        margin-bottom: 0.5rem;
+  body.has-toc {
+    .main-content-wrap {
+      display: grid;
+      grid-template-columns: 1fr 15rem;
+      grid-template-areas: "main-column toc-column";
+      align-items: start;
+      gap: 0 3rem;
     }
+
+    .main-column {
+      grid-area: main-column;
+      min-width: 0; // allow content to shrink below min-width
+    }
+
+    #toc-column {
+      grid-area: toc-column;
+      position: sticky;
+      top: 5rem;
+      max-height: calc(100vh - 6rem);
+      overflow-y: auto;
+    }
+  }
+}
+
+// At medium-lg breakpoint, TOC moves above content
+@media (max-width: 69.99rem) {
+  body.has-toc {
+    .main-content-wrap {
+      display: flex;
+      flex-direction: column;
+    }
+
+    #toc-column {
+      // TOC flows inline above main content (natural document flow)
+      margin-bottom: 1.5rem;
+    }
+  }
 }
 
 .nav-list .nav-list-item > .nav-list .nav-list-item .nav-list-link {

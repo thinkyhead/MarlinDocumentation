@@ -2,7 +2,7 @@
 title: Introduction to Marlin
 description: An overview of Marlin Firmware — what it is, how it works, and how to use it.
 # Options: home, about, default, minimal, page, post
-layout: mpage
+layout: article
 nav_order: 3
 # Theme Options
 nav_enabled: true
