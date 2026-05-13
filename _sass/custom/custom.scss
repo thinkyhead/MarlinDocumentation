@@ -59,10 +59,17 @@ ul#markdown-toc {
 // This is very rough and doesn't re-center the screen
 // It would help if Just the Docs theme added a class to BODY when a {:toc} has been emitted, but it doesn't.
 @media (min-width: 70rem) {
-	#main-content main details {
+	#main-content main details, #table-of-contents {
 		position: fixed;
 		margin-left: 800px;
 	}
+	#table-of-contents:before {
+        content: 'On this page';
+        display: block;
+        font-size: 1.25rem;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+    }
 }
 
 .nav-list .nav-list-item > .nav-list .nav-list-item .nav-list-link {

@@ -81,6 +81,7 @@ plugins:
   - jekyll-tidy
   - jekyll-feed
   - jekyll-sitemap
+  - jekyll-toc
 
 defaults:
   - # All types

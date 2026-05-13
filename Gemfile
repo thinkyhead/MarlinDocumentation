@@ -23,4 +23,5 @@ gem 'just-the-docs'
 group :jekyll_plugins do
   gem 'jekyll-sitemap'
   gem 'jekyll-feed'
+  gem 'jekyll-toc'
 end
