@@ -16,6 +16,12 @@ theme: just-the-docs
 
 color_scheme: dark
 
+search_enabled: true
+search.button: true
+search.previews: 3
+search.preview_words_before: 5
+search.preview_words_after: 5
+
 twitter:
   username: MarlinFirmware
 
