@@ -1,15 +1,12 @@
 ---
 layout: table_wrappers
 ---
-{%- comment %}
-  Adds has-toc body class for 3-column layout on TOC pages.
-{%- endcomment %}
 
 <!DOCTYPE html>
 
 <html lang="{{ site.lang | default: 'en-US' }}">
 {% include head.html %}
-<body class="{% if page.toc == true and content contains 'id="markdown-toc"' %}has-toc{% endif %}">
+<body class="{% if page.toc == true %}has-toc{% endif %}">
   <a class="skip-to-main" href="#main-content">Skip to main content</a>
   {% include icons/icons.html %}
   {% if page.nav_enabled == true %}
@@ -23,6 +20,11 @@ layout: table_wrappers
     {% include components/header.html %}
     <div class="main-content-wrap">
       {% include components/breadcrumbs.html %}
+      {% if page.toc != false %}
+        <div id="table-of-contents">
+          {{ content | toc_only }}
+        </div>
+      {% endif %}
       <div id="main-content" class="main-content">
         <main>
           {% if site.heading_anchors != false %}
@@ -31,7 +33,7 @@ layout: table_wrappers
             {{ content }}
           {% endif %}
 
-          {% if page.toc %}
+          {% if page.has_toc != false %}
             {% include components/children_nav.html %}
           {% endif %}
         </main>

@@ -11,16 +11,23 @@
 	width: 50rem;
 	height: 3.75rem;
 }
-#main-content { margin-top: 3rem; }
+.main-content-wrap { padding-top: 3rem; }
+#main-content { margin-top: 0.5rem; }
 
-ul#markdown-toc {
-	padding-left: 0.75em;
-	li {
-		font-size: .875rem !important;
-		&::before { content: ''; }
-	}
-	a:hover { color: white; }
+:target { scroll-margin-top: 5rem; }
+
+#table-of-contents {
+    font-size: 0.85em;
+    overscroll-behavior-y: contain; // prevent scroll chaining to body when reaching TOC scroll limits
+
+    overflow-y: scroll;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    ::-webkit-scrollbar { display: none; }
 }
+
+#toc { background-color: #FFFFFF08; border-radius: 4px; padding: 0.25rem; }
 
 // Move below the "fixed" #main-header
 .breadcrumb-nav { margin-top: 2.5rem; margin-bottom: -2.5rem; }
@@ -63,57 +70,74 @@ ul#markdown-toc {
 //
 // Strategy:
 //   - body.has-toc > .main-content-wrap becomes a CSS Grid
-//   - #toc-column = right column (fixed width)
+//   - #table-of-contents = right column (fixed width)
 //   - .main-column  = center column (1fr)
 //   - TOC header "On this page" comes from SCSS ::before
 //   - Responsive: at md breakpoint TOC moves above content
 // ============================================================
 
 // TOC "On this page" label injected via CSS
-#toc-column::before {
-  content: 'On this page';
+#table-of-contents::before {
+  content: ' ';
   display: block;
   font-size: 1.25rem;
   font-weight: 500;
+  margin-top: 5rem; // push down below header
   margin-bottom: 0.5rem;
+}
+#table-of-contents.page::before {
+  content: 'On this page';
 }
 
 @media (min-width: 70rem) {
   body.has-toc {
     .main-content-wrap {
       display: grid;
-      grid-template-columns: 1fr 15rem;
+      grid-template-columns: 1fr 13rem;
       grid-template-areas: "main-column toc-column";
       align-items: start;
       gap: 0 3rem;
     }
 
-    .main-column {
+    .main-content {
       grid-area: main-column;
       min-width: 0; // allow content to shrink below min-width
     }
 
-    #toc-column {
+    #table-of-contents {
       grid-area: toc-column;
       position: sticky;
-      top: 5rem;
-      max-height: calc(100vh - 6rem);
+      top: 2rem;
+      max-height: calc(100vh - 4rem);
       overflow-y: auto;
     }
+
+    ul#toc { padding-inline-start: 2em; }
+    #toc ul { padding-inline-start: 0.75em; }
   }
 }
 
 // At medium-lg breakpoint, TOC moves above content
 @media (max-width: 69.99rem) {
+  .site-button {
+      display: inline;
+      position: relative;
+      top: 1em;
+      margin: 1.5em 0 0.5em 0.5em;
+      padding: 0.5rem 1rem 0.5rem 1rem;
+  }
+  nav#site-nav { padding-top: 2.5rem; }
   body.has-toc {
     .main-content-wrap {
       display: flex;
       flex-direction: column;
     }
-
-    #toc-column {
+    #table-of-contents {
       // TOC flows inline above main content (natural document flow)
       margin-bottom: 1.5rem;
+    }
+    #main-content {
+      margin-top: 0; // remove top margin for main content
     }
   }
 }

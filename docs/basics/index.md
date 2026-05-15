@@ -1,5 +1,5 @@
 ---
-title: Introduction to Marlin
+title: Introduction
 description: An overview of Marlin Firmware — what it is, how it works, and how to use it.
 # Options: home, about, default, minimal, page, post
 layout: article
@@ -8,6 +8,7 @@ nav_order: 3
 nav_enabled: true
 nav_stroke: false
 toc: true
+has_toc: true
 back_to_top: true
 ---
 
@@ -107,7 +108,7 @@ Host software runs on your computer (or Raspberry Pi) and provides a user interf
 
 ## What to Read Next
 
-- [Installation](/docs/basics/install.html) — Get Marlin onto your board
+- [Build & Install Marlin](/docs/basics/install.html) — Build Marlin firmware from source
 - [Configuration](/docs/configuration.html) — Customize Marlin for your machine
 - [G-code Reference](/docs/gcode/) — Complete command reference
 - [Features](/docs/basics/features.html) — Explore what Marlin can do

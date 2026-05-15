@@ -43,6 +43,8 @@ repository:
   main: 'https://github.com/MarlinFirmware/Marlin'
   doc: 'https://github.com/MarlinFirmware/MarlinDocumentation'
   config: 'https://github.com/MarlinFirmware/Configurations'
+  builds: 'https://github.com/MarlinFirmware/MarlinBuilds'
+  autobuild: 'https://github.com/MarlinFirmware/AutoBuildMarlin'
 
 # Google Analytics Tracking (optional)
 ga_tracking: UA-76230130-10

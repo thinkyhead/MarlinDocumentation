@@ -17,7 +17,6 @@ gem 'jekyll-bootstrap-sass', '>= 0.1.0'
 #gem 'jekyll-theme-documentation'
 #gem 'jekyll-theme-minimal'
 gem 'just-the-docs'
-#gem 'jekyll-toc'
 
 # Plugins
 group :jekyll_plugins do

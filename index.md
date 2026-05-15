@@ -6,17 +6,18 @@ layout:      home
 regenerate:  true
 # Theme Options
 nav_enabled: true
+nav_exclude: true
 gh_edit_link: true # show or hide edit this page link
-nav_order:   1
 back_to_top: true
 back_to_top_text: "Back to top"
 ---
 
-<details open markdown="block">
+<!-- This how TOC is emitted with just-the-docs out of the box. But we'll emit nav in layouts instead. See _layouts/article.html  -->
+<!-- details open markdown="block">
   <summary>Page Index</summary>{: .text-delta }
   - TOC
   {:toc}
-</details>
+</details -->
 
 <script>
 const toggleDarkMode = document.querySelector('.js-toggle-dark-mode');
