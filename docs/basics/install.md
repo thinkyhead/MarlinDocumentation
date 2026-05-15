@@ -76,7 +76,7 @@ Follow the [PlatformIO Core installation guide](https://docs.platformio.org/en/l
 
 ### Find Your Build Environment
 
-PlatformIO needs to know which build environment corresponds to your board. Open `Marlin/src/pins/pins.h` and search for your `MOTHERBOARD` definition. The comment after each board entry lists the available environments. For example:
+If you will not be using `make` or `mftest` then you will need to know the PlatformIO environment corresponding to your board. Open `Marlin/src/pins/pins.h` and search for your `MOTHERBOARD` definition. The comment after each board entry lists the available environments. For example:
 
 ```cpp
 #elif MB(RAMPS_14_EFB, RAMPS_14_EEB, RAMPS_14_EFF, RAMPS_14_EEF, RAMPS_14_SF)
@@ -97,6 +97,66 @@ Open a terminal, set the working directory to your Marlin project folder (the on
 | **Debug** | `pio debug -e <environment>` |
 
 Replace `<environment>` with the environment name for your board (e.g., `mega2560`).
+
+### mftest — Maintainer Build Tool
+
+`mftest` is a command-line tool included with Marlin that wraps PlatformIO with environment auto-detection and interactive test selection. It reads the `MOTHERBOARD` define from your `Configuration.h`, looks up the matching environments, and builds without needing to remember environment names.
+
+```bash
+cd $MARLIN_REPO
+mftest -a          # Auto-build using the MOTHERBOARD environment
+mftest -a -n1 -y   # Non-interactive: use first env, build without prompts
+mftest -u          # Auto-upload to the MOTHERBOARD environment
+mftest -r          # Rebuild the last environment used
+mftest -t mega     # Build a specific environment (shortcuts: mega, stm, f4, f7, due, esp, …)
+mftest -m          # Build using make with Docker
+```
+
+The `-a` flag infers candidate environments from `Configuration.h`. When multiple environments are available (e.g., a board with USB and serial variants), `mftest` lists them and prompts for selection. Add `-n1` to automatically pick the first, and `-y` to skip the build confirmation prompt.
+
+Environment shortcuts: `mega` (mega2560), `stm` (STM32), `f4`, `f7`, `due`, `esp`, `lpc8`, `lpc9`, `teensy`, and others.
+
+`mftest` is also used for running CI test suites locally:
+
+```bash
+mftest -t mega2560 -n1 -y   # Run the first mega2560 CI test
+mftest -t mega2560 -n2 -y   # Run the second mega2560 CI test
+```
+
+### Building with Make
+
+Marlin provides a `Makefile` that wraps `mftest` and provides additional targets for validation and testing:
+
+```bash
+make marlin          # Build for the configured board (runs mftest -a)
+make clean           # Remove all build artifacts (.pio/build/*)
+```
+
+The Makefile also supports running Marlin's CI test suite locally — useful for validating changes before submitting a PR:
+
+| Target | Description |
+|--------|-------------|
+| `make tests-single-local TEST_TARGET=mega2560` | Run a single CI test locally |
+| `make tests-all-local` | Run all CI tests locally (requires pyyaml) |
+| `make tests-single-local-docker TEST_TARGET=mega2560` | Run a single test in a Docker container |
+| `make tests-all-local-docker` | Run all tests in Docker |
+| `make format-pins -j` | Reformat all pins files |
+| `make validate-pins -j` | Validate pins file formatting |
+| `make validate-boards -j` | Validate boards.h standards compliance |
+| `make validate-urls` | Validate URLs in source files |
+
+The Docker targets automatically build a `marlin-dev` Docker image with all dependencies pre-installed — useful for CI-matching environments without toolchain setup.
+
+### CONFIG_EXPORT — Quick Config Inspection
+
+Add `#define CONFIG_EXPORT 105` to `Configuration.h` before building to export all active configuration options. The result is written to `Marlin/_Exported_Settings.h`, providing a concise summary of what your config enables without reading thousands of lines:
+
+```bash
+echo '#define CONFIG_EXPORT 105' >> Marlin/Configuration.h
+pio run -e <env> 2>&1 | grep -E "error:|warning:|Export"
+cat Marlin/_Exported_Settings.h
+# Remove the temporary line before continuing
+```
 
 ## Understanding Build Output
 

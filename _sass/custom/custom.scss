@@ -15,23 +15,14 @@
 #main-content { margin-top: 0.5rem; }
 
 :target { scroll-margin-top: 5rem; }
-
-#table-of-contents {
-    font-size: 0.85em;
-    overscroll-behavior-y: contain; // prevent scroll chaining to body when reaching TOC scroll limits
-
-    overflow-y: scroll;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-
-    ::-webkit-scrollbar { display: none; }
-}
-
-#toc { background-color: #FFFFFF08; border-radius: 4px; padding: 0.25rem; }
+.breadcrumb-nav+#main-content :target { scroll-margin-top: 8rem; }
 
 // Move below the "fixed" #main-header
 .breadcrumb-nav { margin-top: 2.5rem; margin-bottom: -2.5rem; }
 //.breadcrumb-nav-list-item span { font-size: 2.25rem; font-weight: 300; color: #F5F6FA; }
+
+// Move down if breadcrumbs are present
+.breadcrumb-nav+#main-content { padding-top: 1rem; }
 
 // Top-right aux nav with one or more links
 // Defined by aux_links in _config.yml
@@ -76,14 +67,28 @@
 //   - Responsive: at md breakpoint TOC moves above content
 // ============================================================
 
+#table-of-contents {
+  margin-top: 2rem; // push down below header
+
+  font-size: 0.85em;
+  overscroll-behavior-y: contain; // prevent scroll chaining to body when reaching TOC scroll limits
+
+  overflow-y: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  ::-webkit-scrollbar { display: none; }
+}
+
+#toc { background-color: #FFFFFF08; border-radius: 4px; padding: 0.25rem; }
+
 // TOC "On this page" label injected via CSS
 #table-of-contents::before {
   content: ' ';
   display: block;
   font-size: 1.25rem;
   font-weight: 500;
-  margin-top: 5rem; // push down below header
-  margin-bottom: 0.5rem;
+  /* margin-bottom: 0.5rem; */
 }
 #table-of-contents.page::before {
   content: 'On this page';
@@ -91,9 +96,15 @@
 
 @media (min-width: 70rem) {
   body.has-toc {
+
+    .main { max-width: 64rem; }
+    #main-header { width: 64rem; }
+
+    // Make a gradient that goes most of the way as #222 ... #222, then abuptly changes color at calc(64rem - 14rem)
+    #top { background: linear-gradient(to right, #222 0%, #222 calc(100% - 18rem), #282828 calc(100% - 18rem), #242424 100%); }
     .main-content-wrap {
       display: grid;
-      grid-template-columns: 1fr 13rem;
+      grid-template-columns: 1fr 14rem;
       grid-template-areas: "main-column toc-column";
       align-items: start;
       gap: 0 3rem;
@@ -107,8 +118,8 @@
     #table-of-contents {
       grid-area: toc-column;
       position: sticky;
-      top: 2rem;
-      max-height: calc(100vh - 4rem);
+      top: 5rem;
+      max-height: calc(100vh - 9rem);
       overflow-y: auto;
     }
 
@@ -134,7 +145,8 @@
     }
     #table-of-contents {
       // TOC flows inline above main content (natural document flow)
-      margin-bottom: 1.5rem;
+      margin-bottom: 0;
+      margin-top: 2rem; // push down below header
     }
     #main-content {
       margin-top: 0; // remove top margin for main content

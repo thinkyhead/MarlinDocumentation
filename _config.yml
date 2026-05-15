@@ -75,6 +75,10 @@ collections:
     output: true
     permalink: /docs/:collection/:path:output_ext
 
+  appendix:
+    output: true
+    permalink: /docs/:collection/:path:output_ext
+
 exclude:
   - _config.yml
   - Gemfile
@@ -111,6 +115,13 @@ defaults:
       layout: page
       category: [ Basics ]
 
+  - # Appendix collection
+    scope:
+      type: appendix
+    values:
+      layout: page
+      category: [ Appendix ]
+
 # SEO Stuff
 author: Marlin Firmware
 summary: Documentation for the Marlin Firmware project.
@@ -127,6 +138,14 @@ feed:
 #    - https://github.com/just-the-docs/just-the-docs
 
 # Just the Docs theme configuration
+just_the_docs:
+  collections:
+    basics:
+      name: Basics
+    appendix:
+      name: Appendix
+      nav_fold: true
+
 aux_links:
   🤓 GitHub: https://github.com/MarlinFirmware/Marlin
   ❤️ Donate: /docs/contribute.html
