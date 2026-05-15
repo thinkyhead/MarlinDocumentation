@@ -8,7 +8,6 @@ nav_order: 3
 nav_enabled: true
 nav_stroke: false
 toc: true
-has_toc: true
 back_to_top: true
 ---
 

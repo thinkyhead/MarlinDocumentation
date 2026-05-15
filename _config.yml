@@ -9,12 +9,24 @@ js: '/assets/javascript/'
 pull_img: '/assets/images/docs/development/pull_images/'
 destination: ./_site
 
+exclude:
+  - _config.yml
+  - Gemfile
+  - LICENSE
+  - public
+  - script
+  - vendor
+  - dev-notes.md
+  - AGENTS.md
+
 #theme: jekyll-theme-documentation
 #theme: jekyll-theme-minimal
 theme: just-the-docs
 #nav_enabled: true
+#heading_anchors: false
 
 color_scheme: dark
+back_to_top: true
 
 search_enabled: true
 search.button: true
@@ -35,8 +47,8 @@ social:
     - http://forums.reprap.org/list.php?415
     - https://discord.com/servers/marlin-firmware-461605380783472640
 
-#github:
-#  repository_name: 'MarlinFirmware/MarlinDocumentation'
+github:
+  repository_name: 'MarlinFirmware/MarlinDocumentation'
 #  repository_url:
 
 repository:
@@ -62,13 +74,20 @@ kramdown:
   input: GFM
   syntax_highlighter: rouge
 
-jekyll_tidy:
-  compress_html: true
-  # exclude: ["index.html"]
-  # ignore_env: development
+plugins:
+  - jekyll-bootstrap-sass
+  - jekyll-tidy
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-toc
 
 sass:
     style: compressed
+
+jekyll_tidy:
+  compress_html: true
+  exclude: ["*.js"]
+  # ignore_env: development
 
 collections:
   basics:
@@ -79,21 +98,9 @@ collections:
     output: true
     permalink: /docs/:collection/:path:output_ext
 
-exclude:
-  - _config.yml
-  - Gemfile
-  - LICENSE
-  - public
-  - script
-  - vendor
-
-plugins:
-  #- jekyll-toc
-  - jekyll-bootstrap-sass
-  - jekyll-tidy
-  - jekyll-feed
-  - jekyll-sitemap
-  - jekyll-toc
+#toc:
+#  min_level: 2 # default: 1
+#  max_level: 5 # default: 6
 
 defaults:
   - # All types
@@ -111,6 +118,7 @@ defaults:
   - # Basics collection
     scope:
       type: basics
+      path: 'docs/basics'
     values:
       layout: page
       category: [ Basics ]
@@ -118,6 +126,7 @@ defaults:
   - # Appendix collection
     scope:
       type: appendix
+      path: 'docs/appendix'
     values:
       layout: page
       category: [ Appendix ]

@@ -4,8 +4,8 @@ description: Reference material for Marlin hardware, boards, controllers, and ot
 layout: page
 nav_order: 10
 nav_enabled: true
-nav_fold: false
-has_children: true
+has_children: true # Left nav and TOC show child pages
+nav_fold: false    # Reveal (all) child pages by default
 back_to_top: true
 ---
 

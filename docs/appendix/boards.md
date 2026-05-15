@@ -3,9 +3,9 @@ title: Boards
 description: Complete list of hardware boards supported by Marlin Firmware, with pin mapping and FastIO information.
 parent: Appendix
 nav_order: 1
-back_to_top: true
 layout: article
 toc: true
+back_to_top: true
 ---
 
 # Boards
@@ -64,7 +64,7 @@ If you're developing a custom board, try to use common pinouts as much as possib
 
 <div id="board-list">
 {% for item in site.data.boards %}
-<h4>{{ item.group }}</h4>
+<h3>{{ item.group }}</h3>
 {% if item.long %}<p>{{ item.long | markdownify }}</p>{% endif %}
 <table class="table table-condensed table-striped">
 <tr><th>Name</th><th>Description</th><th>Since</th></tr>
