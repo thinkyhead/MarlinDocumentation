@@ -1,0 +1,281 @@
+---
+layout: table_wrappers
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ page.title }} - Marlin Firmware</title>
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <style>
+    .gcode-header {
+      background: #1a1a1a;
+      color: #fff;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      border-radius: 4px;
+    }
+    .gcode-header h1 {
+      margin: 0;
+      font-size: 1.8rem;
+    }
+    .gcode-badges {
+      margin-top: 0.5rem;
+    }
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      border-radius: 3px;
+      font-size: 0.85rem;
+      margin-right: 0.5rem;
+      margin-bottom: 0.25rem;
+    }
+    .badge-success { background: #28a745; color: #fff; }
+    .badge-warning { background: #ffc107; color: #000; }
+    .badge-default { background: #6c757d; color: #fff; }
+    .badge-primary { background: #007bff; color: #fff; }
+    .badge-requires { background: #dc3545; color: #fff; font-size: 0.75rem; }
+    
+    .gcode-related {
+      background: #f8f9fa;
+      padding: 1rem;
+      border-radius: 4px;
+      margin-bottom: 1.5rem;
+    }
+    .gcode-related strong { margin-right: 0.5rem; }
+    .gcode-link { margin-right: 0.5rem; }
+    
+    .gcode-description {
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+    
+    .gcode-notes, .gcode-devnotes {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .gcode-devnotes {
+      background: #d1ecf1;
+      border-left-color: #17a2b8;
+    }
+    
+    .gcode-usage {
+      margin-bottom: 2rem;
+    }
+    .gcode-usage code {
+      font-size: 1.1rem;
+      padding: 0.5rem;
+      background: #f8f9fa;
+      border-radius: 3px;
+    }
+    
+    .gcode-params table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 2rem;
+    }
+    .gcode-params th {
+      background: #1a1a1a;
+      color: #fff;
+      padding: 0.75rem;
+      text-align: left;
+    }
+    .gcode-params td {
+      padding: 0.75rem;
+      border-bottom: 1px solid #dee2e6;
+    }
+    .gcode-params code {
+      background: #e9ecef;
+      padding: 0.2rem 0.4rem;
+      border-radius: 3px;
+    }
+    
+    .gcode-examples {
+      margin-bottom: 2rem;
+    }
+    .gcode-example-pre {
+      margin-bottom: 0.5rem;
+    }
+    .gcode-example-code {
+      background: #1a1a1a;
+      color: #f8f8f2;
+      padding: 1rem;
+      border-radius: 4px;
+      overflow-x: auto;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+    .gcode-example-post {
+      margin-top: 0.5rem;
+      font-style: italic;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  {% if page.collection == 'gcode' and page.codes %}
+    {% assign gcode = page %}
+    
+    <!-- Header -->
+    <div class="gcode-header">
+      <h1>
+        {% for code in page.codes %}
+          <code>{{ code }}</code>
+          {% if forloop.last != true %} / {% endif %}
+        {% endfor %}
+        <span style="color: #88c;">- {{ page.title }}</span>
+      </h1>
+      
+      <div class="gcode-badges">
+        {% if page.experimental %}
+          <span class="badge badge-warning">Experimental</span>
+        {% endif %}
+        
+        {% if page.since %}
+          <span class="badge badge-success">Available since {{ page.since }}</span>
+        {% endif %}
+        
+        {% if page.group %}
+          <span class="badge badge-default">{{ page.group }}</span>
+        {% endif %}
+        
+        {% if page.brief %}
+          <span class="badge badge-primary">{{ page.brief }}</span>
+        {% endif %}
+        
+        {% if page.requires %}
+          {% assign req_list = page.requires | split: ',' %}
+          {% for req in req_list %}
+            <span class="badge badge-requires" title="Requires">{{ req | strip }}</span>
+          {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Related commands -->
+    {% if page.related %}
+      <div class="gcode-related">
+        <strong>Related codes:</strong>
+        {% for item in page.related %}
+          <a href="/docs/gcode/{{ item | linkify }}.html" class="gcode-link">
+            <code>{{ item }}</code>
+          </a>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <!-- Description (from body) -->
+    <div class="gcode-description">
+      {{ content }}
+    </div>
+
+    <!-- Notes -->
+    {% if page.notes %}
+      <div class="gcode-notes">
+        <h3>Notes</h3>
+        {% for line in page.notes %}
+          <p>{{ line }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <!-- Developer Notes -->
+    {% if page.devnotes %}
+      <div class="gcode-devnotes">
+        <h3>Developer Notes</h3>
+        {% for line in page.devnotes %}
+          <p>{{ line }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <!-- Usage -->
+    {% if page.parameters and page.pagetype != 'toc' %}
+      <div class="gcode-usage">
+        <h3>Usage</h3>
+        {% for code in page.codes %}
+          <p><code>
+            {{ code }}
+            {% if page.parameters.size > 0 %}
+              {% assign parm_list = page.parameters | sort: 'tag' %}
+              {% for parm in parm_list %}
+                <span title="{{ parm.description | escape }}">{{ parm.tag }}</span>
+              {% endfor %}
+            {% endif %}
+          </code></p>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <!-- Parameters Table -->
+    {% if page.parameters and page.parameters.size > 0 %}
+      <div class="gcode-params">
+        <h3>Parameters</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Parameter</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% assign parm_list = page.parameters | sort: 'tag' %}
+            {% for parm in parm_list %}
+              <tr>
+                <td>
+                  {% if parm.optional %}<em>optional</em> {% endif %}
+                  <code>{{ parm.tag }}</code>
+                  {% if parm.since %}
+                    <span class="badge badge-success" style="font-size: 0.7rem;">{{ parm.since }}</span>
+                  {% endif %}
+                </td>
+                <td>{{ parm.description }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% endif %}
+
+    <!-- Examples -->
+    {% if page.examples and page.examples.size > 0 %}
+      <div class="gcode-examples">
+        <h3>Examples</h3>
+        {% for item in page.examples %}
+          {% if item.pre %}
+            <div class="gcode-example-pre">
+              {% for line in item.pre %}
+                <p>{{ line }}</p>
+              {% endfor %}
+            </div>
+          {% endif %}
+          
+          <div class="gcode-example-code">
+            {% for line in item.code %}
+              {{ line }}
+            {% endfor %}
+          </div>
+          
+          {% if item.post %}
+            <div class="gcode-example-post">
+              {% for line in item.post %}
+                <p>{{ line }}</p>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+
+  {% else %}
+    <!-- Fallback for non-gcode pages -->
+    <h1>{{ page.title }}</h1>
+    {{ content }}
+  {% endif %}
+</body>
+</html>

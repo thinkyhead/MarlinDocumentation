@@ -1,0 +1,289 @@
+{% if page.collection == 'gcode' and page.codes %}
+  {% assign gcode = page %}
+  
+  <!-- Header with command badges -->
+  <div class="gcode-header">
+    <h1>
+      {% for code in page.codes %}
+        <code class="gcode-code">{{ code }}</code>
+        {% if forloop.last != true %} / {% endif %}
+      {% endfor %}
+      <span class="gcode-title">- {{ page.title }}</span>
+    </h1>
+    
+    <!-- Badges -->
+    <div class="gcode-badges">
+      {% if page.experimental %}
+        <span class="badge badge-warning" title="Experimental">
+          <i class="fas fa-flask"></i> Experimental
+        </span>
+      {% endif %}
+      
+      {% if page.since %}
+        <span class="badge badge-success" title="Available since">
+          <i class="fas fa-code"></i> {{ page.since }}
+        </span>
+      {% endif %}
+      
+      {% if page.group %}
+        <span class="badge badge-default">
+          <i class="fas fa-tags"></i> {{ page.group }}
+        </span>
+      {% endif %}
+      
+      {% if page.brief %}
+        <span class="badge badge-primary">
+          <i class="fas fa-pencil-square"></i> {{ page.brief }}
+        </span>
+      {% endif %}
+      
+      {% if page.requires %}
+        {% assign req_list = page.requires | split: ',' %}
+        {% for req in req_list %}
+          <span class="badge badge-requires" title="Requires">
+            {{ req | strip }}
+          </span>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Related commands -->
+  {% if page.related %}
+    <div class="gcode-related">
+      <strong>Related codes:</strong>
+      {% for item in page.related %}
+        <a href="/docs/gcode/{{ item | linkify }}.html" class="gcode-link">
+          <code>{{ item }}</code>
+        </a>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <!-- Description (from markdown body) -->
+  {% if page.content != "" %}
+    <div class="gcode-description">
+      <h3>Description</h3>
+      {{ page.content | markdownify }}
+    </div>
+  {% endif %}
+
+  <!-- Notes -->
+  {% if page.notes %}
+    <div class="gcode-notes">
+      <h3>Notes</h3>
+      {% for line in page.notes %}
+        {{ line | markdownify }}
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <!-- Developer Notes -->
+  {% if page.devnotes %}
+    <div class="gcode-devnotes">
+      <h3>Developer Notes</h3>
+      {% for line in page.devnotes %}
+        {{ line | markdownify }}
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <!-- Usage section -->
+  {% if page.pagetype != 'toc' %}
+    <div class="gcode-usage" id="usage-{{ page.tag }}">
+      <h3>Usage</h3>
+      {% for code in page.codes %}
+        <div class="gcode-usage-line">
+          <code>
+            {{ code }}
+            {% if page.parameters %}
+              {% assign parm_list = '' | split: '|' %}
+              {% for parm in page.parameters %}
+                {% if parm.tag %}
+                  {% assign parm_list = parm_list | push: parm %}
+                {% endif %}
+              {% endfor %}
+
+              {% if parm_list.size > 0 %}
+                {% assign parm_list = parm_list | sort: 'tag' %}
+                {% for parm in parm_list %}
+                  <span 
+                    {% if parm.optional %}class="gcode-param-optional" {% endif %}
+                    data-toggle="tooltip" 
+                    data-container="body" 
+                    data-placement="top" 
+                    data-original-title="{{ parm.description | markdownify | strip_html }}"
+                  >
+                    {% if parm.optional %}&#x5B;{% endif -%}
+                      {{- parm.tag -}}
+                      {%- if parm.values.size > 0 -%}
+                        {%- if parm.values.size == 1 -%}
+                          {%- assign pv = parm.values[0] -%}
+                          {%- if pv.type != 'flag' -%}
+                            {%- if pv.optional %}&#x5B;{% else -%}&lt;{%- endif -%}
+                            {%- if pv.tag -%}
+                              {{ pv.tag }}{%- if pv.unit -%} ({{ pv.unit }}){%- endif -%}
+                            {%- elsif pv.unit -%}
+                              {{ pv.unit }}
+                            {%- elsif pv.type -%}
+                              {{ pv.type }}
+                            {%- else -%}
+                              Unknown
+                            {%- endif -%}
+                            {%- if pv.optional %}&#x5D;{% else -%}&gt;{%- endif -%}
+                          {%- endif -%}
+                        {%- else -%}
+                          &lt;
+                          {%- for pv in parm.values -%}
+                            {{- pv.tag -}}
+                            {%- if forloop.last != true %}&#x7C;{% endif -%}
+                          {%- endfor -%}
+                          &gt;
+                        {%- endif -%}
+                      {%- endif -%}
+                      {%- if parm.optional -%}&#x5D;{% endif -%}
+                  </span>
+                {% endfor %}
+              {% endif %}
+            {% endif %}
+          </code>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <!-- Parameters table -->
+  {% if page.parameters %}
+    {% assign parm_list = '' | split: '|' %}
+    {% for parm in page.parameters %}
+      {% if parm.tag %}
+        {% assign parm_list = parm_list | push: parm %}
+      {% endif %}
+    {% endfor %}
+
+    {% if parm_list.size > 0 %}
+      <div class="gcode-params">
+        <h4>Parameters</h4>
+        <div class="table-responsive">
+          <table class="table">
+            <tbody>
+              {% assign parm_list = parm_list | sort: 'tag' %}
+              {% for parm in parm_list %}
+                <tr>
+                  <td class="gcode-param-name">
+                    {% if parm.experimental %}
+                      <span class="badge badge-warning" title="Experimental option">
+                        <i class="fas fa-flask"></i>
+                      </span>
+                    {% endif %}
+                    <code>
+                      {% if parm.optional %}&#x5B;{% endif -%}
+                      {{ parm.tag }}
+                      {%- if parm.values.size > 0 -%}
+                        {%- if parm.values.size == 1 -%}
+                          {%- assign pv = parm.values[0] -%}
+                          {%- if pv.type != 'flag' -%}
+                            {%- if pv.optional -%}&#x5B;{%- else -%}&lt;{%- endif -%}
+                            {%- if pv.tag -%}
+                              {{- pv.tag }}{%- if pv.unit -%}({{ pv.unit }}){%- endif -%}
+                            {%- elsif pv.unit -%}
+                              {{- pv.unit -}}
+                            {%- elsif pv.type -%}
+                              {{- pv.type -}}
+                            {%- else -%}
+                              Unknown
+                            {%- endif -%}
+                            {%- if pv.optional -%}&#x5D;{%- else -%}&gt;{%- endif -%}
+                          {%- endif -%}
+                        {%- else -%}
+                          &lt;
+                          {%- for pv in parm.values -%}
+                            {{ pv.tag }}
+                            {%- if forloop.last != true -%}&#x7C;{%- endif -%}
+                          {%- endfor -%}
+                          &gt;
+                        {%- endif -%}
+                      {%- endif -%}
+                      {%- if parm.optional %}&#x5D;{% endif -%}
+                    </code>
+                    {% if parm.since %}
+                      <div>
+                        <span class="badge badge-success" title="Available since">
+                          <i class="fas fa-code"></i> {{ parm.since }}
+                        </span>
+                      </div>
+                    {% endif %}
+                    {% if parm.requires %}
+                      {% assign req_list = parm.requires | split: ',' %}
+                      <div>
+                        {% for item in req_list %}
+                          <span class="badge badge-requires" title="Option required">
+                            {{ item | strip }}
+                          </span>
+                        {% endfor %}
+                      </div>
+                    {% endif %}
+                  </td>
+                  <td>
+                    {{- parm.description | markdownify -}}
+                    {% if parm.values.size > 0 %}
+                      <ul class="param-desc-list">
+                        {% for pv in parm.values %}
+                          {% if pv.description %}
+                            <li>
+                              {% if pv.since %}
+                                <span class="badge badge-success" title="Available since">
+                                  <i class="fas fa-code"></i> {{ pv.since }}
+                                </span>
+                              {% endif %}
+                              <code>{{ parm.tag }}{{ pv.tag }}</code>: {{ pv.description | markdownify }}
+                            </li>
+                          {% endif %}
+                        {% endfor %}
+                      </ul>
+                    {% endif %}
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    {% endif %}
+  {% endif %}
+
+  <!-- Examples -->
+  {% if page.examples %}
+    <div class="gcode-examples">
+      <h3>Examples</h3>
+      {% for item in page.examples %}
+        {% if item.since %}
+          <span class="badge badge-success" title="Available since">
+            <i class="fas fa-code"></i> {{ item.since }}
+          </span>
+        {% endif %}
+        {% if item.pre %}
+          <div class="gcode-example-pre">
+            {% for line in item.pre %}
+              {{ line | markdownify }}
+            {% endfor %}
+          </div>
+        {% endif %}
+        <div class="gcode-example-code">
+          ```gcode
+          {% for line in item.code %}{{ line }}
+{% endfor %}
+          ```
+        </div>
+        {% if item.post %}
+          <div class="gcode-example-post">
+            {% for line in item.post %}
+              {{ line | markdownify }}
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% endif %}
+
+{% endif %}

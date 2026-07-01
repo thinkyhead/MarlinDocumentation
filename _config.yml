@@ -136,6 +136,14 @@ defaults:
       layout: page
       category: [ Appendix ]
 
+  - # G-code collection
+    scope:
+      type: gcode
+      path: 'docs/gcode'
+    values:
+      layout: gcode
+      category: [ gcode ]
+
 # SEO Stuff
 author: Marlin Firmware
 summary: Documentation for the Marlin Firmware project.
