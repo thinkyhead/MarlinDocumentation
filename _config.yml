@@ -94,6 +94,11 @@ collections:
     output: true
     permalink: /docs/:collection/:path:output_ext
 
+  gcode:
+    output: true
+    title: G-code
+    permalink: /docs/:collection/:path:output_ext
+
   appendix:
     output: true
     permalink: /docs/:collection/:path:output_ext
