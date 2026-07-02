@@ -104,6 +104,14 @@ collections:
     output: true
     permalink: /docs/:collection/:path:output_ext
 
+  development:
+    output: true
+    permalink: /docs/:collection/:path:output_ext
+
+  hardware:
+    output: true
+    permalink: /docs/:collection/:path:output_ext
+
 #toc:
 #  min_level: 2 # default: 1
 #  max_level: 5 # default: 6
@@ -128,6 +136,22 @@ defaults:
     values:
       layout: page
       category: [ Basics ]
+
+  - # Development collection
+    scope:
+      type: development
+      path: 'docs/development'
+    values:
+      layout: page
+      category: [ Development ]
+
+  - # Hardware collection
+    scope:
+      type: hardware
+      path: 'docs/hardware'
+    values:
+      layout: page
+      category: [ Hardware ]
 
   - # Appendix collection
     scope:
@@ -164,6 +188,10 @@ just_the_docs:
   collections:
     basics:
       name: Basics
+    development:
+      name: Development
+    hardware:
+      name: Hardware
     appendix:
       name: Appendix
       nav_fold: true
