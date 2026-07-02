@@ -1,6 +1,7 @@
 ---
 title: Code Structure
 description: An overview of Marlin's files and folders.
+parent: Appendix
 layout: article
 nav_order: 31
 nav_enabled: true

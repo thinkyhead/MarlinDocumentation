@@ -1,6 +1,7 @@
 ---
 title: Contributing Code with Pull Requests
 description: How to submit changes to Marlin through Github
+parent: Appendix
 layout: article
 nav_order: 37
 nav_enabled: true

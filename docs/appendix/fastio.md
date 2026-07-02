@@ -1,6 +1,7 @@
 ---
 title: FastIO
 description: Overview of FastIO
+parent: Appendix
 layout: article
 nav_order: 34
 nav_enabled: true

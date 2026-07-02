@@ -1,6 +1,7 @@
 ---
 title: Troubleshooting Tips
 description: Common problems and potential solutions
+parent: Appendix
 layout: article
 nav_order: 6
 nav_enabled: true

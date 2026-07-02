@@ -1,6 +1,7 @@
 ---
 title: Controllers and displays
 description: Controllers and displays supported by Marlin
+parent: Appendix
 layout: article
 nav_order: 50
 nav_enabled: true

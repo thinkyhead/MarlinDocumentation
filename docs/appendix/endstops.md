@@ -1,6 +1,7 @@
 ---
 title: Endstops
 description: Endstop purpose, types and EMI effects
+parent: Appendix
 layout: article
 nav_order: 60
 nav_enabled: true

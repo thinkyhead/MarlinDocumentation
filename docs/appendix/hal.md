@@ -1,6 +1,7 @@
 ---
 title: Hardware Abstraction Layer
 description: Overview of the Hardware Abstraction Layer in Marlin
+parent: Appendix
 layout: article
 nav_order: 39
 nav_enabled: true

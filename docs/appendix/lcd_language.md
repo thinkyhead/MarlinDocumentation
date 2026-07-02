@@ -1,6 +1,7 @@
 ---
 title: LCD Language System
 description: How Marlin handles LCD languages
+parent: Appendix
 layout: article
 nav_order: 40
 nav_enabled: true

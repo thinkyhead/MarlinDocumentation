@@ -18,6 +18,7 @@ exclude:
   - vendor
   - dev-notes.md
   - AGENTS.md
+  - .hermes-tmp.*
 
 #theme: jekyll-theme-documentation
 #theme: jekyll-theme-minimal
@@ -100,18 +101,6 @@ collections:
     title: G-code
     permalink: /docs/:collection/:path:output_ext
 
-  appendix:
-    output: true
-    permalink: /docs/:collection/:path:output_ext
-
-  development:
-    output: true
-    permalink: /docs/:collection/:path:output_ext
-
-  hardware:
-    output: true
-    permalink: /docs/:collection/:path:output_ext
-
 #toc:
 #  min_level: 2 # default: 1
 #  max_level: 5 # default: 6
@@ -137,25 +126,8 @@ defaults:
       layout: page
       category: [ Basics ]
 
-  - # Development collection
+  - # Appendix pages
     scope:
-      type: development
-      path: 'docs/development'
-    values:
-      layout: page
-      category: [ Development ]
-
-  - # Hardware collection
-    scope:
-      type: hardware
-      path: 'docs/hardware'
-    values:
-      layout: page
-      category: [ Hardware ]
-
-  - # Appendix collection
-    scope:
-      type: appendix
       path: 'docs/appendix'
     values:
       layout: page
@@ -188,13 +160,6 @@ just_the_docs:
   collections:
     basics:
       name: Basics
-    development:
-      name: Development
-    hardware:
-      name: Hardware
-    appendix:
-      name: Appendix
-      nav_fold: true
 
 aux_links:
   🤓 GitHub: https://github.com/MarlinFirmware/Marlin

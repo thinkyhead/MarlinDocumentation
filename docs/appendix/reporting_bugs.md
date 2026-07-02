@@ -1,6 +1,7 @@
 ---
 title: Reporting Bugs
 description: 'Detailed guide about bugs and how to report them'
+parent: Appendix
 layout: article
 nav_order: 5
 nav_enabled: true

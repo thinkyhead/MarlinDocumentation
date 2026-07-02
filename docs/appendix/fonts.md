@@ -1,6 +1,7 @@
 ---
 title: Adding new fonts
 description: How to add new font files to Marlin
+parent: Appendix
 layout: article
 nav_order: 36
 nav_enabled: true

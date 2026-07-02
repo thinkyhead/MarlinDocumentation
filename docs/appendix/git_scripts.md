@@ -1,6 +1,7 @@
 ---
 title: Marlin Github Scripts
 description: Helper scripts to ease and speed Marlin development.
+parent: Appendix
 layout: article
 nav_order: 38
 nav_enabled: true

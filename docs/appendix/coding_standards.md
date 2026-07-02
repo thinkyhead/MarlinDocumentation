@@ -1,6 +1,7 @@
 ---
 title: Coding Standards
 description: Guidelines for Marlin code formatting, methodologies, and standards.
+parent: Appendix
 layout: article
 nav_order: 32
 nav_enabled: true

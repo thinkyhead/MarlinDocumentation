@@ -1,6 +1,7 @@
 ---
 title: Trinamic drivers
 description: Using Trinamic TMC based stepper drivers.
+parent: Appendix
 layout: article
 nav_order: 70
 nav_enabled: true

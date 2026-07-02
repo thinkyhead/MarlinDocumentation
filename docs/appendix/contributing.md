@@ -1,6 +1,7 @@
 ---
 title: Contributing to Marlin
 description: How to help improve Marlin
+parent: Appendix
 layout: article
 nav_order: 33
 nav_enabled: true
