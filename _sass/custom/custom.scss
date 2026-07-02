@@ -235,3 +235,56 @@ footer p em {
     font-size: 0.75em;
     color: #888;
 }
+
+// ============================================================
+// G-code page badges
+// ============================================================
+.gcode-badges .badge {
+    display: inline-block;
+    white-space: nowrap;
+    border-radius: 4px;
+    padding: 0.2em 0.5em;
+    margin: 0 0.25em 0.25em 0;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border: 1px solid transparent;
+    line-height: 1.4;
+
+    transition: opacity 0.15s ease;
+}
+
+.badge-since {
+    background: #0a3d3d;
+    border-color: #2dd4bf;
+    color: #ccfbf1;
+}
+
+.badge-group {
+    background: #1e1050;
+    border-color: #818cf8;
+    color: #e0e7ff;
+}
+
+.badge-experimental {
+    background: #3d1f00;
+    border-color: #fbbf24;
+    color: #fef3c7;
+}
+
+.badge-requires {
+    background: #3d0c1f;
+    border-color: #fb7185;
+    color: #ffe4e6;
+}
+
+.badge-brief {
+    background: #0f2450;
+    border-color: #60a5fa;
+    color: #dbeafe;
+}
+
+// Also style the Usage parameter spans
+.optional {
+    opacity: 0.85;
+}
+
