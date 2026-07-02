@@ -15,7 +15,7 @@ layout: default
 
   <!-- Header -->
   <div class="gcode-header">
-    <h1>{{ gcode.codes | codes_desc }} - {{ gcode.title }}</h1>
+    <h1>{% if gcode.short_title %}{{ gcode.codes | codes_desc }} - {{ gcode.short_title }}{% else %}{{ gcode.title }}{% endif %}</h1>
 
     {% if gcode.experimental %}
     <span class="badge badge-experimental">Experimental</span>

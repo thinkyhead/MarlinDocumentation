@@ -80,6 +80,7 @@ plugins:
   - jekyll-feed
   - jekyll-sitemap
   - jekyll-toc
+  - jekyll-seo-tag
 
 sass:
     style: compressed

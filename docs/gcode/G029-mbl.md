@@ -1,8 +1,10 @@
 ---
 tag: g029m1
-title: Bed Leveling (Manual)
+title: "G29: Bed Leveling (Manual)"
+short_title: Bed Leveling (Manual)
 brief: Measure Z heights in a grid, enable leveling compensation
 author: thinkyhead
+parent: G-code Commands
 
 group: calibration
 requires: MESH_BED_LEVELING
