@@ -2,16 +2,94 @@
 // _sass/custom/custom.scss
 //
 // Custom styles for "Just the Docs" theme
+// Uses CSS custom properties for runtime theming via [data-color-scheme]
 //
+
+// Marlin dark-theme defaults (compiled into CSS)
+// Light-theme overrides are in the [data-color-scheme="light"] block at bottom
+:root {
+  --marlin-top-bg-1: #222;
+  --marlin-top-bg-2: #222;
+  --marlin-top-bg-3: #242424;
+  --marlin-table-even-bg: #3332;
+  --marlin-table-header-bg: #282855;
+  --marlin-toc-bg: #ffffff08;
+  --marlin-footer-color: #888;
+  --marlin-aux-nav-color: #f88;
+  --marlin-nav-hover-color: #88c;
+
+  // Badges - dark theme
+  --badge-since-bg: #0a3d3d;
+  --badge-since-border: #2dd4bf;
+  --badge-since-color: #ccfbf1;
+  --badge-group-bg: #1e1050;
+  --badge-group-border: #818cf8;
+  --badge-group-color: #e0e7ff;
+  --badge-experimental-bg: #3d1f00;
+  --badge-experimental-border: #fbbf24;
+  --badge-experimental-color: #fef3c7;
+  --badge-requires-bg: #3d0c1f;
+  --badge-requires-border: #fb7185;
+  --badge-requires-color: #ffe4e6;
+  --badge-brief-bg: #0f2450;
+  --badge-brief-border: #60a5fa;
+  --badge-brief-color: #dbeafe;
+}
+
+[data-color-scheme="light"] {
+  // JTD core
+  --body-background-color: #fff;
+  --sidebar-color: #f5f6fa;
+  --body-text-color: #27262b;
+  --body-heading-color: #27262b;
+  --link-color: #1565c0;
+  --btn-primary-color: #1565c0;
+  --code-background-color: #f5f6fa;
+  --border-color: #e6e1e8;
+  --search-background-color: #fff;
+  --search-result-preview-color: #58595b;
+  --table-background-color: #fff;
+  --feedback-color: #e8e5ed;
+  --nav-child-link-color: #58595b;
+
+   // Marlin custom
+   --marlin-top-bg-1: #e8e8ec;
+   --marlin-top-bg-2: #eaeaf0;
+   --marlin-top-bg-3: #ededf2;
+   --marlin-table-even-bg: #f4f4f6;
+   --marlin-table-header-bg: #dde;
+   --marlin-toc-bg: #f5f5f7;
+   --marlin-footer-color: #666;
+   --marlin-aux-nav-color: #1565c0;
+   --marlin-nav-hover-color: #66a;
+
+   // Badges — light
+   --badge-since-bg: #d1f2eb;
+   --badge-since-border: #1abc9c;
+   --badge-since-color: #0e6655;
+   --badge-group-bg: #d4e6f1;
+   --badge-group-border: #5dade2;
+   --badge-group-color: #1f618d;
+   --badge-experimental-bg: #fdebd0;
+   --badge-experimental-border: #f39c12;
+   --badge-experimental-color: #7d6608;
+   --badge-requires-bg: #f2d7d5;
+   --badge-requires-border: #e74c3c;
+   --badge-requires-color: #922b21;
+   --badge-brief-bg: #d4e6f1;
+   --badge-brief-border: #3498db;
+   --badge-brief-color: #1a5276;
+}
+
 #top {
-    background-color: #222;
+    background-color: var(--marlin-top-bg-1);
 }
 #main-header {
     display: block;
     position: fixed;
     z-index: 1000;
-    width: 50rem;
-    height: 3.75rem;
+    width: $content-width;
+    height: $header-height;
 }
 .main-content-wrap {
     padding-top: 3rem;
@@ -28,10 +106,10 @@
 }
 
 #board-list table > tbody > tr:nth-of-type(even) td {
-    background: #3332;
+    background: var(--marlin-table-even-bg);
 }
 #board-list th {
-    background: #282855;
+    background: var(--marlin-table-header-bg);
 }
 
 // Move below the "fixed" #main-header
@@ -39,34 +117,10 @@
     margin-top: 2.5rem;
     margin-bottom: -2.5rem;
 }
-//.breadcrumb-nav-list-item span { font-size: 2.25rem; font-weight: 300; color: #F5F6FA; }
 
 // Move down if breadcrumbs are present
 .breadcrumb-nav + #main-content {
     padding-top: 1rem;
-}
-
-// Top-right aux nav with one or more links
-// Defined by aux_links in _config.yml
-.aux-nav {
-    float: left;
-    position: relative;
-    a {
-        color: #f88;
-    }
-}
-@media (max-width: 70rem) {
-    .aux-nav {
-        float: none;
-        left: calc(-16rem + 1em);
-    }
-}
-@media (min-width: 70rem) {
-    .aux-nav {
-        left: 40rem;
-        top: -3.5rem;
-        z-index: 2000;
-    }
 }
 
 /**
@@ -78,26 +132,84 @@
  *  xl  1400px (87.5rem) and up
  */
 
+// Search Input in the header top-center
+.search-input-wrap { max-width: 30rem; } /* Reduce from 33.5rem */
+
+// Top-right aux nav with one or more links
+// Defined by aux_links in _config.yml
+.aux-nav {
+    float: left;
+    position: relative;
+    a {
+        color: var(--marlin-aux-nav-color);
+    }
+}
+@media (max-width: 70rem) {
+    .aux-nav {
+        float: none;
+        left: calc(-19rem + 1em);
+        top: 0;
+    }
+}
+@media (min-width: 70rem) {
+    .aux-nav {
+        left: 34rem;
+        top: -3.5rem;
+        z-index: 2000;
+    }
+}
+
+.aux-nav .site-button { height: 90%; }
+
+.theme-toggle {
+    display: inline;
+    float: left;
+    position: relative;
+    a { color: var(--marlin-aux-nav-color); }
+    left: 33rem;
+    top: -2.5rem;
+    z-index: 2000;
+    border: none;
+    background: transparent;
+    font-size: 0.75rem;
+    font-weight: 500;
+    .theme-toggle-icon {
+        font-size: 1rem;
+        line-height: 1;
+    }
+}
+
+// ============================================================
+// Color scheme toggle button
+// ============================================================
+.theme-toggle-old {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid #888;
+    border-radius: 4px;
+    background: transparent;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: inherit;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+
+    &:hover {
+        background: rgba(255,255,255,0.1);
+    }
+
+}
+
 // ============================================================
 // Three-column layout for mpage (TOC pages)
 // ============================================================
-// JTD's two-column layout: fixed sidebar + centered content
-// For pages with a TOC we want:  [sidebar]  [content]  [TOC]
-//
-// Strategy:
-//   - body.has-toc > .main-content-wrap becomes a CSS Grid
-//   - #table-of-contents = right column (fixed width)
-//   - .main-column  = center column (1fr)
-//   - TOC header "On this page" comes from SCSS ::before
-//   - Responsive: at md breakpoint TOC moves above content
-// ============================================================
 
 #table-of-contents {
-    margin-top: 2rem; // push down below header
-
+    margin-top: 2rem;
     font-size: 0.85em;
-    overscroll-behavior-y: contain; // prevent scroll chaining to body when reaching TOC scroll limits
-
+    overscroll-behavior-y: contain;
     overflow-y: scroll;
     scrollbar-width: none;
     -ms-overflow-style: none;
@@ -108,18 +220,16 @@
 }
 
 #toc {
-    background-color: #ffffff08;
+    background-color: var(--marlin-toc-bg);
     border-radius: 4px;
     padding: 0.25rem;
 }
 
-// TOC "On this page" label injected via CSS
 #table-of-contents::before {
     content: " ";
     display: block;
     font-size: 1.25rem;
     font-weight: 500;
-    /* margin-bottom: 0.5rem; */
 }
 #table-of-contents.page::before {
     content: "On this page";
@@ -140,14 +250,13 @@
             width: 64rem;
         }
 
-        // Make a gradient that goes most of the way as #222 ... #222, then abuptly changes color at calc(64rem - 14rem)
         #top {
             background: linear-gradient(
                 to right,
-                #222 0%,
-                #222 calc(100% - 18rem),
-                #282828 calc(100% - 18rem),
-                #242424 100%
+                var(--marlin-top-bg-1) 0%,
+                var(--marlin-top-bg-1) calc(100% - 18rem),
+                var(--marlin-top-bg-2) calc(100% - 18rem),
+                var(--marlin-top-bg-3) 100%
             );
         }
         .main-content-wrap {
@@ -160,7 +269,7 @@
 
         .main-content {
             grid-area: main-column;
-            min-width: 0; // allow content to shrink below min-width
+            min-width: 0;
         }
 
         #table-of-contents {
@@ -180,8 +289,7 @@
     }
 }
 
-// At medium-lg breakpoint, TOC moves above content
-@media (max-width: 69.99rem) {
+@media (max-width: 70rem) {
     .site-button {
         display: inline;
         position: relative;
@@ -198,12 +306,11 @@
             flex-direction: column;
         }
         #table-of-contents {
-            // TOC flows inline above main content (natural document flow)
             margin-bottom: 0;
-            margin-top: 2rem; // push down below header
+            margin-top: 2rem;
         }
         #main-content {
-            margin-top: 0; // remove top margin for main content
+            margin-top: 0;
         }
     }
 }
@@ -213,14 +320,13 @@
 }
 .nav-list .nav-list-item a.nav-list-link:hover,
 .nav-list .nav-list-item a.nav-list-link.active {
-    color: #88c;
+    color: var(--marlin-nav-hover-color);
     background: linear-gradient(
         -90deg,
         #201f23 0%,
         rgba(32, 31, 35, 0.8) 80%,
         rgba(32, 31, 35, 0) 100%
     );
-    // background-image: linear-gradient(-90deg, #201f23 0%, rgba(32,31,35,0.8) 80%, rgba(32,31,35,0) 100%);
 }
 
 .site-nav {
@@ -233,58 +339,157 @@
 
 footer p em {
     font-size: 0.75em;
-    color: #888;
+    color: var(--marlin-footer-color);
 }
 
 // ============================================================
 // G-code page badges
 // ============================================================
-.gcode-badges .badge {
+.gcode-header .badge, .gcode-params .badge {
     display: inline-block;
     white-space: nowrap;
-    border-radius: 4px;
     padding: 0.2em 0.5em;
     margin: 0 0.25em 0.25em 0;
+    border: 1px solid #888;
+    border-radius: 4px;
     font-size: 0.75rem;
     font-weight: 600;
-    border: 1px solid transparent;
     line-height: 1.4;
-
     transition: opacity 0.15s ease;
 }
 
 .badge-since {
-    background: #0a3d3d;
-    border-color: #2dd4bf;
-    color: #ccfbf1;
+    background: var(--badge-since-bg);
+    border-color: var(--badge-since-border);
+    color: var(--badge-since-color);
 }
-
 .badge-group {
-    background: #1e1050;
-    border-color: #818cf8;
-    color: #e0e7ff;
+    background: var(--badge-group-bg);
+    border-color: var(--badge-group-border);
+    color: var(--badge-group-color);
 }
-
 .badge-experimental {
-    background: #3d1f00;
-    border-color: #fbbf24;
-    color: #fef3c7;
+    background: var(--badge-experimental-bg);
+    border-color: var(--badge-experimental-border);
+    color: var(--badge-experimental-color);
 }
-
 .badge-requires {
-    background: #3d0c1f;
-    border-color: #fb7185;
-    color: #ffe4e6;
+    background: var(--badge-requires-bg);
+    border-color: var(--badge-requires-border);
+    color: var(--badge-requires-color);
 }
-
 .badge-brief {
-    background: #0f2450;
-    border-color: #60a5fa;
-    color: #dbeafe;
+    background: var(--badge-brief-bg);
+    border-color: var(--badge-brief-border);
+    color: var(--badge-brief-color);
 }
 
-// Also style the Usage parameter spans
+// Usage parameter spans
 .optional {
     opacity: 0.85;
 }
 
+// ============================================================
+// Marlin customizations
+// ============================================================
+.search-input {
+    background: #222;
+    border-radius: 12px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.site-title:hover {
+    background-image: linear-gradient(90deg, #FF00 0%, #F0F2 15%, #44F8 30%, #0F08 45%, #FF08 60%, #FA08 75%, #F007 90%, #F001 100%);
+}
+
+// ============================================================
+// Light color scheme overrides
+// ============================================================
+[data-color-scheme="light"] {
+    // JTD element overrides
+    body {
+        background-color: #eee;
+        color: #000;
+    }
+
+    h1 { color: #000; }
+    h2, h3, h4, h5, h6, #toctitle { color: #000; }
+
+    .site-title:hover {
+        background-image: linear-gradient(90deg, #F0F0 0%, #F0F2 15%, #44F7 30%, #0F08 45%, #FF08 60%, #FA08 75%, #F007 90%, #F001 100%);
+    }
+
+    .side-bar { background-color: #f5f6fa; }
+    .main-content a { color: #1565c0; }
+
+    // Main header bar — dark bg persists without this
+    .side-bar + .main .main-header,
+    .main-header { background-color: #e8e8ec; border-bottom-color: #ccc; }
+    // Inline code — JTD dark scheme sets background: #0d1117, border: #44434d
+    :not(pre, figure) > code {
+      background-color: #f0f0f3;
+      border-color: #ccc;
+    }
+
+    // Bare pre blocks (non-highlighted) — inherit dark bg without this
+    .main-content pre {
+      background-color: #f0f0f3;
+      color: #27262b;
+    }
+
+    // Code blocks (syntax highlighted) — lighten for light mode
+    .highlight, pre.highlight,
+    div.highlighter-rouge, figure.highlight {
+      background-color: #f5f6fa;
+    }
+
+    // Copy button inside code blocks — SVG fill too light in light mode
+    figure.highlight > button svg,
+    div.highlighter-rouge > button svg,
+    div.listingblock > div.content > button svg {
+      fill: #666;
+    }
+    figure.highlight > button,
+    div.highlighter-rouge > button,
+    div.listingblock > div.content > button {
+      color: #666;
+    }
+
+    // Table cells — JTD dark scheme gives dark backgrounds that persist
+    th, td {
+      background-color: #fff;
+    }
+
+    .site-footer { color: #666; }
+
+    .search-input {
+        background: #ddd;
+        color: #27262b;
+    }
+    .search-result-preview { color: #58595b; }
+
+    .nav-list .nav-list-item a.nav-list-link:hover,
+    .nav-list .nav-list-item a.nav-list-link.active {
+        background: #e0e0e8;
+        background-image: none;
+    }
+
+    .theme-toggle {
+        color: #27262b;
+        border-color: #e6e1e8;
+        &:hover { background: #e8e5ed; }
+    }
+
+    // Hamburger menu button — dark hover gradient looks wrong in light mode
+    .site-button:hover {
+        background: #e0e0e8;
+        background-image: none;
+    }
+
+    .site-nav a { color: #58595b; }
+    .aux-nav a { color: #1565c0; }
+
+    // Logo — switch to day variant
+    .site-logo { background-image: url("/assets/images/logo/marlin/text-day.png"); }
+}

@@ -25,7 +25,7 @@ theme: just-the-docs
 #nav_enabled: true
 #heading_anchors: false
 
-color_scheme: dark
+color_scheme: marlin
 back_to_top: true
 
 search_enabled: true
