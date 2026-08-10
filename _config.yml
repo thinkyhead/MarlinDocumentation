@@ -129,21 +129,18 @@ defaults:
       path: 'docs/basics'
     values:
       layout: page
-      category: [ Basics ]
 
   - # Development pages
     scope:
       path: 'docs/development'
     values:
       layout: page
-      category: [ Development ]
 
   - # Appendix pages
     scope:
       path: 'docs/appendix'
     values:
       layout: page
-      category: [ Appendix ]
 
   - # G-code pages
     scope:
@@ -169,11 +166,9 @@ feed:
 
 # Just the Docs theme configuration
 just_the_docs:
-  collections:
-    basics:
-      name: Basics
-    development:
-      name: Development
+  # Sections are driven by page `parent:` + `nav_order` frontmatter,
+  # so named collections are intentionally omitted to avoid empty
+  # `nav-category` dividers at the bottom of the sidebar.
 
 aux_links:
   🤓 GitHub: https://github.com/MarlinFirmware/Marlin
