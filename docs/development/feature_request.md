@@ -1,9 +1,9 @@
 ---
 title: Feature requests
 description: Complete list of all the user requested features
-parent: Appendix
+parent: Development
 layout: article
-nav_order: 35
+nav_order: 4
 nav_enabled: true
 toc: true
 has_toc: true

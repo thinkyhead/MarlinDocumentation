@@ -96,6 +96,11 @@ collections:
     output: true
     permalink: /docs/:collection/:path:output_ext
 
+  development:
+    output: true
+    title: Development
+    permalink: /docs/:collection/:path:output_ext
+
   gcode:
     output: true
     title: G-code
@@ -125,6 +130,13 @@ defaults:
     values:
       layout: page
       category: [ Basics ]
+
+  - # Development pages
+    scope:
+      path: 'docs/development'
+    values:
+      layout: page
+      category: [ Development ]
 
   - # Appendix pages
     scope:
@@ -160,6 +172,8 @@ just_the_docs:
   collections:
     basics:
       name: Basics
+    development:
+      name: Development
 
 aux_links:
   🤓 GitHub: https://github.com/MarlinFirmware/Marlin

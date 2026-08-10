@@ -1,9 +1,9 @@
 ---
 title: Coding Standards
 description: Guidelines for Marlin code formatting, methodologies, and standards.
-parent: Appendix
+parent: Development
 layout: article
-nav_order: 32
+nav_order: 2
 nav_enabled: true
 toc: true
 has_toc: true
@@ -267,7 +267,7 @@ Macro|Description
 
 ### FastIO
 
-Marlin uses FastIO macros to interface with pins that are known and fixed at compile-time. This results in much faster I/O, especially on AVR boards where every cycle counts. For more details about Marlin's use of FastIO see [this page](fastio.html).
+Marlin uses FastIO macros to interface with pins that are known and fixed at compile-time. This results in much faster I/O, especially on AVR boards where every cycle counts. For more details about Marlin's use of FastIO see [this page](/docs/appendix/fastio.html).
 
 {:.pretty-list.headless}
 Macro|Description
