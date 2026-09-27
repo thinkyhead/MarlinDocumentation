@@ -12,9 +12,6 @@ contrib: thinkyhead, thisiskeithb
 
 # Probe Temperature Compensation
 
-{: .warning }
-> As of this writing, this is still an experimental feature and should be used with caution.
-
 ## Introduction
 
 Temperature can significantly affect bed probing and as a consequence first layer quality. To address this, probes like the P.I.N.D.A V2 include a thermistor so they can compensate for measurements taken at different temperatures. However, in order to find these compensation values a calibration process is required ([`G76`](/docs/gcode/G076.html)).

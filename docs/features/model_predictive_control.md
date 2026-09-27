@@ -198,11 +198,15 @@ $$\dfrac{T_s(t + 2 \Delta t) - T_{asymp}}{T_s(t + \Delta t) - T_{asymp}} = \dfra
 
 Rearranging:
 
-$$ T_s(t + 2 \Delta t) . T_s(t) - T_{asymp} . (T_s(t + 2 \Delta t) + T_s(t)) + T_{asymp}^2 = T_s(t + \Delta t) ^ 2 - T_{asymp} . 2 . T_s(t + \Delta t) + T_{asymp}^2 $$
+$$ T_s(t + 2 \Delta t) . T_s(t) - T_{asymp} . (T_s(t + 2 \Delta t) + T_s(t)) + T_{asymp}^2 $$
+
+$$ = T_s(t + \Delta t) ^ 2 - T_{asymp} . 2 . T_s(t + \Delta t) + T_{asymp}^2 $$
 
 Or (subtracting $$T_{asymp}^2$$ from both sides):
 
-$$ T_s(t + 2 \Delta t) . T_s(t) - T_{asymp} . (T_s(t + 2 \Delta t) + T_s(t)) = T_s(t + \Delta t) ^ 2 - T_{asymp} . 2 . T_s(t + \Delta t) $$
+$$ T_s(t + 2 \Delta t) . T_s(t) - T_{asymp} . (T_s(t + 2 \Delta t) + T_s(t)) $$
+
+$$ = T_s(t + \Delta t) ^ 2 - T_{asymp} . 2 . T_s(t + \Delta t) $$
 
 And:
 
