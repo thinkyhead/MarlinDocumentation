@@ -213,7 +213,7 @@ Here's the Pull Request that was just created.
 
 ![image36](/assets/images/docs/development/pull_images/pull_36.jpg)
 
-If you have an open issue associated with your Pull Request, include that issue's number in your Pull Request description (_e.g.,_ "`#1536`"), and a link to the Pull Request will automatically appear on the issue's page. The same goes for individual commit descriptions.
+If you have an open issue associated with your Pull Request, include that issue's number in your Pull Request description (e.g., "`#1536`"), and a link to the Pull Request will automatically appear on the issue's page. The same goes for individual commit descriptions.
 
 ### Updating the PR
 

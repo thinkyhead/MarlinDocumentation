@@ -1,4 +1,6 @@
 ---
+# Override of just-the-docs 0.12.0 assets/js/zzzz-search-data.json
+# Marlin addition: index each docs/settings option (from frontmatter) as its own result.
 layout: null
 permalink: /assets/js/search-data.json
 ---
@@ -69,6 +71,20 @@ permalink: /assets/js/search-data.json
   }
         {%- assign i = i | plus: 1 -%}
       {%- endunless -%}
+      {%- comment -%} Marlin: one search entry per configuration option / option group {%- endcomment -%}
+      {%- for s in page.settings -%}
+        {%- assign sid = s.name | replace: '*', 'N' -%}
+        {%- capture stext -%}{{ s.brief | default: s.comment | default: s.shared_comment }} {{ s.long }} {% for m in s.members %}{{ m.name }} {% endfor %}{{ s.file }}{% if s.requires %} Requires {{ s.requires }}{% endif %}{%- endcapture -%}
+  ,"{{ i }}": {
+    "doc": {{ page.title | jsonify }},
+    "title": {{ s.name | jsonify }},
+    "content": {{ stext | markdownify | strip_html | normalize_whitespace | append: ' ' | jsonify }},
+    "url": "{{ page.url | append: '#' | append: sid | relative_url }}",
+    {% include lunr/custom-data.json page=page %}
+    "relUrl": "{{ page.url | append: '#' | append: sid }}"
+  }
+        {%- assign i = i | plus: 1 -%}
+      {%- endfor -%}
     {%- endif -%}
   {%- endfor -%}
 {%- endfor %}

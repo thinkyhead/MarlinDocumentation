@@ -23,7 +23,7 @@ Marlin aims to support all possible boards and machine configurations. A minimal
 
 ## How Marlin Works
 
-Marlin Firmware runs as a single self-contained application on the printer's mainboard. It manages all the real-time activities of the machine — heaters, steppers, sensors, lights, LCD display, buttons, and everything else involved in the 3D printing process. While you *can* connect a host like OctoPrint for remote monitoring, Marlin can run completely standalone.
+Marlin Firmware runs as a single self-contained application on the printer's mainboard. It manages all the real-time activities of the machine — heaters, steppers, sensors, lights, LCD display, buttons, and everything else involved in the 3D printing process. Marlin can run completely standalone or you can connect a host like OctoPrint for remote monitoring and extended control features.
 
 Marlin implements an additive manufacturing process called [Fused Deposition Modeling (FDM)](https://en.wikipedia.org/wiki/Fused_deposition_modeling) — also known as Fused Filament Fabrication (FFF). In this process a motor pushes plastic filament through a hot nozzle that melts and extrudes the material while the nozzle is moved under computer control. After several minutes (or a couple of days) of laying down thin layers of plastic, the result is a physical object.
 
@@ -43,9 +43,10 @@ The high-priority Stepper Interrupt reads blocks from the Planner Queue and gene
 
 ### Motion Control
 - Intelligent interrupt-based motion system with lookahead planner and linear acceleration
-- Input Shaping for faster moves with minimal vibration
+- [Input Shaping](/docs/features/input_shaping.html) for faster moves with minimal vibration
 - S-Curve Acceleration for smoother starts and stops
-- Linear and Pressure Advance for cleaner extrusion
+- [Linear Advance](/docs/features/lin_advance.html) for cleaner extrusion
+- [Fixed-Time Motion](/docs/features/ft_motion.html) for faster, smoother, quieter stepping on ARM
 - Support for up to 10 linear and/or rotary axes
 
 ### Machine Types
@@ -55,26 +56,26 @@ The high-priority Stepper Interrupt reads blocks from the Planner Queue and gene
 
 ### Temperature Control
 - Closed-loop PID heating with automated tuning
-- Model Predictive Control (MPC) for stable hotend temperature
+- [Model Predictive Control](/docs/features/model_predictive_control.html) (MPC) for stable hotend temperature
 - Heated beds, chambers, laser coolers
 - Thermal protection and safety cutoffs
 
 ### Automated Calibration
 - Assisted tramming
 - Manual and automatic bed probing
-- Mesh-based and bilinear bed leveling
+- Mesh-based and bilinear [bed leveling](/docs/features/auto_bed_leveling.html), including [Unified Bed Leveling](/docs/features/unified_bed_leveling.html)
 - Backlash and skew compensation
 - Probe calibration wizards
 
 ### Print Job Control
-- SD card and USB drive printing with autostart
-- Filament runout detection and filament change
+- SD card and USB drive printing with [autostart](/docs/features/autostart.html)
+- [Filament runout detection](/docs/features/runout_sensor.html) and filament change
 - Print pause with nozzle parking
 - Print timer with remaining-time estimation
 
 ### Display and UI
 - HD44780, GLCD, and OLED support
-- 30+ languages built in
+- [30+ languages](/docs/appendix/lcd_language.html) built in
 - Creality DWIN, Jyers UI, and Marlin UI variants
 
 ## Preparing a Print
@@ -110,4 +111,4 @@ Host software runs on your computer (or Raspberry Pi) and provides a user interf
 - [Build & Install Marlin](/docs/basics/install.html) — Build Marlin firmware from source
 - [Configuration](/docs/configuration.html) — Customize Marlin for your machine
 - [G-code Reference](/docs/gcode/) — Complete command reference
-- [Features](/docs/basics/features.html) — Explore what Marlin can do
+- [Features](/docs/features/) — How Marlin's major features work

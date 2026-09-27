@@ -10,7 +10,7 @@ has_toc: true
 back_to_top: true
 ---
 
-The Hardware Abstraction Layer –"HAL" for short– allows Marlin to run on a wide variety of boards by providing a common interface for low-level resources like timers, [serial ports](/docs/setting/serial.html), i2c and SPI buses, [EEPROM](/docs/features/eeprom.html), SDIO, and so on.
+The Hardware Abstraction Layer –"HAL" for short– allows Marlin to run on a wide variety of boards by providing a common interface for low-level resources like timers, [serial ports](/docs/settings/serial.html), i2c and SPI buses, [EEPROM](/docs/features/eeprom.html), SDIO, and so on.
 
 ## HAL Rationale
 

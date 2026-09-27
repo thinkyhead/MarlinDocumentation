@@ -23,7 +23,7 @@ Endstops fulfill two important functions in a 3D printer: Reference system for t
 ## Reference for the axes system
 After powering up a 3D printer the printer's controller board does not know at which position its axes are. Marlin indicates this by blinking question-marks in place of X, Y and Z on the LCD screen (v1.1.8 and older) or blinking '?' in place of the coordinates besides X,Y and Z (Marlin v1.1.9 / v2.0.0 and newer).
 
-This means the system needs first to establish its starting point of the physical (machine) coordinate system, a process called *Homing*. Homing can be initiated either via the [G28 G-code](/docs/gcode/G028.html) or via the [LCD controller](/docs/hardware/controllers.html).
+This means the system needs first to establish its starting point of the physical (machine) coordinate system, a process called *Homing*. Homing can be initiated either via the [G28 G-code](/docs/gcode/G028.html) or via the [LCD controller](/docs/appendix/controllers.html).
 
 ![real](/assets/images/docs/hardware/endstops/not_homed.jpg)
 {: style="text-align: center;"}
@@ -63,7 +63,7 @@ Probes can act like an endstop for the minimum Z-axis. While the typical endstop
 Figure 3: Common probe types: Inductive (left), solenoid touch probe (right)
 {: style="color:gray; font-size: 80%; text-align: center;"}
 
-Some aspects of probe configuration are considered in this endstop introduction. Further reading is provided in the Chapter [Probes Configuration](/docs/configuration/probes.html), [Auto Bed Leveling](/docs/features/auto_bed_leveling.html) and [Unified Bed Leveling](/docs/features/unified_bed_leveling.html).
+Some aspects of probe configuration are considered in this endstop introduction. Further reading is provided in the Chapter [Probes Configuration](/docs/settings/probes.html), [Auto Bed Leveling](/docs/features/auto_bed_leveling.html) and [Unified Bed Leveling](/docs/features/unified_bed_leveling.html).
 
 ## Software Endstops
 Typically 3D printers are only equipped with hardware endstops on one side of each axis (Minimum or Maximum of the respective axis). As discussed above this is used to determine the starting point (origin) of the machine coordinate system.
@@ -101,9 +101,8 @@ When homing, the printer is not protected against hardware endstop failure.  Thi
 Figure 2: Example configuration using a microswitch for homing, BL-Touch for bed-leveling probe.
 {: style="color:gray; font-size: 80%; text-align: center;"}
 
-<A name = "measure_offsets"></A>
-
-## Measuring offsets.
+## Measuring offsets
+{: #measure_offsets }
 To measure an offset between a trigger point and the bed, lower the nozzle to the trigger point (by homing, if it's the homing device), and note the z-value. If you do not use the probe for homing, temporarily disable the hardware endstops (with M121). Now turn off the software endstop temporarily (with M211 S0) to enable lowering the nozzle further down to the bed. Note the z again. The difference is the height of the respective trigger point above the bed.
 
 # Endstops and Electromagnetic Interference (EMI)

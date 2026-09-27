@@ -46,7 +46,8 @@ layout: default
   <div class="gcode-related">
     Related codes:
     {% for item in gcode.related %}
-    <a href="/docs/gcode/{{ item | linkify }}.html"><code>{{ item }}</code></a>
+    {% assign rel_url = item | gcode_url %}
+    {% if rel_url %}<a href="{{ rel_url | relative_url }}"><code>{{ item }}</code></a>{% else %}<code>{{ item }}</code>{% endif %}
     {% endfor %}
   </div>
   {% endif %}

@@ -1,6 +1,7 @@
 ---
 tag: m0665b
 title: "M665: SCARA Configuration"
+group: calibration
 short_title: SCARA Configuration
 brief: Set SCARA geometry values
 author: ManuelMcLure

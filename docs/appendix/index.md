@@ -2,7 +2,7 @@
 title: Appendix
 description: Reference material for Marlin hardware, boards, controllers, and other technical details.
 layout: page
-nav_order: 12
+nav_order: 99
 nav_enabled: true
 has_children: true # Left nav and TOC show child pages
 nav_fold: false    # Reveal (all) child pages by default

@@ -6,6 +6,7 @@ nav_order: 4
 nav_enabled: true
 nav_stroke: false
 toc: true
+has_children: true
 has_toc: true
 back_to_top: true
 ---
@@ -22,7 +23,7 @@ For a Marlin firmware perfectly tailored to your machine, periperals, and prefer
 
 Before building, you'll need:
 
-- **Marlin Source Code**: Download from the [Marlin Downloads](/meta/download/) page, or clone the repository directly:
+- **Marlin Source Code**: Download from the [Marlin Downloads](/meta/download.html) page, or clone the repository directly:
   ```bash
   git clone https://github.com/MarlinFirmware/Marlin.git
   ```
@@ -64,6 +65,16 @@ The Build Panel displays basic information about the configuration followed by a
 
 ![ABM Panel](/assets/images/basics/abm/panel.png)
 
+The toolbar icons start the same tasks:
+
+| Icon | Action |
+|------|--------|
+| ![Build](/assets/images/basics/abm/B_small.png){: .inline} | **Build** to test your Marlin build |
+| ![Upload](/assets/images/basics/abm/U_small.png){: .inline} | **Upload** to install Marlin on your board |
+| ![Debug](/assets/images/basics/abm/T_small.png){: .inline} | **Upload (traceback)** to install Marlin with debugging |
+| ![Clean](/assets/images/basics/abm/C_small.png){: .inline} | **Clean** to delete old build files |
+| ![Config](/assets/images/basics/abm/K_small.png){: .inline} | Open the **Configure** panel |
+
 Click **Build** to test your configuration first. If you see errors, review the build log in the Terminal panel — the first error is the most relevant. Once the build succeeds, click **Upload** to install the firmware onto your board.
 
 ## Build Output
@@ -83,6 +94,12 @@ After a successful install, the `firmware.bin` file may be renamed to `FIRMWARE.
 - **Read the first error** in the build log. It's usually the main error. Subsequent errors are often cascading noise.
 - **Build warnings** about code style or unused variables can usually be ignored. Warnings from `Warnings.cpp` are informational.
 - **Need help?** Join the [Marlin Discord](https://discord.com/servers/marlin-firmware-461605380783472640) for community support.
+
+## Other Ways to Build
+
+- [PlatformIO in VSCode](install_platformio_vscode.html): choose the build environment yourself in `platformio.ini`
+- [Arduino IDE](install_arduino.html): AVR, Due, and Teensy++ 2.0 boards only
+- [VSCode Dev Container](install_devcontainer_vscode.html): a pre-configured Docker build environment
 
 ## Building from the CLI
 

@@ -153,7 +153,7 @@ parameters:
     description: |
       **Automatic Probing** invalidates the mesh and continues automatic probing using the probe.
       - In most cases the probe can't reach all areas that the nozzle can due to the offsets specified by `X_PROBE_OFFSET_FROM_EXTRUDER` and `Y_PROBE_OFFSET_FROM_EXTRUDER`.
-        Deltabots can only probe within the area where `DELTA_PROBEABLE_RADIUS` and `DELTA_PRINTABLE_RADIUS` overlap.
+        Deltabots can only probe within the area where `DELTA_PROBEABLE_RADIUS` and `PRINTABLE_RADIUS` overlap.
       - Unreachable points can be filled in later with the `P2` and `P3` phases.
       - Use `C` to leave the previous mesh intact and automatically probe needed points. This allows you to invalidate parts of the mesh but still use Automatic Probing.
       - The `X` and `Y` parameters prioritize where to try and measure points. If omitted, the current probe position is used.
@@ -178,7 +178,7 @@ parameters:
       - This phase requires an LCD Panel. To fine-tune the mesh without a controller, use [`G42`](/docs/gcode/G042.html) and [`M421`](/docs/gcode/M421.html).
       - Phase 4 is meant to be used with [`G26`](/docs/gcode/G026.html) Mesh Validation to fine tune the mesh by direct editing of Mesh Points. Raise and lower points to fine tune the mesh until it gives consistently reliable adhesion.
       - `P4` moves to the closest Mesh Point (and/or the given `X` `Y`), raises the nozzle above the mesh height by the given `H` offset (or default Z_CLEARANCE_BETWEEN_PROBES), and waits while the controller is used to adjust the nozzle height. On click the displayed height is saved in the mesh.
-      - Start Phase 4 at a specific location with `X` and `Y`. Adjust a specific number of Mesh Points with the `R` (Repeat) parameter. (If `R` is left out, the whole matrix is assumed.) This command can be terminated early (_e.g.,_ after editing the area of interest) by pressing and holding the encoder button.
+      - Start Phase 4 at a specific location with `X` and `Y`. Adjust a specific number of Mesh Points with the `R` (Repeat) parameter. (If `R` is left out, the whole matrix is assumed.) This command can be terminated early (e.g., after editing the area of interest) by pressing and holding the encoder button.
       - The general form is `G29 P4 [R points] [X position] [Y position]`.
       - The `H[offset]` parameter is useful if a shim is used to fine-tune the mesh. For a 0.4mm shim the command would be `G29 P4 H0.4`. The nozzle is moved to the shim height, you adjust height to the shim, and on click the height minus the shim thickness is saved in the mesh.
       - _USE WITH CAUTION, as a bad mesh can cause the nozzle to crash into the bed!_
@@ -224,7 +224,7 @@ parameters:
   description: |
     **Topology**: Include a Topology Map in the output in one of two styles.
     - This parameter can be used alone (`G29 T`) or in combination with most of the other commands.
-    - This option works with all Phase commands (_e.g.,_ `G29 P4 R 5 T X 50 Y100 C-0.1 O`)
+    - This option works with all Phase commands (e.g., `G29 P4 R 5 T X 50 Y100 C-0.1 O`)
   values:
   - tag: 0
     description: Human-readable (the default)

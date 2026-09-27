@@ -6,7 +6,7 @@ layout: table_wrappers
 
 <html lang="{{ site.lang | default: 'en-US' }}">
 {% include head.html %}
-<body class="{% if page.toc == true %}has-toc{% endif %}">
+<body class="{% if page.toc == true or page.settings %}has-toc{% endif %}">
   <a class="skip-to-main" href="#main-content">Skip to main content</a>
   {% include icons/icons.html %}
   {% if page.nav_enabled == true %}
@@ -21,13 +21,14 @@ layout: table_wrappers
     <div class="main-content-wrap">
       {% include components/breadcrumbs.html %}
       {% if page.toc != false %}
-        <div id="table-of-contents">
-          {{ content | toc_only }}
+        <div id="table-of-contents"{% if page.settings %} class="page"{% endif %}>
+          {% if page.settings %}{% include settings_toc.html %}{% else %}{{ content | toc_only }}{% endif %}
         </div>
       {% endif %}
       <div id="main-content" class="main-content">
         <main>
           {% assign pcontent = content | inject_anchors %}
+          {% if page.path contains 'docs/features/' %}{% assign pcontent = pcontent | settings_autolink %}{% endif %}
           {% if site.heading_anchors != false %}
             {% include vendor/anchor_headings.html html=pcontent beforeHeading="true" anchorBody="<svg viewBox=\"0 0 16 16\" aria-hidden=\"true\"><use xlink:href=\"#svg-link\"></use></svg>" anchorClass="anchor-heading" anchorAttrs="aria-labelledby=\"%html_id%\"" %}
           {% else %}

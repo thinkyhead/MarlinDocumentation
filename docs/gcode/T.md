@@ -44,7 +44,7 @@ examples:
 
 ---
 
-Use `T0`, `T1`, etc. to switch to the respective physical or virtual tool. See [Universal Tool Change Settings](/docs/configuration/configuration.html#universal-tool-change-settings) in `Configuration_adv.h` for more details.
+Use `T0`, `T1`, etc. to switch to the respective physical or virtual tool. See [Universal Tool Change Settings](/docs/settings/tool_change.html#TOOLCHANGE_FILAMENT_SWAP) in `Configuration_adv.h` for more details.
 
 In Marlin 2.1.3 and up you can use `T` with no tool number to report the current tool index to the serial console.
 

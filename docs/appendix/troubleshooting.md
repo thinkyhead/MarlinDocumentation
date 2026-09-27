@@ -72,7 +72,7 @@ This is a hardware issue due to the connected beeper pin being HIGH when the boa
 ### Random Halting
 An under-powered PSU combined with heaters and high speed moves can lead to a frozen board. No kill, no watchdog, heaters stuck on. See [#17202](https://github.com/MarlinFirmware/Marlin/issues/17202). To test for this:
 - To test for this, enable the bed and extruder heaters and print at high speed to see if a hard freeze occurs. Try disabling heaters and/or slower printing to see if the problem goes away.
-- Read the input voltage from PSU with a meter during fast moves. If you see a drop too far below your expected voltage (_e.g.,_ 12V or 24V) this indicates a problem.
+- Read the input voltage from PSU with a meter during fast moves. If you see a drop too far below your expected voltage (e.g., 12V or 24V) this indicates a problem.
 
 ### EEPROM Errors
 
@@ -116,7 +116,7 @@ Since Marlin 1.1 "Delta Height" is defined as the distance between Z Home Positi
 
 ### Trinamic Stepper Drivers
 
-These tips are collected from various reports we have received. See [Trinamic troubleshooting](/docs/hardware/tmc_drivers.html#troubleshooting) for additional guidance.
+These tips are collected from various reports we have received. See [Trinamic troubleshooting](/docs/appendix/tmc_drivers.html#troubleshooting) for additional guidance.
 
 - Some SilentStepSticks with variable 3-5V logic voltage (VIO) [might get damaged](https://github.com/MarlinFirmware/Marlin/issues/10162#issuecomment-397844847) if only powered over USB.
 - **SPI conflict with the SD card?** Solutions vary.
@@ -145,4 +145,4 @@ If you encounter strange build errors it could indicate a problem with PlatformI
 2. Delete the hidden `.platformio` folder from your User directory:
    - Windows: `%USERPROFILE%\\.platformio\\`
    - macOS / Linux: `~/.platformio/`
-3. [Reinstall PlatformIO](install_platformio.html).
+3. [Reinstall PlatformIO](/docs/basics/install_platformio_vscode.html).
