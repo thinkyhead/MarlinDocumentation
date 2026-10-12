@@ -10,12 +10,13 @@ settings:
   disabled: true
   requires: HAS_TRINAMIC_CONFIG
   comment: |-
-    TMC2130, TMC2160, TMC2208, TMC2209, TMC5130 and TMC5160 only The driver will switch to spreadCycle when stepper speed is over `HYBRID_THRESHOLD`. This mode allows for faster movements at the expense of higher noise levels. STEALTHCHOP_(XY|Z|E) must be enabled to use `HYBRID_THRESHOLD`.
+    TMC2130, TMC2160, TMC2208, TMC2209, TMC2240, TMC5130 and TMC5160 only The driver will switch to spreadCycle when stepper speed is over `HYBRID_THRESHOLD`. This mode allows for faster movements at the expense of higher noise levels. STEALTHCHOP_(XY|Z|E) must be enabled to use `HYBRID_THRESHOLD`.
 
     - `M913` X/Y/Z/E to live tune the setting
 - name: '*_HYBRID_THRESHOLD'
   file: Configuration_adv.h
   type: int
+  units: mm/s
   requires: HAS_TRINAMIC_CONFIG
   members:
   - id: X
@@ -84,6 +85,70 @@ settings:
   - id: E7
     name: E7_HYBRID_THRESHOLD
     default: 30
+- name: HOMING_HYBRID_THRESHOLD
+  file: Configuration_adv.h
+  type: switch
+  disabled: true
+  requires: HAS_TRINAMIC_CONFIG
+  comment: |-
+    Use a separate Hybrid Threshold while homing each axis. TMC2209 and TMC2240 home with StallGuard4, which only works in stealthChop. Set the threshold above the homing feedrate, or 0 to stay in stealthChop.
+
+    - `M913` H X/Y/Z to live tune the setting
+  long: |-
+    StallGuard4 sensorless homing (TMC2209 and TMC2240) only detects stalls while the driver is in stealthChop. If `HYBRID_THRESHOLD` switches the axis to spreadCycle at the homing feedrate, sensorless homing will fail. Enable `HOMING_HYBRID_THRESHOLD` to give each axis a separate threshold that is used only while that axis is homing. The homing value is applied when homing the axis starts and the normal value is restored when it ends.
+
+    Requires `HYBRID_THRESHOLD`. Extruders are not included.
+
+    Set the value to 0 to stay in stealthChop for the whole homing move, or set it above the homing feedrate. Tune it live with [`M913 H`](/docs/gcode/M913.html) and see the saved values with `M503`.
+- name: '*_HOMING_HYBRID_THRESHOLD'
+  file: Configuration_adv.h
+  type: int
+  units: mm/s
+  requires: HAS_TRINAMIC_CONFIG && HOMING_HYBRID_THRESHOLD
+  comment: (mm/s) 0 = Stay in stealthChop
+  members:
+  - id: X
+    name: X_HOMING_HYBRID_THRESHOLD
+    default: 0
+  - id: X2
+    name: X2_HOMING_HYBRID_THRESHOLD
+    default: 0
+  - id: Y
+    name: Y_HOMING_HYBRID_THRESHOLD
+    default: 0
+  - id: Y2
+    name: Y2_HOMING_HYBRID_THRESHOLD
+    default: 0
+  - id: Z
+    name: Z_HOMING_HYBRID_THRESHOLD
+    default: 0
+  - id: Z2
+    name: Z2_HOMING_HYBRID_THRESHOLD
+    default: 0
+  - id: Z3
+    name: Z3_HOMING_HYBRID_THRESHOLD
+    default: 0
+  - id: Z4
+    name: Z4_HOMING_HYBRID_THRESHOLD
+    default: 0
+  - id: I
+    name: I_HOMING_HYBRID_THRESHOLD
+    default: 0
+  - id: J
+    name: J_HOMING_HYBRID_THRESHOLD
+    default: 0
+  - id: K
+    name: K_HOMING_HYBRID_THRESHOLD
+    default: 0
+  - id: U
+    name: U_HOMING_HYBRID_THRESHOLD
+    default: 0
+  - id: V
+    name: V_HOMING_HYBRID_THRESHOLD
+    default: 0
+  - id: W
+    name: W_HOMING_HYBRID_THRESHOLD
+    default: 0
 ---
 
 Options in the `tmc/hybrid` section of the Marlin configuration files.

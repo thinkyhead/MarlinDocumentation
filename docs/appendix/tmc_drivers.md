@@ -25,6 +25,7 @@ TMC5130 | SPI | yes | yes | yes | yes |
 TMC5160 | SPI |yes | yes | yes | yes |
 TMC2208<br/>TMC2225 | UART | yes | no | yes | yes | UART RX line requires an interrupt capable pin.<br>Software UART isn't supported on all platforms, such as DUE based boards.
 TMC2209<br/>TMC2226 | UART | yes | yes | yes | yes |
+TMC2240 | SPI | yes | yes | yes | yes | Sensorless homing uses StallGuard4 (stealthChop), like the TMC2209.
 TMC2660 | SPI | no | not implemented | yes | no |
 
 All configurable Trinamic stepper drivers can also be operated in standalone mode if they are pre-configured in hardware, either by hard connections or jumpers.
@@ -104,7 +105,7 @@ The two smaller bridges need to be configured as shown.
 Several Trinamic-specific technologies are supported by Marlin.
 - [stealthChop](https://www.trinamic.com/technology/adv-technologies/stealthchop/) is a technology that drives the motors using PWM voltage instead of current. The result is nearly inaudible stepping at low velocities. StealthChop has a lower stepping speed limit and if you need to move faster, for example travel moves, you may want to use spreadCycle or configure Hybrid Mode.
 - [spreadCycle](https://www.trinamic.com/technology/adv-technologies/spreadcycle/) is an alternative stepping mode. The driver will use four stages to drive the desired current into the stepper motor. SpreadCycle provides greater torque which might be useful if you're experiencing skipped steps. The downside is slightly higher noise levels.
-- [stallGuard](https://www.trinamic.com/technology/adv-technologies/stallguard/) measures the load that is applied to the motor. If the load is sufficiently high, Marlin can react to the event. Such an event can be when we drive an axis to its physical limit and the signal provided by the driver can be detected just like an endstop. That way you can use the driver itself as an axis sensor negating the need to an additional endstop and the wiring needed. StallGuard is only active when the driver is in spreadCycle mode.
+- [stallGuard](https://www.trinamic.com/technology/adv-technologies/stallguard/) measures the load that is applied to the motor. If the load is sufficiently high, Marlin can react to the event. Such an event can be when we drive an axis to its physical limit and the signal provided by the driver can be detected just like an endstop. That way you can use the driver itself as an axis sensor negating the need to an additional endstop and the wiring needed. StallGuard2 (most drivers) is only active in spreadCycle mode. StallGuard4 (TMC2209, TMC2240) only works in stealthChop; see `HOMING_HYBRID_THRESHOLD`.
 * Hybrid Mode: Marlin can configure the driver to automatically change between stepping modes using a user configured switching velocity. If the velocity is lower than the threshold the stepper is in quiet stealthChop mode. When the axis velocity increases the driver will automatically switch to spreadCycle.
 
 Option | Description
@@ -122,6 +123,7 @@ CURRENT_STEP              | Reduce current value when Marlin sees OTPW error.
 REPORT_CURRENT_CHANGE     | Report to the user when automatically changing current setting.
 STOP_ON_ERROR             | If Marlin detects an error where the driver has shut down to protect itself, it can stop the print to save both time and material.
 HYBRID_THRESHOLD          | Configure the axis speed when the driver should switch between stealthChop and spreadCycle modes.
+HOMING_HYBRID_THRESHOLD   | Use a separate hybrid threshold while homing each axis. Needed for StallGuard4 sensorless homing (TMC2209, TMC2240) to stay in stealthChop.
 SENSORLESS_HOMING         | Use the TMC drivers that support this feature to act as endstops by using stallGuard to detect a physical limit.
 SENSORLESS_PROBING        | Use stallGuard on supporting TMC drivers to replace a bed probe.<br>Recommended to be used on delta printers only.
 HOMING_SENSITIVITY        | The Sensorless Homing sensitivity can be tuned to suit the specific machine.<br>A **higher** value will make homing **less** sensitive.<br>A **lower** value will make homing **more** sensitive.
@@ -138,7 +140,7 @@ Command | Configuration<br>required | Description
 [`M906`](/docs/gcode/M906.html) | none                      | Set the driver current using axis letters X/Y/Z/E.
 [`M911`](/docs/gcode/M911.html) | `MONITOR_DRIVER_STATUS`   | Report TMC prewarn triggered flags held by the library.
 [`M912`](/docs/gcode/M912.html) | `MONITOR_DRIVER_STATUS`   | Clear TMC prewarn triggered flags.
-[`M913`](/docs/gcode/M913.html) | `HYBRID_THRESHOLD`        | Set HYBRID_THRESHOLD speed.
+[`M913`](/docs/gcode/M913.html) | `HYBRID_THRESHOLD`        | Set HYBRID_THRESHOLD speed. With `HOMING_HYBRID_THRESHOLD`, `M913 H` sets the speed used while homing.
 [`M914`](/docs/gcode/M914.html) | `SENSORLESS_HOMING`       | Set SENSORLESS_HOMING sensitivity.
 [`M915`](/docs/gcode/M915.html) | `TMC_Z_CALIBRATION`       | (Deprecated in Marlin 2.0.)<br>Level your X axis by trying to move the Z axis past its physical limit. The movement is done at a reduced motor current to prevent breaking parts and promote skipped steps. Marlin will then rehome Z axis and restore normal current setting.
 
