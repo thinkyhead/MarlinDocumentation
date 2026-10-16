@@ -349,12 +349,21 @@ def leaves(node):
     for v in node.values(): yield from leaves(v)
 
 def all_names(schema):
-  """Map every option name in the schema to its settings page slug."""
+  """Map every option name in the schema to the settings page that documents it
+  (the page on disk if it was moved, else the schema section)."""
   out = {}
   for fk in ('basic', 'advanced'):
     for section, opts in schema.get(fk, {}).items():
       for node in opts.values():
         for m in leaves(node): out.setdefault(m['name'], slug(section))
+  # Pages get reorganized after generation, so what is on disk wins over the schema section.
+  owners = {}
+  for f in sorted(OUTDIR.glob('**/*.md')):
+    page_slug = f.relative_to(OUTDIR).with_suffix('').as_posix()
+    for n in re.findall(r'^\s*(?:- )?name: (\S+)\s*$', f.read_text(encoding='utf-8'), re.M):
+      owners.setdefault(n, []).append(page_slug)
+  for n, pages in owners.items():
+    if n in out and out[n] not in pages: out[n] = pages[0]
   return dict(sorted(out.items()))
 
 #

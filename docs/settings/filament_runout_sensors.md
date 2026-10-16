@@ -182,6 +182,15 @@ settings:
   type: switch
   disabled: true
   requires: FILAMENT_RUNOUT_SENSOR && FILAMENT_RUNOUT_DISTANCE_MM && FILAMENT_MOTION_SENSOR
+- name: FILAMENT_MOTION_DISTANCE_MM
+  file: Configuration.h
+  type: float
+  default: 3.0
+  units: mm
+  requires: FILAMENT_RUNOUT_SENSOR && FILAMENT_RUNOUT_DISTANCE_MM && FILAMENT_MOTION_SENSOR && FILAMENT_SWITCH_AND_MOTION
+  comment: Missing distance required to trigger runout (0 = no jam detection)
+  long: |-
+    Change it at runtime with [`M412 L`](/docs/gcode/M412.html). `M412 L0` turns off jam detection and keeps only the runout switch.
 - name: NUM_MOTION_SENSORS
   file: Configuration.h
   type: int

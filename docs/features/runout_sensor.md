@@ -62,6 +62,9 @@ To use a switch sensor **and** a motion sensor together, also enable `FILAMENT_S
 `NUM_MOTION_SENSORS`, define a `FIL_MOTION#_PIN` for each motion sensor, and use `FIL_MOTION*_STATE`,
 `FIL_MOTION*_PULLUP`, and `FIL_MOTION*_PULLDOWN` to override their pin settings individually.
 
+`FILAMENT_MOTION_DISTANCE_MM` sets how much missing motion triggers a runout (3.0 mm by default). Use `M412 L` to change
+it at runtime, and `M412 L0` to turn off jam detection and keep only the runout switch.
+
 ## Related G-codes
 
 - `M412`: Filament Runout

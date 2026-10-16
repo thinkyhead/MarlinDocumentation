@@ -15,6 +15,7 @@ related: [ M420, M421 ]
 
 notes: |
   - Any arguments left out of `G29` will use the default values set in `Configuration.h`.
+  - On a SCARA the default probing area is the bed less `PROBING_MARGIN`, and every point of the grid must be reachable by the probe. `G29` reports `(L,R,F,B) out of bounds` if the dead zone around the shoulder cuts into the grid. Give `L`, `R`, `F`, and `B` for an area that doesn't.
   - By default `G28` disables bed leveling. Follow `G28` with `M420 S` to turn leveling on.
       - With `ENABLE_LEVELING_AFTER_G28` leveling will always be enabled after `G28`.
       - With `RESTORE_LEVELING_AFTER_G28` leveling is restored to whatever state it was in before `G28`.
