@@ -46,17 +46,17 @@ settings:
   comment: |-
     Use StallGuard to home / probe X, Y, Z.
 
-    TMC2130, TMC2160, TMC2209, TMC2660, TMC5130, and TMC5160 only Connect the stepper driver's DIAG1 pin to the X/Y endstop pin. X, Y, and Z homing will always be done in spreadCycle mode.
+    TMC2130, TMC2160, TMC2209, TMC2240, TMC2660, TMC5130, and TMC5160 only Connect the stepper driver's DIAG1 pin to the X/Y endstop pin. (TMC2240 signals a stall on DIAG0.) TMC2209 and TMC2240 home in stealthChop mode using StallGuard4. Other drivers home in spreadCycle mode using StallGuard2. With `HYBRID_THRESHOLD` use `HOMING_HYBRID_THRESHOLD` to stay in stealthChop while homing.
 
     X/Y/`Z_STALL_SENSITIVITY` is the default stall threshold. Use M914 X Y Z to set the stall threshold at runtime:
 
-    Sensitivity   TMC2209   Others
+    Sensitivity  TMC2209/2240   Others
 
-    HIGHEST       255      -64    (Too sensitive =&gt; False positive) LOWEST         0        63    (Too insensitive =&gt; No trigger)
+    HIGHEST        255         -64    (Too sensitive =&gt; False positive) LOWEST          0           63    (Too insensitive =&gt; No trigger)
 
     It is recommended to set `HOMING_BUMP_MM` to { 0, 0, 0 }.
 
-    `SPI_ENDSTOPS`  *** TMC2130/TMC5160 Only ***
+    `SPI_ENDSTOPS`  *** TMC2130, TMC2240, and TMC5160 Only ***
 
     Poll the driver through SPI to determine load when homing. Removes the need for a wire from DIAG1 to an endstop pin.
 
@@ -67,7 +67,7 @@ settings:
   file: Configuration_adv.h
   type: int
   requires: HAS_TRINAMIC_CONFIG && ANY(SENSORLESS_HOMING, SENSORLESS_PROBING)
-  comment: 'TMC2209: 0...255. TMC2130: -64...63'
+  comment: 'TMC2209, TMC2240: 0...255. Others: -64...63'
   members:
   - id: X
     name: X_STALL_SENSITIVITY
@@ -126,13 +126,27 @@ settings:
   type: switch
   disabled: true
   requires: HAS_TRINAMIC_CONFIG && ANY(SENSORLESS_HOMING, SENSORLESS_PROBING)
-  comment: TMC2130/TMC5160 only
+  comment: TMC2130, TMC2240, and TMC5160
 - name: IMPROVE_HOMING_RELIABILITY
   file: Configuration_adv.h
   type: switch
   disabled: true
   requires: HAS_TRINAMIC_CONFIG && ANY(SENSORLESS_HOMING, SENSORLESS_PROBING)
-  shared_comment: 'TMC2209: 0...255. TMC2130: -64...63'
+  shared_comment: 'TMC2209, TMC2240: 0...255. Others: -64...63'
+- name: SENSORLESS_STALLGUARD_DELAY
+  file: Configuration_adv.h
+  type: int
+  default: 0
+  units: ms
+  disabled: true
+  requires: HAS_TRINAMIC_CONFIG && ANY(SENSORLESS_HOMING, SENSORLESS_PROBING)
+  comment: (ms) Delay to allow drivers to settle
+- name: SENSORLESS_HOMING_TEST_MENU_ITEMS
+  file: Configuration_adv.h
+  type: switch
+  disabled: true
+  requires: HAS_TRINAMIC_CONFIG && ANY(SENSORLESS_HOMING, SENSORLESS_PROBING) && HAS_MARLINUI_MENU
+  comment: Convenient homing menu items next to Sensorless Homing edit items
 ---
 
 Options in the `tmc/stallguard` section of the Marlin configuration files.

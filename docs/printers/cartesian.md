@@ -40,7 +40,7 @@ these are the settings to check first, roughly in order:
 1. **Board and drivers.** Set [`MOTHERBOARD`](/docs/settings/machine.html#MOTHERBOARD) and the stepper
    [driver types](/docs/settings/stepper_drivers.html#N_DRIVER_TYPE).
 2. **Motor directions.** If an axis moves the wrong way, flip it with
-   [`INVERT_X_DIR`](/docs/settings/motion.html#INVERT_N_DIR) (or Y, Z, E). This is a setting, so you don't
+   [`INVERT_X_DIR`](/docs/settings/stepper_drivers.html#INVERT_N_DIR) (or Y, Z, E). This is a setting, so you don't
    need to rewire anything.
 3. **Steps per millimeter.** [`DEFAULT_AXIS_STEPS_PER_UNIT`](/docs/settings/motion.html#DEFAULT_AXIS_STEPS_PER_UNIT)
    depends on your belts, pulleys, lead screws, and microstepping. Adjust later with [`M92`](/docs/gcode/M092.html).

@@ -8,7 +8,7 @@ nav_order: 80
 
 # Thermistors
 
-Set each `TEMP_SENSOR_*` option to one of the values below to tell Marlin which thermistor, thermocouple, or other sensor is connected. Use `0` for a sensor that isn't present. See the [Temperature settings](/docs/settings/temperature.html#TEMP_SENSOR_N) for the individual options.
+Set each `TEMP_SENSOR_*` option to one of the values below to tell Marlin which thermistor, thermocouple, or other sensor is connected. Use `0` for a sensor that isn't present. See the [Temperature settings](/docs/settings/temperature_sensors.html#TEMP_SENSOR_N) for the individual options.
 
 This table is generated from the list in `Configuration.h`.
 

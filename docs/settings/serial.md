@@ -17,24 +17,6 @@ settings:
     Select the serial port on the board to use for communication with the host. This allows the connection of wireless adapters (for instance) to non-default port pins. Serial port -1 is the USB emulated serial port, if available.
 
     Note: The first serial port (-1 or 0) will always be used by the Arduino bootloader.
-- name: SERIAL_PORT_*
-  file: Configuration.h
-  type: int
-  since: 2.0.0
-  long: |-
-    Enable this if your board has a secondary serial port.
-
-    {: .note }
-    > Serial port -1 is the USB emulated serial port, if available.
-  comment: Port 3 is bridged to the RawSocketSerial TCP listener (default :8099) by execution_control.cpp, giving host/agent G-code access to the simulator.
-  members:
-  - id: '2'
-    name: SERIAL_PORT_2
-    default: 3
-  - id: '3'
-    name: SERIAL_PORT_3
-    default: 1
-    disabled: true
 - name: BAUDRATE
   file: Configuration.h
   type: int
@@ -63,6 +45,25 @@ settings:
   long: |
     This setting allows you to use G-code `M575 P<port> B<baud rate>` to dynamically change the baud rate during operation.
   comment: Enable G-code M575 to set the baud rate
+- name: SERIAL_PORT_*
+  file: Configuration.h
+  type: int
+  since: 2.0.0
+  long: |-
+    Enable this if your board has a secondary serial port.
+
+    {: .note }
+    > Serial port -1 is the USB emulated serial port, if available.
+  comment: Select a secondary serial port on the board to use for communication with the host. Currently Ethernet (-2) is only supported on Teensy 4.1 boards.
+  members:
+  - id: '2'
+    name: SERIAL_PORT_2
+    default: -1
+    disabled: true
+  - id: '3'
+    name: SERIAL_PORT_3
+    default: 1
+    disabled: true
 - name: BAUDRATE_*
   file: Configuration.h
   type: int
@@ -110,11 +111,6 @@ settings:
   brief: Buffer size for RS485 bus.
   long: |
     The size of the CAN bus buffer. This should be set to the maximum number of messages that can be sent in a single CAN frame.
-- name: CAN_MASTER
-  file: Configuration.h
-  type: switch
-  disabled: true
-  comment: Enable CAN bus support and protocol
 - name: BLUETOOTH
   file: Configuration.h
   type: switch
@@ -139,6 +135,11 @@ settings:
   comment: Name displayed in the LCD "Ready" message and Info menu
   example:
   - value: '"X5 Endeavour"'
+- name: CONFIGURABLE_MACHINE_NAME
+  file: Configuration.h
+  type: switch
+  disabled: true
+  comment: Add G-code M550 to set/report the machine name
 - name: MACHINE_UUID
   file: Configuration.h
   type: string
@@ -170,9 +171,13 @@ settings:
   default: 0
   long: 'Transmission to Host buffer size. To save 386 bytes of PROGMEM (and `TX_BUFFER_SIZE`+3 bytes of SRAM) set to 0. To buffer a simple "ok" you need 4 bytes. An `ADVANCED_OK` ([`M105`](/docs/gcode/M105.html)) needs 32 bytes. For debug-echo: 128 bytes for the optimal speed. Other output doesn''t need to be that speedy.'
   comment: |-
-    Transmission to Host Buffer Size
+    Host Transmit Buffer Size
 
-    To save 386 bytes of flash (and `TX_BUFFER_SIZE`+3 bytes of RAM) set to 0. To buffer a simple "ok" you need 4 bytes. For `ADVANCED_OK` (M105) you need 32 bytes. For debug-echo: 128 bytes for the optimal speed. Other output doesn't need to be that speedy.
+    - Costs 386 bytes of flash and `TX_BUFFER_SIZE`+3 bytes of SRAM (if not 0).
+    - 4 bytes required to buffer a simple "ok".
+    - 32 bytes for `ADVANCED_OK` (M105).
+    - 128 bytes for the optimal speed of 'debug-echo:'
+    - Other output doesn't need to be that speedy.
 - name: RX_BUFFER_SIZE
   file: Configuration_adv.h
   type: int
@@ -204,6 +209,12 @@ settings:
   disabled: true
   requires: HAS_MEDIA
   comment: Enable this option to collect and display the number of dropped bytes after a file transfer to SD.
+- name: SERIAL_STATS_RX_FRAMING_ERRORS
+  file: Configuration_adv.h
+  type: switch
+  disabled: true
+  requires: HAS_MEDIA
+  comment: Enable this option to collect and display framing errors. Framing errors occur when invalid start/stop bits or other serial protocol violations are detected.
 - name: RX_BUFFER_MONITOR
   file: Configuration_adv.h
   type: switch
@@ -239,8 +250,8 @@ settings:
     | Value | Description |
     |------:|-------------|
     | `S000` | Report State and Position while moving. |
-    | `P000` | Instant Pause / Hold while moving. |
-    | `R000` | Resume from Pause / Hold. |
+    | `P000` | Instant Pause / Hold while moving. Enable `SOFT_FEED_HOLD` for soft deceleration. |
+    | `R000` | Resume from Pause / Hold. Enable `SOFT_FEED_HOLD` for soft acceleration. |
 
     - During Hold all Emergency Parser commands are available, as usual.
     - Enable `NANODLP_Z_SYNC` and `NANODLP_ALL_AXIS` for move command end-state reports.
@@ -261,6 +272,7 @@ settings:
 - name: ADVANCED_OK
   file: Configuration_adv.h
   type: switch
+  disabled: true
   long: Include extra information about the buffer in "ok" messages. Some hosts will have this feature soon. This could make the `NO_TIMEOUTS` unnecessary.
   comment: Some clients will have this feature soon. This could make the `NO_TIMEOUTS` unnecessary.
 - name: SERIAL_OVERRUN_PROTECTION

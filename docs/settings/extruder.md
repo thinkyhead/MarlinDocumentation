@@ -21,6 +21,17 @@ settings:
   comment: This defines the number of extruders
   example:
   - value: 2
+- name: E_DUAL_STEPPER_DRIVERS
+  file: Configuration.h
+  type: switch
+  disabled: true
+  comment: Drive the E axis with two synchronized steppers
+- name: INVERT_E1_VS_E0_DIR
+  file: Configuration.h
+  type: switch
+  disabled: true
+  requires: E_DUAL_STEPPER_DRIVERS
+  comment: E direction signals are opposites
 - name: DEFAULT_NOMINAL_FILAMENT_DIA
   file: Configuration.h
   type: float
@@ -141,6 +152,11 @@ settings:
   requires: SWITCHING_NOZZLE
   long: Dwell time to wait for servo to make physical move.
   comment: Dwell time to wait for servo to make physical move
+- name: SWITCHING_NOZZLE_LIFT_TO_PROBE
+  file: Configuration.h
+  type: switch
+  requires: SWITCHING_NOZZLE
+  comment: Lift toolheads out of the way while probing
 - name: MECHANICAL_SWITCHING_NOZZLE
   file: Configuration.h
   type: switch
@@ -246,6 +262,23 @@ settings:
   block_clause: '!PARKING_EXTRUDER'
   brief: Offset Compensation -1 , 0 , 1 (multiplier) only for coupling.
   comment: Offset Compensation -1 , 0 , 1 (multiplier) only for coupling
+- name: DIFFERENTIAL_EXTRUDER
+  file: Configuration.h
+  type: switch
+  disabled: true
+  comment: |-
+    Differential Extruder
+
+    The X and E steppers work together to create a differential drive system.
+
+    Simple : E steps = X + E   ; X steps = X  (E drives a loop, X stays the same)
+
+    Balanced: E steps = X + E/2 ; X steps = X - E/2  (Dual loop system)
+- name: BALANCED_DIFFERENTIAL_EXTRUDER
+  file: Configuration.h
+  type: switch
+  disabled: true
+  requires: DIFFERENTIAL_EXTRUDER
 - name: SWITCHING_TOOLHEAD
   file: Configuration.h
   type: switch
@@ -483,35 +516,6 @@ settings:
   file: Configuration.h
   type: switch
   comment: Keep only the active extruder enabled
-- name: INVERT_E*_DIR
-  file: Configuration.h
-  type: bool
-  comment: For direct drive extruder v9 set to true, for geared extruder set to false.
-  members:
-  - id: '0'
-    name: INVERT_E0_DIR
-    default: false
-  - id: '1'
-    name: INVERT_E1_DIR
-    default: false
-  - id: '2'
-    name: INVERT_E2_DIR
-    default: false
-  - id: '3'
-    name: INVERT_E3_DIR
-    default: false
-  - id: '4'
-    name: INVERT_E4_DIR
-    default: false
-  - id: '5'
-    name: INVERT_E5_DIR
-    default: false
-  - id: '6'
-    name: INVERT_E6_DIR
-    default: false
-  - id: '7'
-    name: INVERT_E7_DIR
-    default: false
 - name: EXTRUDER_RUNOUT_PREVENT
   file: Configuration_adv.h
   type: switch
@@ -588,6 +592,7 @@ settings:
 - name: LIN_ADVANCE
   file: Configuration_adv.h
   type: switch
+  disabled: true
   long: This feature allows Marlin to use linear pressure control for print extrusion, to eliminate ooze, improve corners, etc. See `Configuration_adv.h` and the [Linear Advance page](/docs/features/lin_advance.html) for more complete documentation.
   comment: |-
     Linear Pressure Control v1.5
@@ -602,16 +607,16 @@ settings:
 - name: ADVANCE_K
   file: Configuration_adv.h
   type: float[]
-  default: '{ 0.0 }'
+  default: '{ 0.22 }'
   units: mm
-  requires: LIN_ADVANCE && DISTINCT_E_FACTORS
-  comment: (mm) Compression length per 1mm/s extruder speed, per extruder
+  requires: ANY(LIN_ADVANCE, FT_MOTION) && DISTINCT_E_FACTORS
+  comment: (mm) Compression length per 1mm/s extruder speed, per extruder. Override with 'M900 T&lt;tool&gt; K&lt;mm&gt;'.
 - name: ADVANCE_K_EXTRA
   file: Configuration_adv.h
   type: switch
   disabled: true
-  requires: LIN_ADVANCE
-  comment: Add a second linear advance constant, configurable with M900 L.
+  requires: ANY(LIN_ADVANCE, FT_MOTION)
+  comment: Add a second linear advance constant, configurable with 'M900 L'.
 - name: LA_DEBUG
   file: Configuration_adv.h
   type: switch
@@ -624,6 +629,31 @@ settings:
   disabled: true
   requires: LIN_ADVANCE
   comment: Allow I2S_STEPPER_STREAM to be used with LA. Performance degrades as the LA step rate reaches ~20kHz.
+- name: SMOOTH_LIN_ADVANCE
+  file: Configuration_adv.h
+  type: switch
+  disabled: true
+  requires: LIN_ADVANCE
+  comment: Remove limits on acceleration by gradual increase of nozzle pressure
+- name: ADVANCE_TAU
+  file: Configuration_adv.h
+  type: float[]
+  default: '{ 0.02 }'
+  units: seconds
+  requires: LIN_ADVANCE && SMOOTH_LIN_ADVANCE && DISTINCT_E_FACTORS
+  comment: '`ADVANCE_TAU` is also the time ahead that the smoother needs to look into the planner, so the planner needs to have enough blocks loaded. For k=0.04 at 10k acceleration and an "Orbiter 2" extruder it can be as low as 0.0075. Adjust by lowering the value until you observe the extruder skipping, then raise slightly. Higher k and higher XY acceleration may require larger `ADVANCE_TAU` to avoid skipping steps.'
+- name: SMOOTH_LIN_ADV_HZ
+  file: Configuration_adv.h
+  type: int
+  default: 1000
+  units: Hz
+  requires: LIN_ADVANCE && SMOOTH_LIN_ADVANCE
+  comment: (Hz) How often to update extruder speed
+- name: INPUT_SHAPING_E_SYNC
+  file: Configuration_adv.h
+  type: switch
+  requires: LIN_ADVANCE && SMOOTH_LIN_ADVANCE
+  comment: Synchronize the extruder-shaped XY axes (to increase precision)
 - name: NONLINEAR_EXTRUSION
   file: Configuration_adv.h
   type: switch
@@ -632,6 +662,12 @@ settings:
     Nonlinear Extrusion Control
 
     Control extrusion rate based on instantaneous extruder velocity. Can be used to correct for underextrusion at high extruder speeds that are otherwise well-behaved (i.e., not skipping). For better results also enable `ADAPTIVE_STEP_SMOOTHING`.
+- name: NONLINEAR_EXTRUSION_DEFAULT_ON
+  file: Configuration_adv.h
+  type: switch
+  disabled: true
+  requires: NONLINEAR_EXTRUSION
+  comment: Enable if NLE should be ON by default
 ---
 
 Options in the `extruder` section of the Marlin configuration files.

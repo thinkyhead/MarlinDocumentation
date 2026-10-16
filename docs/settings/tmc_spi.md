@@ -8,7 +8,7 @@ settings:
   file: Configuration_adv.h
   type: int
   requires: HAS_TRINAMIC_CONFIG
-  comment: Override default SPI pins for TMC2130, TMC2160, TMC2660, TMC5130 and TMC5160 drivers here. The default pins can be found in your board's pins file.
+  comment: Override default SPI pins for TMC2130, TMC2160, TMC2240, TMC2660, TMC5130 and TMC5160 drivers here. The default pins can be found in your board's pins file.
   members:
   - id: X
     name: X_CS_PIN
@@ -103,28 +103,28 @@ settings:
   type: switch
   disabled: true
   requires: HAS_TRINAMIC_CONFIG
-  comment: Software option for SPI driven drivers (TMC2130, TMC2160, TMC2660, TMC5130 and TMC5160). The default SW SPI pins are defined the respective pins files, but you can override or define them here.
+  comment: Software option for SPI driven drivers (TMC2130, TMC2160, TMC2240, TMC2660, TMC5130 and TMC5160). The default SW SPI pins are defined the respective pins files, but you can override or define them here.
 - name: TMC_SPI_MOSI
   file: Configuration_adv.h
   type: int
   default: -1
   disabled: true
   requires: HAS_TRINAMIC_CONFIG
-  shared_comment: Software option for SPI driven drivers (TMC2130, TMC2160, TMC2660, TMC5130 and TMC5160). The default SW SPI pins are defined the respective pins files, but you can override or define them here.
+  shared_comment: Software option for SPI driven drivers (TMC2130, TMC2160, TMC2240, TMC2660, TMC5130 and TMC5160). The default SW SPI pins are defined the respective pins files, but you can override or define them here.
 - name: TMC_SPI_MISO
   file: Configuration_adv.h
   type: int
   default: -1
   disabled: true
   requires: HAS_TRINAMIC_CONFIG
-  shared_comment: Software option for SPI driven drivers (TMC2130, TMC2160, TMC2660, TMC5130 and TMC5160). The default SW SPI pins are defined the respective pins files, but you can override or define them here.
+  shared_comment: Software option for SPI driven drivers (TMC2130, TMC2160, TMC2240, TMC2660, TMC5130 and TMC5160). The default SW SPI pins are defined the respective pins files, but you can override or define them here.
 - name: TMC_SPI_SCK
   file: Configuration_adv.h
   type: int
   default: -1
   disabled: true
   requires: HAS_TRINAMIC_CONFIG
-  shared_comment: Software option for SPI driven drivers (TMC2130, TMC2160, TMC2660, TMC5130 and TMC5160). The default SW SPI pins are defined the respective pins files, but you can override or define them here.
+  shared_comment: Software option for SPI driven drivers (TMC2130, TMC2160, TMC2240, TMC2660, TMC5130 and TMC5160). The default SW SPI pins are defined the respective pins files, but you can override or define them here.
 ---
 
 Options in the `tmc/spi` section of the Marlin configuration files.

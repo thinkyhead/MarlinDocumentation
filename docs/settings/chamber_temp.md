@@ -44,6 +44,7 @@ settings:
   - id: MIN
     name: MIN_CHAMBER_POWER
     default: 0
+    disabled: true
     requires: PIDTEMPCHAMBER
 - name: PID_CHAMBER_DEBUG
   file: Configuration.h
@@ -51,7 +52,7 @@ settings:
   disabled: true
   requires: PIDTEMPCHAMBER
   brief: Print chamber‑PID debug data to the serial port.
-  comment: Print Chamber PID debug data to the serial port.
+  comment: Print Chamber PID debug data to the serial port. Use 'M303 D' to enable/disable.
 - name: DEFAULT_CHAMBER_KP
   file: Configuration.h
   type: float

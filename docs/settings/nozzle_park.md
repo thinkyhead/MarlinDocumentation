@@ -7,6 +7,7 @@ settings:
 - name: NOZZLE_PARK_FEATURE
   file: Configuration.h
   type: switch
+  disabled: true
   long: |-
     Park the nozzle at the given XYZ position on idle or [`G27`](/docs/gcode/G027.html).
 

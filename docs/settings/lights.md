@@ -12,7 +12,7 @@ settings:
     Temperature status LEDs that display the hotend and bed temperature. If all hotend and bed temperature set-point are < 54C then the BLUE led is on. Otherwise the RED led is on. There is 1C hysteresis.
 
     Adds a simple temperature status indicators using LEDs.
-  comment: Temperature status LEDs that display the hotend and bed temperature. If all hotends, bed temperature, and target temperature are under 54C then the BLUE led is on. Otherwise the RED led is on. (1C hysteresis)
+  comment: Temperature status LEDs that display the hotend and bed temperature. If all hotends, bed temperature, and target temperature are under 54C the BLUE led is on. Otherwise the RED led is on. (1C hysteresis)
 - name: BLINKM
   file: Configuration.h
   type: switch

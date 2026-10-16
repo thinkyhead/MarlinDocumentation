@@ -43,7 +43,26 @@ settings:
   default: '{ 40.0f }'
   units: W
   requires: MPCTEMP
-  comment: (W) Heat cartridge powers.
+  comment: (W) Nominal heat cartridge powers.
+- name: MPC_PTC
+  file: Configuration.h
+  type: switch
+  disabled: true
+  requires: MPCTEMP
+  comment: Hotend power changes with temperature (e.g., PTC heat cartridges).
+- name: MPC_HEATER_ALPHA
+  file: Configuration.h
+  type: float[]
+  default: '{ 0.0028f }'
+  requires: MPCTEMP && MPC_PTC
+  comment: Temperature coefficient of resistance of the heat cartridges.
+- name: MPC_HEATER_REFTEMP
+  file: Configuration.h
+  type: int[]
+  default: '{ 20 }'
+  units: °C
+  requires: MPCTEMP && MPC_PTC
+  comment: (°C) Reference temperature for `MPC_HEATER_POWER` and `MPC_HEATER_ALPHA`.
 - name: MPC_INCLUDE_FAN
   file: Configuration.h
   type: switch
@@ -133,6 +152,13 @@ settings:
   units: mm
   requires: MPCTEMP
   comment: (mm) M306 Autotuning final Z position.
+- name: EVENT_GCODE_AFTER_MPC_TUNE
+  file: Configuration.h
+  type: string
+  default: '"M84"'
+  disabled: true
+  requires: MPCTEMP
+  comment: G-code to execute after MPC tune finished and Z raised.
 ---
 
 Options in the `mpc temp` section of the Marlin configuration files.

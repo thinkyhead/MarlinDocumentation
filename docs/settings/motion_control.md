@@ -17,24 +17,88 @@ settings:
   comment: |-
     Fixed-time-based Motion Control -- BETA FEATURE
 
-    Enable/disable and set parameters with G-code M493. See ft_types.h for named values used by FTM options.
+    Enable/disable and set parameters with G-code M493 and M494. See ft_types.h for named values used by FTM options.
 - name: FTM_IS_DEFAULT_MOTION
   file: Configuration_adv.h
   type: switch
   disabled: true
   requires: FT_MOTION
   comment: Use FT Motion as the factory default?
+- name: FT_MOTION_MENU
+  file: Configuration_adv.h
+  type: switch
+  disabled: true
+  requires: FT_MOTION
+  comment: Provide a MarlinUI menu to set M493 and M494 parameters
+- name: NO_STANDARD_MOTION
+  file: Configuration_adv.h
+  type: switch
+  disabled: true
+  requires: FT_MOTION
+  comment: Disable the standard motion system entirely to save Flash and RAM
+- name: FTM_HOME_AND_PROBE
+  file: Configuration_adv.h
+  type: switch
+  disabled: true
+  requires: FT_MOTION && !NO_STANDARD_MOTION
+  comment: Use FT Motion for homing / probing. Disable if FT Motion breaks these functions.
+- name: FTM_DYNAMIC_FREQ
+  file: Configuration_adv.h
+  type: switch
+  disabled: true
+  requires: FT_MOTION
+  comment: Enable for linear adjustment of XY shaping frequency according to Z or E
 - name: FTM_DEFAULT_DYNFREQ_MODE
   file: Configuration_adv.h
   type: enum
   default: dynFreqMode_DISABLED
-  requires: FT_MOTION
+  requires: FT_MOTION && FTM_DYNAMIC_FREQ
   long: |-
     Set the default dynamic frequency calculation mode for FTM. Options include:
     - `dynFreqMode_DISABLED`: Disable dynamic frequency adjustment (default).
     - `dynFreqMode_Z_BASED`: Use a Z-based dynamic frequency algorithm.
     - `dynFreqMode_MASS_BASED`: Use a mass-based dynamic frequency algorithm.
   comment: Default mode of dynamic frequency calculation. (DISABLED, Z_BASED, MASS_BASED)
+- name: FTM_SHAPER_ZV
+  file: Configuration_adv.h
+  type: switch
+  requires: FT_MOTION
+  comment: Disable unused shapers if you need more free space
+- name: FTM_SHAPER_ZVD
+  file: Configuration_adv.h
+  type: switch
+  requires: FT_MOTION
+  shared_comment: Disable unused shapers if you need more free space
+- name: FTM_SHAPER_ZVDD
+  file: Configuration_adv.h
+  type: switch
+  requires: FT_MOTION
+  shared_comment: Disable unused shapers if you need more free space
+- name: FTM_SHAPER_ZVDDD
+  file: Configuration_adv.h
+  type: switch
+  requires: FT_MOTION
+  shared_comment: Disable unused shapers if you need more free space
+- name: FTM_SHAPER_EI
+  file: Configuration_adv.h
+  type: switch
+  requires: FT_MOTION
+  shared_comment: Disable unused shapers if you need more free space
+- name: FTM_SHAPER_2HEI
+  file: Configuration_adv.h
+  type: switch
+  requires: FT_MOTION
+  shared_comment: Disable unused shapers if you need more free space
+- name: FTM_SHAPER_3HEI
+  file: Configuration_adv.h
+  type: switch
+  requires: FT_MOTION
+  shared_comment: Disable unused shapers if you need more free space
+- name: FTM_SHAPER_MZV
+  file: Configuration_adv.h
+  type: switch
+  requires: FT_MOTION
+  shared_comment: Disable unused shapers if you need more free space
 - name: FTM_DEFAULT_SHAPER_*
   file: Configuration_adv.h
   type: enum
@@ -53,6 +117,9 @@ settings:
   - id: Y
     name: FTM_DEFAULT_SHAPER_Y
     default: ftMotionShaper_NONE
+  - id: Z
+    name: FTM_DEFAULT_SHAPER_Z
+    default: ftMotionShaper_NONE
 - name: FTM_SHAPING_DEFAULT_FREQ_*
   file: Configuration_adv.h
   type: float
@@ -67,18 +134,9 @@ settings:
   - id: Y
     name: FTM_SHAPING_DEFAULT_FREQ_Y
     default: 37.0
-- name: FTM_LINEAR_ADV_DEFAULT_ENA
-  file: Configuration_adv.h
-  type: bool
-  default: false
-  requires: FT_MOTION
-  comment: Default linear advance enable (true) or disable (false)
-- name: FTM_LINEAR_ADV_DEFAULT_K
-  file: Configuration_adv.h
-  type: float
-  default: 0.0
-  requires: FT_MOTION
-  comment: Default linear advance gain. (Acceleration-based scaling factor.)
+  - id: Z
+    name: FTM_SHAPING_DEFAULT_FREQ_Z
+    default: 21.0
 - name: FTM_SHAPING_ZETA_*
   file: Configuration_adv.h
   type: float
@@ -91,6 +149,9 @@ settings:
   - id: Y
     name: FTM_SHAPING_ZETA_Y
     default: 0.1
+  - id: Z
+    name: FTM_SHAPING_ZETA_Z
+    default: 0.03
 - name: FTM_SHAPING_V_TOL_*
   file: Configuration_adv.h
   type: float
@@ -104,100 +165,154 @@ settings:
   - id: Y
     name: FTM_SHAPING_V_TOL_Y
     default: 0.05
-- name: FT_MOTION_MENU
+  - id: Z
+    name: FTM_SHAPING_V_TOL_Z
+    default: 0.05
+- name: FTM_SHAPER_Z
   file: Configuration_adv.h
   type: switch
   disabled: true
   requires: FT_MOTION
-  comment: Provide a MarlinUI menu to set M493 parameters
-- name: FTM_UNIFIED_BWS
+  comment: Include Z shaping support
+- name: FTM_SHAPER_E
+  file: Configuration_adv.h
+  type: switch
+  disabled: true
+  requires: FT_MOTION
+  comment: Include E shaping support Required to synchronize extruder with XYZ (better quality)
+- name: FTM_DEFAULT_SHAPER_E
+  file: Configuration_adv.h
+  type: enum
+  default: ftMotionShaper_NONE
+  requires: FT_MOTION
+  comment: Default shaper mode on Extruder axis
+- name: FTM_SHAPING_DEFAULT_FREQ_E
+  file: Configuration_adv.h
+  type: float
+  default: 21.0
+  units: Hz
+  requires: FT_MOTION
+  comment: (Hz) Default peak frequency used by input shapers
+- name: FTM_SHAPING_ZETA_E
+  file: Configuration_adv.h
+  type: float
+  default: 0.03
+  requires: FT_MOTION
+  comment: Zeta used by input shapers for E axis
+- name: FTM_SHAPING_V_TOL_E
+  file: Configuration_adv.h
+  type: float
+  default: 0.05
+  requires: FT_MOTION
+  comment: Vibration tolerance used by EI input shapers for E axis
+- name: FTM_SMOOTHING
+  file: Configuration_adv.h
+  type: switch
+  disabled: true
+  requires: FT_MOTION
+  comment: Smoothing can reduce artifacts and make steppers quieter on sharp corners, but too much will round corners.
+- name: FTM_MAX_SMOOTHING_TIME
+  file: Configuration_adv.h
+  type: float
+  default: 0.1
+  units: seconds
+  requires: FT_MOTION && FTM_SMOOTHING
+  comment: (s) Maximum smoothing time. Higher values consume more RAM. Increase smoothing time to reduce jerky motion, ghosting and noises.
+- name: FTM_SMOOTHING_TIME_*
+  file: Configuration_adv.h
+  type: float
+  units: seconds
+  requires: FT_MOTION && FTM_SMOOTHING
+  comment: (s) Smoothing time for X axis. Zero means disabled.
+  members:
+  - id: X
+    name: FTM_SMOOTHING_TIME_X
+    default: 0.0
+  - id: Y
+    name: FTM_SMOOTHING_TIME_Y
+    default: 0.0
+  - id: Z
+    name: FTM_SMOOTHING_TIME_Z
+    default: 0.0
+- name: FTM_SMOOTHING_TIME_E
+  file: Configuration_adv.h
+  type: float
+  default: 0.02
+  units: seconds
+  requires: FT_MOTION && FTM_SMOOTHING
+  comment: (s) Smoothing time for E axis. Prevents noise/skipping from LA by smoothing acceleration peaks, which may also smooth curved surfaces.
+- name: FTM_POLYS
   file: Configuration_adv.h
   type: switch
   requires: FT_MOTION
-  long: These advanced settings configure various aspects of trajectory generation and stepper communication, ensuring smooth and accurate motion control. CoreXY motion needs a larger buffer size. Provided values are based on community testing and feedback.
+  comment: Disable POLY5/6 to save ~3k of Flash. Preserves TRAPEZOIDAL.
+- name: FTM_POLY6_ACCELERATION_OVERSHOOT
+  file: Configuration_adv.h
+  type: float
+  default: 1.875
+  requires: FT_MOTION && FTM_POLYS
+  comment: Max acceleration overshoot factor for POLY6 (1.25 to 1.875)
+- name: FTM_CONSTANT_JOLT
+  file: Configuration_adv.h
+  type: switch
+  disabled: true
+  requires: FT_MOTION
+  comment: FTM Constant-Jolt Trajectory (7-phase S-curve). Jolt is the rate of change of acceleration, not related to Marlin's "classic jerk." Ramps acceleration gradually so max acceleration is limited by max speed and distance traveled.
+- name: FTM_DEFAULT_JOLT
+  file: Configuration_adv.h
+  type: float
+  default: 250.0
+  units: m/s³
+  requires: FT_MOTION && FTM_CONSTANT_JOLT
+  comment: (m/s³) Default jolt for constant-jolt trajectory. Higher values print faster at the cost of increased resonance and extruder stress
+- name: FTM_TRAJECTORY_TYPE
+  file: Configuration_adv.h
+  type: enum
+  default: TRAPEZOIDAL
+  requires: FT_MOTION
+  comment: Block acceleration profile
+  options:
+  - value: TRAPEZOIDAL
+  - value: POLY5
+  - value: POLY6
+  - value: CONSTANT_JOLT
+- name: FTM_BUFFER_SIZE
+  file: Configuration_adv.h
+  type: int
+  default: 128
+  requires: FT_MOTION
   comment: Advanced configuration
-- name: FTM_BW_SIZE
-  file: Configuration_adv.h
-  type: int
-  default: 100
-  requires: FT_MOTION && FTM_UNIFIED_BWS
-  comment: Unified Window and Batch size with a ratio of 2
-- name: FTM_WINDOW_SIZE
-  file: Configuration_adv.h
-  type: int
-  default: 200
-  requires: FT_MOTION
-  block_clause: '!FTM_UNIFIED_BWS'
-  comment: Custom Window size for trajectory generation needed by Ulendo FBS
-- name: FTM_BATCH_SIZE
-  file: Configuration_adv.h
-  type: int
-  default: 100
-  requires: FT_MOTION
-  block_clause: '!FTM_UNIFIED_BWS'
-  comment: Custom Batch size for trajectory generation needed by Ulendo FBS
 - name: FTM_FS
   file: Configuration_adv.h
   type: int
   default: 1000
   units: Hz
   requires: FT_MOTION
-  comment: (Hz) Frequency for trajectory generation. (Reciprocal of `FTM_TS`)
-- name: FTM_TS
-  file: Configuration_adv.h
-  type: float
-  default: 0.001
-  units: seconds
-  requires: FT_MOTION
-  comment: (s) Time step for trajectory generation. (Reciprocal of `FTM_FS`)
-- name: FTM_STEPPER_FS
-  file: Configuration_adv.h
-  type: int
-  default: 20000
-  units: Hz
-  requires: FT_MOTION && !COREXY
-  comment: (Hz) Frequency for stepper I/O update
-- name: FTM_STEPPERCMD_BUFF_SIZE
-  file: Configuration_adv.h
-  type: int
-  default: 3000
-  requires: FT_MOTION && !COREXY
-  comment: Use this to adjust the time required to consume the command buffer. Try increasing this value if stepper motion is choppy.
-- name: FTM_STEPS_PER_UNIT_TIME
-  file: Configuration_adv.h
-  default: (FTM_STEPPER_FS / FTM_FS)
-  requires: FT_MOTION
-  long: |-
-    These parameters ensure that the motion control system operates within optimal ranges, providing a balance between performance and accuracy.
-
-    By customizing these settings, you can optimize your printer's performance to suit specific needs or preferences.
-  comment: Interpolated stepper commands per unit time
-- name: FTM_CTS_COMPARE_VAL
-  file: Configuration_adv.h
-  default: (FTM_STEPS_PER_UNIT_TIME / 2)
-  requires: FT_MOTION
-  comment: Comparison value used in interpolation algorithm
-- name: FTM_MIN_TICKS
-  file: Configuration_adv.h
-  default: ((STEPPER_TIMER_RATE) / (FTM_STEPPER_FS))
-  requires: FT_MOTION
-  comment: Minimum stepper ticks between steps
+  comment: (Hz) Frequency for trajectory generation.
 - name: FTM_MIN_SHAPE_FREQ
   file: Configuration_adv.h
   type: int
-  default: 10
+  default: 20
+  units: Hz
   requires: FT_MOTION
-  comment: Minimum shaping frequency
-- name: FTM_RATIO
+  comment: (Hz) Minimum shaping frequency, lower consumes more RAM
+- name: FTM_DIR_CHANGE_HOLD_*
   file: Configuration_adv.h
-  default: (FTM_FS / FTM_MIN_SHAPE_FREQ)
-  requires: FT_MOTION
-  comment: Factor for use in `FTM_ZMAX`. DON'T CHANGE.
-- name: FTM_ZMAX
-  file: Configuration_adv.h
-  default: (FTM_RATIO * 2)
-  requires: FT_MOTION
-  comment: 'Maximum delays for shaping functions (even numbers only!) Calculate as: ZV       : `FTM_RATIO` / 2 ZVD, MZV : `FTM_RATIO` 2HEI     : `FTM_RATIO` * 3 / 2 3HEI     : `FTM_RATIO` * 2'
+  type: switch
+  requires: FT_MOTION && (AXIS_DRIVER_TYPE_X(TMC2208) || AXIS_DRIVER_TYPE_X(TMC2208_STANDALONE))
+  comment: TMC2208 / TMC2208_STANDALONE drivers require a brief pause after a DIR change to prevent a standstill shutdown when using StealthChop (the standalone default). These options cause FT Motion to delay for &gt; 750µs after a DIR change on a given axis. Disable only if you are certain that this can never happen with your TMC2208s.
+  members:
+  - id: X
+    name: FTM_DIR_CHANGE_HOLD_X
+  - id: Y
+    name: FTM_DIR_CHANGE_HOLD_Y
+    requires: FT_MOTION && (AXIS_DRIVER_TYPE_Y(TMC2208) || AXIS_DRIVER_TYPE_Y(TMC2208_STANDALONE))
+  - id: Z
+    name: FTM_DIR_CHANGE_HOLD_Z
+    requires: FT_MOTION && (AXIS_DRIVER_TYPE_Z(TMC2208) || AXIS_DRIVER_TYPE_Z(TMC2208_STANDALONE))
+  - id: E
+    name: FTM_DIR_CHANGE_HOLD_E
+    requires: FT_MOTION && (HAS_E_DRIVER(TMC2208) || HAS_E_DRIVER(TMC2208_STANDALONE))
 - name: INPUT_SHAPING_*
   file: Configuration_adv.h
   type: switch
@@ -275,6 +390,12 @@ settings:
   disabled: true
   requires: ANY(INPUT_SHAPING_X, INPUT_SHAPING_Y, INPUT_SHAPING_Z)
   comment: Add a menu to the LCD to set shaping parameters.
+- name: RESONANCE_TEST
+  file: Configuration_adv.h
+  type: switch
+  disabled: true
+  requires: ANY(INPUT_SHAPING_X, INPUT_SHAPING_Y, INPUT_SHAPING_Z, FTM_SHAPER_ZV, FTM_SHAPER_ZVD, FTM_SHAPER_ZVDD, FTM_SHAPER_ZVDDD, FTM_SHAPER_EI, FTM_SHAPER_2HEI, FTM_SHAPER_3HEI, FTM_SHAPER_MZV)
+  comment: Sine sweep motion for resonance study
 ---
 
 Options in the `motion control` section of the Marlin configuration files.

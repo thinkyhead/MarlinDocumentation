@@ -40,7 +40,7 @@ settings:
   requires: PIDTEMPBED
   brief: Print bed‑PID debug data to the serial port.
   long: Sample Bed PID values are included for reference, but use the result from [`M303 E-1`](/docs/gcode/M303.html) for your specific machine.
-  comment: Print Bed PID debug data to the serial port.
+  comment: Print Bed PID debug data to the serial port. Use 'M303 D' to enable/disable.
 - name: DEFAULT_BED_KP
   file: Configuration.h
   type: float

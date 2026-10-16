@@ -34,6 +34,11 @@ settings:
     - For simple switches...
     - Normally-closed (NC) also connect to GND.
     - Normally-open (NO) also connect to 5V.
+- name: USE_PIN_27_BOARD
+  file: Configuration.h
+  type: switch
+  disabled: true
+  comment: Use Pin 27 adapter (on the EXP port) for probe (and BEEPER). Also enable `USE_PROBE_FOR_Z_HOMING` for older BLTouch/3DTouch connected to Z_MIN_PIN.
 - name: PROBE_MANUALLY
   file: Configuration.h
   type: switch
@@ -44,12 +49,6 @@ settings:
     Even if you have no bed probe you can still use any of the core `AUTO_BED_LEVELING_*` options below by selecting this option. With `PROBE_MANUALLY` the [`G29`](/docs/gcode/G029-mbl.html) command only moves the nozzle to the next probe point where it pauses. You adjust the Z height with a piece of paper or feeler gauge, then send [`G29`](/docs/gcode/G029-mbl.html)  again to continue to the next point. You can also enable `LCD_BED_LEVELING` to add a "Level Bed" Menu item to the LCD for a fully interactive leveling process.
     `MANUAL_PROBE_START_Z` sets the Z-height the printer initially moves to at each mesh point during manual probing. With this disabled, the printer will move to Z0 for the first probe point. Then each consecutive probe point uses the Z position of the probe point preceding it.
   comment: The "Manual Probe" provides a means to do "Auto" Bed Leveling without a probe. Use G29 repeatedly, adjusting the Z height at each point with movement commands or (with `LCD_BED_LEVELING`) the LCD controller.
-- name: MANUAL_PROBE_START_Z
-  file: Configuration.h
-  type: float
-  default: 0.2
-  disabled: true
-  shared_comment: The "Manual Probe" provides a means to do "Auto" Bed Leveling without a probe. Use G29 repeatedly, adjusting the Z height at each point with movement commands or (with `LCD_BED_LEVELING`) the LCD controller.
 - name: FIX_MOUNTED_PROBE
   file: Configuration.h
   type: switch
@@ -183,8 +182,6 @@ settings:
     A lightweight, solenoid-driven probe. For information about this sensor https://github.com/bigtreetech/MicroProbe
 
     Also requires `PROBE_ENABLE_DISABLE`
-
-    With `FT_MOTION` requires `ENDSTOP_INTERRUPTS_FEATURE`
 - name: BIQU_MICROPROBE_V2
   file: Configuration.h
   type: switch
@@ -250,6 +247,38 @@ settings:
   units: mm/min
   requires: MAG_MOUNTED_PROBE
   comment: (mm/min) Probe stow speed
+- name: MAG_MOUNTED_PROBE_SERVO_NR
+  file: Configuration.h
+  type: int
+  default: 0
+  disabled: true
+  requires: MAG_MOUNTED_PROBE
+  comment: |-
+    Magnetically Mounted Probe with a Servo mechanism
+
+    Probe Deploy and Stow both follow the same basic sequence:
+
+    - Rotate the SERVO to its Deployed angle
+    - Perform XYZ moves to deploy or stow the PROBE
+    - Rotate the SERVO to its Stowed angle
+- name: MAG_MOUNTED_PROBE_SERVO_ANGLES
+  file: Configuration.h
+  type: int[]
+  default: '{ 90, 0 }'
+  requires: MAG_MOUNTED_PROBE && MAG_MOUNTED_PROBE_SERVO_NR
+  comment: Servo Angles for Deployed, Stowed
+- name: MAG_MOUNTED_PRE_DEPLOY
+  file: Configuration.h
+  type: array
+  default: '{ PROBE_DEPLOY_FEEDRATE, { 15, 160, 30 } }'
+  requires: MAG_MOUNTED_PROBE && MAG_MOUNTED_PROBE_SERVO_NR
+  comment: Safe position for servo activation
+- name: MAG_MOUNTED_PRE_STOW
+  file: Configuration.h
+  type: array
+  default: '{ PROBE_DEPLOY_FEEDRATE, { 15, 160, 30 } }'
+  requires: MAG_MOUNTED_PROBE && MAG_MOUNTED_PROBE_SERVO_NR
+  comment: Safe position for servo deactivation
 - name: MAG_MOUNTED_DEPLOY_*
   file: Configuration.h
   type: array
@@ -387,6 +416,7 @@ settings:
   file: Configuration.h
   type: int[]
   default: '{ 10, 10, 0 }'
+  units: mm
   long: |-
     These offsets specify the distance from the tip of the nozzle of tool T0 to the probe — or more precisely, to the point at which the probe triggers. The X and Y offsets are specified as integers. The Z offset should be specified as exactly as possible using a decimal value. The Z offset can be overridden with `M851 Z`, baby stepping, or the LCD controller. The [`M851`](/docs/gcode/M851.html) offset is saved to EEPROM with [`M500`](/docs/gcode/M500.html).
 
@@ -403,7 +433,7 @@ settings:
 
     X and Y offset
 
-    Use a caliper or ruler to measure the distance from the tip of the Nozzle to the center-point of the Probe in the X and Y axes.
+    Use a caliper or ruler to measure the distance (in mm) from the tip of the Nozzle to the center-point of the Probe in the X and Y axes.
 
     Z offset
 
@@ -437,6 +467,13 @@ settings:
   disabled: true
   requires: PROBING_TOOL
   comment: Suppress motion on probe tool-change
+- name: PROBE_WAKEUP_TIME_MS
+  file: Configuration.h
+  type: int
+  default: 30
+  units: ms
+  disabled: true
+  comment: (ms) Time for the probe to wake up
 - name: PROBING_MARGIN
   file: Configuration.h
   type: int
@@ -623,6 +660,7 @@ settings:
   file: Configuration.h
   type: int
   units: mm
+  long: For [`M851`](/docs/gcode/M851.html) and LCD menus give a range for adjusting the Z probe offset.
   comment: For M851 provide ranges for adjusting the X, Y, and Z probe offsets
   members:
   - id: XMIN
@@ -649,7 +687,6 @@ settings:
     name: PROBE_OFFSET_ZMAX
     default: 20
     disabled: true
-  long: For [`M851`](/docs/gcode/M851.html) and LCD menus give a range for adjusting the Z probe offset.
 - name: Z_MIN_PROBE_REPEATABILITY_TEST
   file: Configuration.h
   type: switch

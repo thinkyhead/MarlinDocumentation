@@ -16,7 +16,7 @@ settings:
   comment: |-
     Trinamic Smart Drivers
 
-    To use TMC2130, TMC2160, TMC2660, TMC5130, TMC5160 stepper drivers in SPI mode:
+    To use TMC2130, TMC2160, TMC2240, TMC2660, TMC5130, TMC5160 stepper drivers in SPI mode:
 
     - Connect your SPI pins to the Hardware SPI interface on the board. Some boards have simple jumper connections! See your board's documentation.
     - Define the required Stepper CS pins in your `pins_MYBOARD.h` file. (See the RAMPS pins, for example.)
@@ -30,6 +30,12 @@ settings:
     The TMCStepper library is required for other TMC stepper drivers.
 
     - <https://github.com/teemuatlut/TMCStepper>
+- name: EDITABLE_HOMING_CURRENT
+  file: Configuration_adv.h
+  type: switch
+  disabled: true
+  requires: HAS_TRINAMIC_CONFIG
+  comment: Add a G-code and menu to modify the Homing Current
 - name: INTERPOLATE
   file: Configuration_adv.h
   type: bool
@@ -39,6 +45,42 @@ settings:
     Interpolate microsteps to 256
 
     Override for each driver with &lt;driver&gt;_INTERPOLATE settings below
+- name: TMC2240_RREF
+  file: Configuration_adv.h
+  type: int
+  default: 12000
+  units: Ω
+  requires: HAS_TRINAMIC_CONFIG && HAS_DRIVER(TMC2240)
+  comment: (Ω) 12000 .. 60000. (FLY TMC2240 = 12300) Max Current. Lower for more internal resolution. Raise to run cooler.
+- name: TMC2240_CURRENT_RANGE
+  file: Configuration_adv.h
+  type: int
+  default: 1
+  requires: HAS_TRINAMIC_CONFIG && HAS_DRIVER(TMC2240)
+  comment: 'Slope Control: Lower is more silent. Higher runs cooler.'
+  options:
+  - value: '0'
+    label: RMS=690mA PEAK=1A
+  - value: '1'
+    label: RMS=1410mA PEAK=2A
+  - value: '2'
+    label: RMS=2120mA PEAK=3A
+  - value: '3'
+    label: RMS=2110mA PEAK=3A
+- name: TMC2240_SLOPE_CONTROL
+  file: Configuration_adv.h
+  type: int
+  default: 0
+  requires: HAS_TRINAMIC_CONFIG && HAS_DRIVER(TMC2240)
+  options:
+  - value: '0'
+    label: 100V/µs
+  - value: '1'
+    label: 200V/µs
+  - value: '2'
+    label: 400V/µs
+  - value: '3'
+    label: 800V/µs
 - name: '*_CURRENT'
   file: Configuration_adv.h
   type: int

@@ -7,6 +7,7 @@ settings:
 - name: NOZZLE_CLEAN_FEATURE
   file: Configuration.h
   type: switch
+  disabled: true
   long: Adds the [`G12`](/docs/gcode/G012.html) command to perform a nozzle cleaning process. See `Configuration.h` for additional configuration options.
   comment: |-
     Clean Nozzle Feature

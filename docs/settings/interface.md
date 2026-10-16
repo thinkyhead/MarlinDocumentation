@@ -32,7 +32,7 @@ settings:
 
     Select the language to display on the LCD. These languages are available:
 
-    en, an, bg, ca, cz, da, de, el, el_CY, es, eu, fi, fr, gl, hr, hu, it, jp_kana, ko_KR, nl, pl, pt, pt_br, ro, ru, sk, sv, tr, uk, vi, zh_CN, zh_TW
+    en, an, bg, ca, cz, da, de, el, el_CY, es, eu, fi, fr, gl, hg, hr, hu, id, it, jp_kana, ko_KR, nl, pl, pt, pt_br, ro, ru, sk, sv, tr, uk, vi, zh_CN, zh_TW
   options:
   - value: en
   - value: English
@@ -62,10 +62,14 @@ settings:
   - value: French
   - value: gl
   - value: Galician
+  - value: hg
+  - value: Hinglish (Hindi-Latin)
   - value: hr
   - value: Croatian
   - value: hu
   - value: Hungarian
+  - value: id
+  - value: Indonesian
   - value: it
   - value: Italian
   - value: jp_kana
@@ -216,6 +220,7 @@ settings:
 - name: REVERSE_MENU_DIRECTION
   file: Configuration.h
   type: switch
+  disabled: true
   brief: Change the encoder direction required to move the menu highlight up/down.
   long: This option reverses the encoder direction for navigating LCD menus. If CLOCKWISE normally moves DOWN this makes it go UP. If CLOCKWISE normally moves UP this makes it go DOWN.
   comment: |-
@@ -313,27 +318,6 @@ settings:
   default: '{ 698, 300, 0, 50, 523, 50, 0, 25, 494, 50, 0, 25, 523, 100, 0, 50, 554, 300, 0, 100, 523, 300 }'
   disabled: true
   comment: A sequence of tones to play at startup, in pairs of tone (Hz), duration (ms). Silence in-between tones.
-- name: FREEZE_FEATURE
-  file: Configuration_adv.h
-  type: switch
-  disabled: true
-  comment: |-
-    Instant freeze / unfreeze functionality
-
-    Potentially useful for rapid stop that allows being resumed. Halts stepper movement. Note this does NOT pause spindles, lasers, fans, heaters or any other auxiliary device.
-- name: FREEZE_PIN
-  file: Configuration_adv.h
-  type: int
-  default: 41
-  disabled: true
-  requires: FREEZE_FEATURE
-  comment: Override the default (KILL) pin here
-- name: FREEZE_STATE
-  file: Configuration_adv.h
-  type: state
-  default: LOW
-  requires: FREEZE_FEATURE
-  comment: State of pin indicating freeze
 ---
 
 Options in the `interface` section of the Marlin configuration files.

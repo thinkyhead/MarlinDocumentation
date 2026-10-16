@@ -102,6 +102,27 @@ settings:
   - id: '5'
     name: CONFIG_MENU_ITEM_5_CONFIRM
     disabled: true
+- name: CONFIG_MENU_ITEM_*_IMMEDIATE
+  file: Configuration_adv.h
+  type: switch
+  requires: CUSTOM_MENU_CONFIG
+  comment: Skip the queue and execute immediately. Rarely needed.
+  members:
+  - id: '1'
+    name: CONFIG_MENU_ITEM_1_IMMEDIATE
+    disabled: true
+  - id: '2'
+    name: CONFIG_MENU_ITEM_2_IMMEDIATE
+    disabled: true
+  - id: '3'
+    name: CONFIG_MENU_ITEM_3_IMMEDIATE
+    disabled: true
+  - id: '4'
+    name: CONFIG_MENU_ITEM_4_IMMEDIATE
+    disabled: true
+  - id: '5'
+    name: CONFIG_MENU_ITEM_5_IMMEDIATE
+    disabled: true
 ---
 
 Options in the `custom config menu` section of the Marlin configuration files.

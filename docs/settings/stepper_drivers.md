@@ -30,7 +30,7 @@ settings:
 
     Use TMC2208/TMC2208_STANDALONE for TMC2225 drivers and TMC2209/TMC2209_STANDALONE for TMC2226 drivers.
 
-    Options: A4988, A5984, DRV8825, LV8729, TB6560, TB6600, TMC2100, TMC2130, TMC2130_STANDALONE, TMC2160, TMC2160_STANDALONE, TMC2208, TMC2208_STANDALONE, TMC2209, TMC2209_STANDALONE, TMC2660, TMC2660_STANDALONE, TMC5130, TMC5130_STANDALONE, TMC5160, TMC5160_STANDALONE
+    Options: A4988, A5984, DRV8825, LV8729, TB6560, TB6600, TMC2100, TMC2130, TMC2130_STANDALONE, TMC2160, TMC2160_STANDALONE, TMC2208, TMC2208_STANDALONE, TMC2209, TMC2209_STANDALONE, TMC2240, TMC2660, TMC2660_STANDALONE, TMC5130, TMC5130_STANDALONE, TMC5160, TMC5160_STANDALONE
   members:
   - id: X
     name: X_DRIVER_TYPE
@@ -132,6 +132,7 @@ settings:
   - value: TMC2208_STANDALONE
   - value: TMC2209
   - value: TMC2209_STANDALONE
+  - value: TMC2240
   - value: TMC2660
   - value: TMC2660_STANDALONE
   - value: TMC5130
@@ -335,12 +336,69 @@ settings:
   - id: W
     name: DISABLE_W
     disabled: true
-- name: DISABLE_REDUCED_ACCURACY_WARNING
+- name: INVERT_*_DIR
   file: Configuration.h
-  type: switch
-  disabled: true
-  long: Enable this option to suppress the warning given in cases when reduced accuracy is likely to occur.
-  comment: Turn off the display blinking that warns about possible accuracy reduction
+  type: bool
+  long: These settings reverse the motor direction for each axis. Be careful when first setting these. Axes moving the wrong direction can cause damage. Get these right without belts attached first, if possible. Before testing, move the carriage and bed to the middle. Test each axis for proper movement using the host or LCD "Move Axis" menu. If an axis is inverted, either flip the plug around or change its invert setting.
+  comment: Invert the stepper direction. Change (or reverse the motor connector) if an axis goes the wrong way.
+  members:
+  - id: X
+    name: INVERT_X_DIR
+    default: false
+  - id: Y
+    name: INVERT_Y_DIR
+    default: true
+  - id: Z
+    name: INVERT_Z_DIR
+    default: false
+  - id: I
+    name: INVERT_I_DIR
+    default: false
+    disabled: true
+  - id: J
+    name: INVERT_J_DIR
+    default: false
+    disabled: true
+  - id: K
+    name: INVERT_K_DIR
+    default: false
+    disabled: true
+  - id: U
+    name: INVERT_U_DIR
+    default: false
+    disabled: true
+  - id: V
+    name: INVERT_V_DIR
+    default: false
+    disabled: true
+  - id: W
+    name: INVERT_W_DIR
+    default: false
+    disabled: true
+  - id: E0
+    name: INVERT_E0_DIR
+    default: false
+  - id: E1
+    name: INVERT_E1_DIR
+    default: false
+  - id: E2
+    name: INVERT_E2_DIR
+    default: false
+  - id: E3
+    name: INVERT_E3_DIR
+    default: false
+  - id: E4
+    name: INVERT_E4_DIR
+    default: false
+  - id: E5
+    name: INVERT_E5_DIR
+    default: false
+  - id: E6
+    name: INVERT_E6_DIR
+    default: false
+  - id: E7
+    name: INVERT_E7_DIR
+    default: false
 lists:
   n_enable_on:
   - value: LOW

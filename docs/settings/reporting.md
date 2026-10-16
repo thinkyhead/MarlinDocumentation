@@ -7,6 +7,7 @@ settings:
 - name: M114_DETAIL
   file: Configuration_adv.h
   type: switch
+  disabled: true
   comment: Extra options for the M114 "Current Position" report
 - name: M114_REALTIME
   file: Configuration_adv.h
@@ -58,7 +59,7 @@ settings:
 - name: CAPABILITIES_REPORT
   file: Configuration_adv.h
   type: switch
-  comment: '- `M115` Report capabilites. Disable to save ~1150 bytes of flash. Some hosts (and serial TFT displays) rely on this feature.'
+  comment: '- `M115` Report capabilities. Disable to save ~1150 bytes of flash. Some hosts (and serial TFT displays) rely on this feature.'
 - name: EXTENDED_CAPABILITIES_REPORT
   file: Configuration_adv.h
   type: switch

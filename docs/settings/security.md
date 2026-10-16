@@ -7,6 +7,7 @@ settings:
 - name: PASSWORD_FEATURE
   file: Configuration.h
   type: switch
+  disabled: true
   comment: |-
     Password
 

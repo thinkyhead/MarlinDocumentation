@@ -272,45 +272,13 @@ settings:
     This option eliminates vibration during printing by fitting a Bézier curve to move acceleration, producing much smoother direction changes.
 
     - <https://github.com/synthetos/TinyG/wiki/Jerk-Controlled-Motion-Explained>
-- name: INVERT_*_DIR
+- name: S_CURVE_FACTOR
   file: Configuration.h
-  type: bool
-  long: These settings reverse the motor direction for each axis. Be careful when first setting these. Axes moving the wrong direction can cause damage. Get these right without belts attached first, if possible. Before testing, move the carriage and bed to the middle. Test each axis for proper movement using the host or LCD "Move Axis" menu. If an axis is inverted, either flip the plug around or change its invert setting.
-  comment: Invert the stepper direction. Change (or reverse the motor connector) if an axis goes the wrong way.
-  members:
-  - id: X
-    name: INVERT_X_DIR
-    default: false
-  - id: Y
-    name: INVERT_Y_DIR
-    default: true
-  - id: Z
-    name: INVERT_Z_DIR
-    default: false
-  - id: I
-    name: INVERT_I_DIR
-    default: false
-    disabled: true
-  - id: J
-    name: INVERT_J_DIR
-    default: false
-    disabled: true
-  - id: K
-    name: INVERT_K_DIR
-    default: false
-    disabled: true
-  - id: U
-    name: INVERT_U_DIR
-    default: false
-    disabled: true
-  - id: V
-    name: INVERT_V_DIR
-    default: false
-    disabled: true
-  - id: W
-    name: INVERT_W_DIR
-    default: false
-    disabled: true
+  type: float
+  default: 0.25
+  disabled: true
+  requires: S_CURVE_ACCELERATION
+  comment: Define to use 4th instead of 6th order motion curve
 - name: AXIS_RELATIVE_MODES
   file: Configuration_adv.h
   type: array
@@ -569,6 +537,7 @@ settings:
   file: Configuration_adv.h
   type: float
   default: 1.0
+  units: mm
   requires: CALIBRATION_GCODE
   comment: The following parameters refer to the conical section of the nozzle tip.
 - name: CALIBRATION_NOZZLE_OUTER_DIAMETER
@@ -588,6 +557,7 @@ settings:
   file: Configuration_adv.h
   type: float[]
   default: '{ 264.0, -22.0,  -2.0 }'
+  units: mm
   requires: CALIBRATION_GCODE
   comment: The true location and dimension the cube/bolt/washer on the bed.
 - name: CALIBRATION_OBJECT_DIMENSIONS
@@ -725,6 +695,69 @@ settings:
   default: '{ 16, 16, 16, 16, 16, 16 }'
   long: If you have a board with pins named `X_MS1`, `X_MS2`, etc., then you can change the micro-stepping using G-code or the LCD menu.
   comment: Microstep settings (Requires a board with pins named X_MS1, X_MS2, etc.)
+- name: ARC_SUPPORT
+  file: Configuration_adv.h
+  type: switch
+  long: '[`G2/G3`](/docs/gcode/G002-G003.html) Arc Support'
+  comment: '- `G2/G3` Arc Support'
+- name: '*_ARC_SEGMENT_MM'
+  file: Configuration_adv.h
+  type: float
+  units: mm
+  requires: ARC_SUPPORT
+  comment: (mm) Minimum length of each arc segment
+  members:
+  - id: MIN
+    name: MIN_ARC_SEGMENT_MM
+    default: 0.1
+  - id: MAX
+    name: MAX_ARC_SEGMENT_MM
+    default: 1.0
+- name: MIN_CIRCLE_SEGMENTS
+  file: Configuration_adv.h
+  type: int
+  default: 72
+  requires: ARC_SUPPORT
+  comment: Minimum number of segments in a complete circle
+- name: ARC_SEGMENTS_PER_SEC
+  file: Configuration_adv.h
+  type: int
+  default: 50
+  disabled: true
+  requires: ARC_SUPPORT
+  comment: Use the feedrate to choose the segment length
+- name: N_ARC_CORRECTION
+  file: Configuration_adv.h
+  type: int
+  default: 25
+  requires: ARC_SUPPORT
+  comment: Number of interpolated segments between corrections
+- name: ARC_P_CIRCLES
+  file: Configuration_adv.h
+  type: switch
+  disabled: true
+  requires: ARC_SUPPORT
+  comment: Enable the 'P' parameter to specify complete circles
+- name: BEZIER_CURVE_SUPPORT
+  file: Configuration_adv.h
+  type: switch
+  disabled: true
+  long: Support for [`G5`](/docs/gcode/G005.html) with XYZE destination and IJPQ offsets. Requires \~2666 bytes.
+  comment: '- `G5` Bézier Curve Support with XYZE destination and IJPQ offsets'
+- name: CNC_WORKSPACE_PLANES
+  file: Configuration_adv.h
+  type: switch
+  disabled: true
+  requires: ANY(ARC_SUPPORT, BEZIER_CURVE_SUPPORT)
+  comment: Allow G2/G3/G5 to operate in XY, ZX, or YZ planes
+- name: DIRECT_STEPPING
+  file: Configuration_adv.h
+  type: switch
+  disabled: true
+  comment: |-
+    Direct Stepping
+
+    Comparable to the method used by Klipper, G6 direct stepping significantly reduces motion calculations, increases top printing speeds, and results in less step aliasing by calculating all motions in advance. Preparing your G-code: https://github.com/colinrgodsey/step-daemon
 - name: MIN_STEPS_PER_SEGMENT
   file: Configuration_adv.h
   type: int
@@ -781,7 +814,7 @@ settings:
   comment: |-
     Minimum stepper driver pulse width (in ns)
 
-    If undefined, these defaults (from Conditionals_adv.h) apply:
+    If undefined, these defaults (from Conditionals-4-adv.h) apply:
 
     | Value | Description |
     |------:|-------------|
@@ -802,7 +835,7 @@ settings:
   comment: |-
     Maximum stepping rate (in Hz) the stepper driver allows
 
-    If undefined, these defaults (from Conditionals_adv.h) apply:
+    If undefined, these defaults (from Conditionals-4-adv.h) apply:
 
     | Value | Description |
     |------:|-------------|

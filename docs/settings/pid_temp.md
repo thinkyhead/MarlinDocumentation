@@ -19,7 +19,7 @@ settings:
 - name: PID_FUNCTIONAL_RANGE
   file: Configuration.h
   type: int
-  default: 10
+  default: 20
   requires: ANY(PIDTEMP, PIDTEMPBED, PIDTEMPCHAMBER)
   comment: If the temperature difference between the target temperature and the actual temperature is more than `PID_FUNCTIONAL_RANGE` then the PID will be shut off and the heater will be set to min/max.
 - name: PID_EDIT_MENU

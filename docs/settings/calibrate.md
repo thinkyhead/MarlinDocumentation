@@ -132,7 +132,7 @@ settings:
   - id: '34'
     name: RESTORE_LEVELING_AFTER_G34
     requires: Z_STEPPER_AUTO_ALIGN
-    comment: Restore leveling after G34 is done? After G34, re-home Z (G28 Z) or just calculate it from the last probe heights? Re-homing might be more precise in reproducing the actual 'G28 Z' homing height, especially on an uneven bed.
+    comment: Restore leveling after G34 is done?
   - id: '35'
     name: RESTORE_LEVELING_AFTER_G35
     requires: ASSISTED_TRAMMING
@@ -178,6 +178,14 @@ settings:
   type: int
   default: 50
   requires: PREHEAT_BEFORE_LEVELING
+- name: LEVELING_HEAT_SOAK_TIME
+  file: Configuration.h
+  type: int
+  default: 60
+  units: seconds
+  disabled: true
+  requires: PREHEAT_BEFORE_LEVELING
+  comment: (s) Time to wait for heat soak after heaters reach temperature
 - name: DEBUG_LEVELING_FEATURE
   file: Configuration.h
   type: switch
@@ -214,12 +222,6 @@ settings:
   units: mm
   requires: ANY(MESH_BED_LEVELING, AUTO_BED_LEVELING_BILINEAR, AUTO_BED_LEVELING_UBL) && ENABLE_LEVELING_FADE_HEIGHT
   comment: (mm) Default fade height.
-- name: GLOBAL_MESH_Z_OFFSET
-  file: Configuration.h
-  type: switch
-  disabled: true
-  requires: ANY(MESH_BED_LEVELING, AUTO_BED_LEVELING_BILINEAR, AUTO_BED_LEVELING_UBL)
-  comment: Add Z offset (M424 Z) that applies to all moves at the planner level. This Z offset will be automatically set to the middle value with G29.
 - name: SEGMENT_LEVELED_MOVES
   file: Configuration.h
   type: switch
@@ -287,6 +289,12 @@ settings:
   default: 1.0
   requires: ANY(MESH_BED_LEVELING, AUTO_BED_LEVELING_BILINEAR, AUTO_BED_LEVELING_UBL) && G26_MESH_VALIDATION
   comment: '- `G26` Q (retraction) used by default between mesh test elements.'
+- name: MAX_SAVED_MESHES
+  file: Configuration.h
+  type: int
+  default: 100
+  requires: ANY(MESH_BED_LEVELING, AUTO_BED_LEVELING_BILINEAR, AUTO_BED_LEVELING_UBL)
+  comment: Maximum number of meshes to store to EEPROM. Use 0 to disable saving.
 - name: GRID_MAX_POINTS_*
   file: Configuration.h
   type: int
@@ -310,6 +318,12 @@ settings:
   requires: ANY(AUTO_BED_LEVELING_LINEAR, AUTO_BED_LEVELING_BILINEAR)
   long: Enable this option if probing should proceed in the Y dimension first instead of X first.
   comment: Probe along the Y axis, advancing X after each column
+- name: PROBE_Z0_BEFORE_G29
+  file: Configuration.h
+  type: switch
+  disabled: true
+  requires: ANY(AUTO_BED_LEVELING_LINEAR, AUTO_BED_LEVELING_BILINEAR) && AUTO_BED_LEVELING_BILINEAR && !USE_PROBE_FOR_Z_HOMING && ALL(FIX_MOUNTED_PROBE, Z_SAFE_HOMING)
+  comment: If your Z Home (M206) is well-calibrated enable this to establish Probe Z0 before every G29
 - name: EXTRAPOLATE_BEYOND_GRID
   file: Configuration.h
   type: switch
@@ -341,10 +355,11 @@ settings:
   file: Configuration.h
   type: int
   default: 1
+  units: mm
   requires: AUTO_BED_LEVELING_UBL
   block_clause: '!ANY(AUTO_BED_LEVELING_LINEAR, AUTO_BED_LEVELING_BILINEAR)'
   long: These options specify the number of points that will always be probed in each dimension during [`G29`](/docs/gcode/G029.html). The mesh inset is used to automatically calculate the probe boundaries. These can be set explicitly in `Configuration_adv.h`. `MESH_G28_REST_ORIGIN` moves the nozzle to rest at `Z_MIN_POS` when mesh probing is done. If Z is offset (e.g., due to `home_offset` or some other cause) this is intended to move Z to a good starting point, usually Z=0.
-  comment: Set Mesh bounds as an inset region of the bed
+  comment: (mm) Set Mesh bounds as an inset region of the bed
 - name: UBL_HILBERT_CURVE
   file: Configuration.h
   type: switch
@@ -382,10 +397,11 @@ settings:
   file: Configuration.h
   type: float
   default: 2.5
+  units: mm
   disabled: true
   requires: AUTO_BED_LEVELING_UBL
   block_clause: '!ANY(AUTO_BED_LEVELING_LINEAR, AUTO_BED_LEVELING_BILINEAR)'
-  comment: When the nozzle is off the mesh, this value is used as the Z-Height correction value.
+  comment: (mm) Use for Z-Height correction when the nozzle is off the mesh
 - name: UBL_MESH_WIZARD
   file: Configuration.h
   type: switch
@@ -404,19 +420,22 @@ settings:
   file: Configuration.h
   type: int
   default: 23
+  units: mm
   requires: AUTO_BED_LEVELING_UBL && AVOID_OBSTACLES
   block_clause: '!ANY(AUTO_BED_LEVELING_LINEAR, AUTO_BED_LEVELING_BILINEAR)'
-  comment: Bed clip width, should be padded a few mm over its physical size
+  comment: (mm) Bed clip width, should be padded a few mm over its physical size
 - name: CLIP_H
   file: Configuration.h
   type: int
   default: 14
+  units: mm
   requires: AUTO_BED_LEVELING_UBL && AVOID_OBSTACLES
   block_clause: '!ANY(AUTO_BED_LEVELING_LINEAR, AUTO_BED_LEVELING_BILINEAR)'
-  comment: Bed clip height, should be padded a few mm over its physical size
+  comment: (mm) Bed clip height, should be padded a few mm over its physical size
 - name: OBSTACLE*
   file: Configuration.h
   type: array
+  units: mm
   requires: AUTO_BED_LEVELING_UBL && AVOID_OBSTACLES
   block_clause: '!ANY(AUTO_BED_LEVELING_LINEAR, AUTO_BED_LEVELING_BILINEAR)'
   comment: Obstacle Rectangles defined as { X1, Y1, X2, Y2 }
@@ -436,6 +455,7 @@ settings:
 - name: G29J_MESH_TILT_MARGIN
   file: Configuration.h
   default: ((CLIP_H) + 1)
+  units: mm
   requires: AUTO_BED_LEVELING_UBL && AVOID_OBSTACLES
   block_clause: '!ANY(AUTO_BED_LEVELING_LINEAR, AUTO_BED_LEVELING_BILINEAR)'
   comment: The probed grid must be inset for G29 J. This is okay, since it is only used to compute a linear transformation for the mesh itself.
@@ -713,7 +733,21 @@ settings:
   file: Configuration_adv.h
   type: switch
   requires: Z_STEPPER_AUTO_ALIGN
-  shared_comment: On a 300mm bed a 5% grade would give a misalignment of ~1.5cm
+  comment: After G34, re-home Z (G28 Z) or just calculate it from the last probe heights? Re-homing might be more precise in reproducing the actual 'G28 Z' homing height, especially on an uneven bed.
+- name: EVENT_GCODE_BEFORE_G34
+  file: Configuration_adv.h
+  type: string
+  default: '"M300 P440 S200"'
+  disabled: true
+  requires: Z_STEPPER_AUTO_ALIGN
+  comment: Commands to execute at the start of G34 probing, after switching to the `PROBING_TOOL`.
+- name: EVENT_GCODE_AFTER_G34
+  file: Configuration_adv.h
+  type: string
+  default: '"G1 Z10 F12000\nG1 X15 Y330\nG1 Z0.5\nG1 Z10"'
+  disabled: true
+  requires: Z_STEPPER_AUTO_ALIGN
+  comment: Commands to execute at the end of G34 probing. Useful to retract or move the Z probe out of the way.
 - name: ASSISTED_TRAMMING
   file: Configuration_adv.h
   type: switch
@@ -792,6 +826,28 @@ settings:
   - value: M5 Clockwise
   - value: M5_CCW
   - value: M5 Counter-Clockwise
+- name: G38_PROBE_TARGET
+  file: Configuration_adv.h
+  type: switch
+  disabled: true
+  long: Add commands [`G38.2`](/docs/gcode/G038.html) and [`G38.3`](/docs/gcode/G038.html) to probe towards target. Enable `MULTIPLE_PROBING` if you want [`G38`](/docs/gcode/G038.html) to double touch.
+  comment: |-
+    - `G38` Probe Target
+
+    This option adds G38.2 and G38.3 (probe towards target) and optionally G38.4 and G38.5 (probe away from target). Set `MULTIPLE_PROBING` for G38 to probe more than once.
+- name: G38_PROBE_AWAY
+  file: Configuration_adv.h
+  type: switch
+  disabled: true
+  requires: G38_PROBE_TARGET
+  comment: Include G38.4 and G38.5 to probe away from target
+- name: G38_MINIMUM_MOVE
+  file: Configuration_adv.h
+  type: float
+  default: 0.0275
+  units: mm
+  requires: G38_PROBE_TARGET
+  comment: (mm) Minimum distance that will produce a move.
 - name: MECHANICAL_GANTRY_CALIBRATION
   file: Configuration_adv.h
   type: switch

@@ -8,7 +8,7 @@ settings:
   file: Configuration.h
   type: switch
   disabled: true
-  comment: Enable for DELTA kinematics and configure below
+  comment: DELTA kinematics
 - name: DEFAULT_SEGMENTS_PER_SECOND
   file: Configuration.h
   type: int
@@ -58,13 +58,6 @@ settings:
   units: mm
   requires: DELTA
   comment: Print surface diameter/2 minus unreachable space (avoid collisions with vertical towers).
-- name: DELTA_MAX_RADIUS
-  file: Configuration.h
-  type: float
-  default: 140.0
-  units: mm
-  requires: DELTA
-  comment: Maximum reachable area
 - name: DELTA_DIAGONAL_ROD
   file: Configuration.h
   type: float

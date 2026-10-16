@@ -78,7 +78,6 @@ settings:
 - name: HOST_STATUS_NOTIFICATIONS
   file: Configuration_adv.h
   type: switch
-  disabled: true
   requires: HOST_ACTION_COMMANDS && HOST_PROMPT_SUPPORT
   comment: Send some status messages to the host as notifications
 - name: HOST_START_MENU_ITEM

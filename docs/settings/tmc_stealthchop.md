@@ -8,12 +8,12 @@ settings:
   file: Configuration_adv.h
   type: switch
   requires: HAS_TRINAMIC_CONFIG && HAS_STEALTHCHOP
-  comment: TMC2130, TMC2160, TMC2208, TMC2209, TMC5130 and TMC5160 only Use Trinamic's ultra quiet stepping mode. When disabled, Marlin will use spreadCycle stepping mode.
+  comment: TMC2130, TMC2160, TMC2208, TMC2209, TMC2240, TMC5130 and TMC5160 only Use Trinamic's ultra quiet stepping mode. When disabled, Marlin will use spreadCycle stepping mode.
 - name: STEALTHCHOP_*
   file: Configuration_adv.h
   type: switch
   requires: HAS_TRINAMIC_CONFIG && HAS_STEALTHCHOP
-  comment: TMC2130, TMC2160, TMC2208, TMC2209, TMC5130 and TMC5160 only Use Trinamic's ultra quiet stepping mode. When disabled, Marlin will use spreadCycle stepping mode.
+  comment: TMC2130, TMC2160, TMC2208, TMC2209, TMC2240, TMC5130 and TMC5160 only Use Trinamic's ultra quiet stepping mode. When disabled, Marlin will use spreadCycle stepping mode.
   members:
   - id: Z
     name: STEALTHCHOP_Z

@@ -8,7 +8,7 @@ settings:
   file: Configuration.h
   type: switch
   disabled: true
-  comment: Enable for Polargraph Kinematics
+  comment: Polargraph Kinematics
 - name: POLARGRAPH_MAX_BELT_LEN
   file: Configuration.h
   type: float

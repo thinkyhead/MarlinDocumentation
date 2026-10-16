@@ -54,8 +54,14 @@ settings:
 - name: PINS_DEBUGGING
   file: Configuration_adv.h
   type: switch
+  disabled: true
   long: Display pin status, toggle pins, watch pins, watch endstops & toggle LED, test servo probe with [`M43`](/docs/gcode/M043.html).
   comment: '- `M43` display pin status, toggle pins, watch pins, watch endstops & toggle LED, test servo probe'
+- name: I2C_SCANNER
+  file: Configuration_adv.h
+  type: switch
+  disabled: true
+  comment: '- `M265` I2C Scanner'
 - name: MARLIN_TEST_BUILD
   file: Configuration_adv.h
   type: switch

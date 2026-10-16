@@ -30,13 +30,27 @@ settings:
   disabled: true
   requires: HAS_MULTI_EXTRUDER && TOOLCHANGE_NO_RETURN
   comment: Extra G-code to run after tool-change
-- name: EVENT_GCODE_TOOLCHANGE_T0
+- name: EVENT_GCODE_PARK_T0
   file: Configuration_adv.h
   type: string
   default: '"G28 A\nG1 A0"'
   disabled: true
   requires: HAS_MULTI_EXTRUDER
   comment: Extra G-code to run while executing tool-change commands. Can be used to use an additional stepper motor (e.g., I axis in Configuration.h) to drive the tool-changer.
+- name: EVENT_GCODE_PARK_T1
+  file: Configuration_adv.h
+  type: string
+  default: '"G1 A10"'
+  disabled: true
+  requires: HAS_MULTI_EXTRUDER
+  comment: Extra G-code to run before tool-change command (if T1 was active)
+- name: EVENT_GCODE_TOOLCHANGE_T0
+  file: Configuration_adv.h
+  type: string
+  default: '"G28 A\nG1 A0"'
+  disabled: true
+  requires: HAS_MULTI_EXTRUDER
+  comment: Extra G-code to run while executing tool-change command T0
 - name: EVENT_GCODE_TOOLCHANGE_T1
   file: Configuration_adv.h
   type: string

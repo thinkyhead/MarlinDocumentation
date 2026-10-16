@@ -14,7 +14,12 @@ settings:
   file: Configuration_adv.h
   type: switch
   disabled: true
-  comment: Native ESP32 board with WiFi or add-on ESP32 WiFi-101 module
+  comment: |-
+    Native ESP32 board with WiFi or add-on ESP32 WiFi-101 module
+
+    Enable one or the other. The two are separate implementations sharing no code, and each has its own extras below.
+
+    WIFISUPPORT covers both an add-on WiFi module wired to the controller and Marlin's own WiFi on an ESP32 build. `ESP3D_WIFISUPPORT` is ESP32 only.
 - name: ESP3D_WIFISUPPORT
   file: Configuration_adv.h
   type: switch
@@ -24,23 +29,21 @@ settings:
   file: Configuration_adv.h
   type: switch
   disabled: true
-  requires: ANY(WIFISUPPORT, ESP3D_WIFISUPPORT)
-  comment: |-
-    Extras for an ESP32-based motherboard with WIFISUPPORT
-
-    These options don't apply to add-on WiFi modules based on ESP32 WiFi101.
+  requires: WIFISUPPORT
+  comment: Marlin's own webserver and OTA, implemented in HAL/ESP32/wifi/ and built only for an ESP32 build of Marlin. With an add-on WiFi module the module runs its own firmware, so neither option has any effect there.
 - name: OTASUPPORT
   file: Configuration_adv.h
   type: switch
   disabled: true
-  requires: ANY(WIFISUPPORT, ESP3D_WIFISUPPORT)
+  requires: WIFISUPPORT
   comment: Support over-the-air firmware updates
 - name: WIFI_CUSTOM_COMMAND
   file: Configuration_adv.h
   type: switch
   disabled: true
-  requires: ANY(WIFISUPPORT, ESP3D_WIFISUPPORT)
-  comment: Accept feature config commands (e.g., WiFi ESP3D) from the host
+  requires: ESP3D_WIFISUPPORT
+  block_clause: '!WIFISUPPORT'
+  comment: ESP3D brings its own webserver and OTA, so WEBSUPPORT and OTASUPPORT don't apply here. The network is configured at runtime with '[ESP100]' / '[ESP101]' and stored on the ESP, so WIFI_SSID / WIFI_PWD don't apply either.
 ---
 
 Options in the `network` section of the Marlin configuration files.

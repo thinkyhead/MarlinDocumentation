@@ -83,15 +83,31 @@ settings:
     name: BUTTON3_DESC
     default: '"Preheat for " PREHEAT_2_LABEL'
     requires: CUSTOM_USER_BUTTONS && PIN_EXISTS(BUTTON3)
+- name: BUTTON1_IMMEDIATE
+  file: Configuration_adv.h
+  type: switch
+  disabled: true
+  requires: CUSTOM_USER_BUTTONS && PIN_EXISTS(BUTTON1)
+  comment: Skip the queue and execute immediately. Rarely needed.
 - name: BUTTON2_WHEN_PRINTING
   file: Configuration_adv.h
   type: bool
   default: false
   requires: CUSTOM_USER_BUTTONS && PIN_EXISTS(BUTTON2)
+- name: BUTTON2_IMMEDIATE
+  file: Configuration_adv.h
+  type: switch
+  disabled: true
+  requires: CUSTOM_USER_BUTTONS && PIN_EXISTS(BUTTON2)
 - name: BUTTON3_WHEN_PRINTING
   file: Configuration_adv.h
   type: bool
   default: false
+  requires: CUSTOM_USER_BUTTONS && PIN_EXISTS(BUTTON3)
+- name: BUTTON3_IMMEDIATE
+  file: Configuration_adv.h
+  type: switch
+  disabled: true
   requires: CUSTOM_USER_BUTTONS && PIN_EXISTS(BUTTON3)
 ---
 

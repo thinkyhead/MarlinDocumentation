@@ -7,7 +7,7 @@ settings:
 - name: MOTHERBOARD
   file: Configuration.h
   type: enum
-  default: BOARD_SIMULATED
+  default: BOARD_RAMPS_14_EFB
   since: 1.0.0
   requires: '!MOTHERBOARD'
   brief: Motherboard of the machine.
@@ -344,7 +344,6 @@ settings:
   - value: BOARD_RUMBA32_MKS
   - value: BOARD_RUMBA32_BTT
   - value: BOARD_BLACK_STM32F407VE
-  - value: BOARD_BLACK_STM32F407ZE
   - value: BOARD_BTT_SKR_MINI_E3_V3_0_1
   - value: BOARD_BTT_SKR_PRO_V1_1
   - value: BOARD_BTT_SKR_PRO_V1_2
@@ -401,6 +400,8 @@ settings:
   - value: BOARD_ZNP_ROBIN_NANO_V1_3
   - value: BOARD_MKS_NEPTUNE_X
   - value: BOARD_MKS_NEPTUNE_3
+  - value: BOARD_MKS_E3D_V2
+  - value: BOARD_PRUSA_BUDDY
   - value: BOARD_CREALITY_CR4NS
   - value: BOARD_REMRAM_V1
   - value: BOARD_NUCLEO_F767ZI
@@ -420,6 +421,8 @@ settings:
   - value: BOARD_FLY_SUPER8_PRO
   - value: BOARD_FYSETC_SPIDER_KING_V1_H723
   - value: BOARD_FYSETC_SPIDER_KING_V1_1_H723
+  - value: BOARD_BTT_SCYLLA_V1_0
+  - value: BOARD_FYSETC_SPIDER_V3_H723
   - value: BOARD_ESPRESSIF_ESP32
   - value: BOARD_MRR_ESPA
   - value: BOARD_MRR_ESPE
@@ -432,12 +435,17 @@ settings:
   - value: BOARD_ENWI_ESPNP
   - value: BOARD_GODI_CONTROLLER_V1_0
   - value: BOARD_MM_JOKER
+  - value: BOARD_MKS_DLC32_V2_1
+  - value: BOARD_BTT_RODENT_V1
   - value: BOARD_AGCM4_RAMPS_144
   - value: BOARD_BRICOLEMON_V1_0
   - value: BOARD_BRICOLEMON_LITE_V1_0
   - value: BOARD_MINITRONICS20
   - value: BOARD_AQUILA_V101
   - value: BOARD_CREALITY_ENDER2P_V24S4
+  - value: BOARD_TRIGORILLA_F1_V1
+  - value: BOARD_TRIGORILLA_V306
+  - value: BOARD_TRIGORILLA_V306_GO
   - value: BOARD_AQUILA_V101_GD32_MFL
   - value: BOARD_CREALITY_V422_GD32_MFL
   - value: BOARD_CREALITY_V427_GD32_MFL

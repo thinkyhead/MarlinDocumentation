@@ -134,8 +134,7 @@ or stub redirect pages for:
       nav_order on the Settings index (currently 76 children, alphabetical).
 - [ ] Nest dependent options under their parent option (e.g. `DEFAULT_*JERK` under `CLASSIC_JERK`).
 - [ ] Hand-fix descriptions the comment formatter can't handle (e.g. `MAGNETIC_PARKING_EXTRUDER`) via `long:`.
-- [ ] Regenerate from a clean `bugfix-2.1.x` checkout before publishing (the current schema came from a working
-      tree with ~1,100 lines of local Configuration changes).
+- [x] Regenerated all 81 sections from clean `upstream/bugfix-2.1.x` (52a9067b73) on 2026-10-16, using `gen_settings.py --prior <snapshot>` so curated text follows options that moved pages. 5 new pages (baby_stepping, firmware_retraction, freeze, temperature_presets, temperature_sensors). 28 options no longer exist in the firmware and were dropped (3 had curated text: SF_ARC_FIX, FTM_UNIFIED_BWS, FTM_STEPS_PER_UNIT_TIME).
 - [ ] Upstream the two `schema.py` changes (`block_clause`, `shared_comment`) to MarlinFirmware.
 
 ## 9. Site housekeeping found during the audit

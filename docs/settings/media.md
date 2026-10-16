@@ -7,6 +7,7 @@ settings:
 - name: SDSUPPORT
   file: Configuration.h
   type: switch
+  disabled: true
   long: |-
     ![SD Card](/assets/images/config/sdcard.jpg){: .float-right .framed }
 

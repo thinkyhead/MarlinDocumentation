@@ -37,13 +37,20 @@ settings:
   default: 0.95
   brief: Smoothing factor within any PID loop.
   comment: Smoothing factor within any PID loop
+- name: MIN_POWER
+  file: Configuration.h
+  type: int
+  default: 0
+  disabled: true
+  requires: PIDTEMP
+  comment: Min power to improve PID stability (0..`PID_MAX`). Get the power from the temperature report ('M105' =&gt; @:nnn) and try `P*2`-20 to `P*2`-10.
 - name: PID_DEBUG
   file: Configuration.h
   type: switch
   disabled: true
   requires: PIDTEMP
   brief: Print PID debug data to the serial port.
-  comment: Print PID debug data to the serial port. Use 'M303 D' to toggle activation.
+  comment: Print PID debug data to the serial port. Use 'M303 D' to enable/disable.
 - name: PID_PARAMS_PER_HOTEND
   file: Configuration.h
   type: switch

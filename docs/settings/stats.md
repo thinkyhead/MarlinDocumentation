@@ -7,6 +7,7 @@ settings:
 - name: PRINTCOUNTER
   file: Configuration.h
   type: switch
+  disabled: true
   long: |-
     When enabled Marlin will keep track of some print statistics such as:
 

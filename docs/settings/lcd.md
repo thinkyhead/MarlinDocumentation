@@ -105,7 +105,12 @@ settings:
   type: switch
   disabled: true
   brief: ANET and Tronxy 20x4 Controller, with keypad
-  comment: ANET and Tronxy 20x4 Controller
+  comment: |-
+    ANET and Tronxy 20x4 Controller
+
+    LCD2004 display with 5 analog buttons.
+
+    NOTE: Requires ADC_KEYPAD_PIN to be assigned to an analog pin. This LCD is known to be susceptible to electrical interference which scrambles the display. Press any button to clear it up.
 - name: ULTRA_LCD
   file: Configuration.h
   type: switch
@@ -196,6 +201,35 @@ settings:
     - <https://github.com/mikeshub/SailfishLCD>
 
     Uses the code directly from Sailfish
+- name: MIGHTYBOARD_LCD
+  file: Configuration.h
+  type: switch
+  disabled: true
+  comment: MightyBoard LCD and Interface
+- name: MIGHTYBOARD_DEBUG
+  file: Configuration.h
+  type: switch
+  disabled: true
+  requires: MIGHTYBOARD_LCD
+  comment: Lightweight debug output for buttons and encoder
+- name: MIGHTYBOARD_DISABLE_ENC_PULLUP
+  file: Configuration.h
+  type: switch
+  disabled: true
+  requires: MIGHTYBOARD_LCD
+  comment: Enable if the encoder button is unreliable
+- name: MIGHTYBOARD_BUTTON_PULLUPS
+  file: Configuration.h
+  type: switch
+  disabled: true
+  requires: MIGHTYBOARD_LCD
+  comment: Enable if other buttons are unreliable
+- name: MIGHTYBOARD_BACK_STATUS_BUTTONS
+  file: Configuration.h
+  type: switch
+  disabled: true
+  requires: MIGHTYBOARD_LCD
+  comment: Use LEFT/RIGHT buttons for Back / Home. Otherwise they act like encoder down / up.
 - name: TFTGLCD_PANEL_SPI
   file: Configuration.h
   type: switch
@@ -379,7 +413,7 @@ settings:
   comment: |-
     FYSETC variant of the MINI12864 graphic controller with SD support
 
-    - <https://wiki.fysetc.com/Mini12864_Panel/>
+    - <https://wiki.fysetc.com/docs/Mini12864Panel>
 - name: FYSETC_MINI_12864_1_2
   file: Configuration.h
   type: switch
@@ -533,7 +567,7 @@ settings:
   type: switch
   disabled: true
   brief: Zonestar OLED 128×64 Full Graphics Controller. 1.3" OLED with SH1106 controller.
-  comment: 1.3" OLED with SH1106 controller (default)
+  comment: 1.3" OLED with SH1106 controller
 - name: ZONESTAR_12864OLED_SSD1306
   file: Configuration.h
   type: switch
@@ -611,9 +645,14 @@ settings:
     - Download https://github.com/CrealityOfficial/Ender-3S1/archive/3S1_Plus_Screen.zip
     - Copy the downloaded DWIN_SET folder to the SD card.
 
-    CREALITY_TOUCH
+    CR10SPROV2 (T5UID1)
 
-    - CR-6 OEM touch screen. A DWIN display with touch.
+    - Stock Creality CR-10S Pro V2 screen. Uses the screen's factory DWIN_SET.
+
+    SERMOON_D1 (T5L)
+
+    - Download https://www.crealitycloud.com/downloads/firmware/sermoon-series/sermoon-d1
+    - Copy the DWIN_SET folder from the firmware package to the SD card.
 
     Flash display with DGUS Displays for Marlin:
 
@@ -650,7 +689,7 @@ settings:
   type: switch
   disabled: true
   brief: Malyan M200/M300 stock Color LCD with Big Clicky Buttons. **NOT A TOUCH SCREEN!**
-  comment: Touch-screen LCD for Malyan M200/M300 printers
+  comment: LCD for Malyan M200/M300 printers
 - name: TOUCH_UI_FTDI_EVE
   file: Configuration.h
   type: switch
@@ -685,6 +724,11 @@ settings:
   disabled: true
   brief: Touch-screen LCD for Anycubic Vyper.
   comment: Touch-screen LCD for Anycubic Vyper
+- name: ANYCUBIC_LCD_KOBRA
+  file: Configuration.h
+  type: switch
+  disabled: true
+  comment: Touch-screen LCD for Anycubic Kobra
 - name: SOVOL_SV06_RTS
   file: Configuration.h
   type: switch
@@ -697,14 +741,14 @@ settings:
   disabled: true
   brief: 320x240 Nextion 2.8" serial TFT Resistive Touch Screen NX3224T028.
   comment: 320x240 Nextion 2.8" serial TFT Resistive Touch Screen NX3224T028
-- name: PANELDUE
+- name: ELEGOO_NEPTUNE_3_TFT
   file: Configuration.h
   type: switch
   disabled: true
   comment: |-
-    PanelDue touch controller by Escher3D
+    Elegoo Neptune 3 Pro / Plus / Max TJC Touch Screen
 
-    - <http://escher3d.com/pages/order/products/product2.php>
+    Requires a 6x6 (Pro), 7x7 (Plus), or 7x9 (Max) bilinear leveling grid.
 - name: EXTENSIBLE_UI
   file: Configuration.h
   type: switch
@@ -729,6 +773,11 @@ settings:
     Usually paired with MKS Robin Nano V2 & V3
 
     - <https://github.com/makerbase-mks/MKS-TFT-Hardware/tree/master/MKS%20TS35>
+- name: MKS_TS24_R_V2_1
+  file: Configuration.h
+  type: switch
+  disabled: true
+  comment: MKS TS24-R V2.1 (2.4" 320x240 ST7789V) as shipped with the MKS DLC32
 - name: MKS_ROBIN_TFT24
   file: Configuration.h
   type: switch
@@ -828,6 +877,11 @@ settings:
     480x320, 3.5", SPI Stock Display with Rotary Encoder from BIQU B1 SE Series
 
     - <https://github.com/bigtreetech/TFT35-SPI/tree/master/v1>
+- name: PRUSA_MINI_LCD
+  file: Configuration.h
+  type: switch
+  disabled: true
+  comment: 240x320, 2.8", SPI Stock Display with Rotary Encoder from Prusa MINI
 - name: TFT_GENERIC
   file: Configuration.h
   type: switch
@@ -849,6 +903,7 @@ settings:
 - name: TFT_INTERFACE_SPI
   file: Configuration.h
   type: switch
+  disabled: true
   requires: TFT_GENERIC
   brief: Use the SPI interface.
   shared_comment: 'Interface. Enable one of the following options:'
@@ -869,6 +924,7 @@ settings:
 - name: TFT_RES_480x320
   file: Configuration.h
   type: switch
+  disabled: true
   requires: TFT_GENERIC
   brief: Use TFT Resolution 480 x 320.
   shared_comment: 'TFT Resolution. Enable one of the following options:'
@@ -925,9 +981,24 @@ settings:
   requires: TFT_COLOR_UI
   brief: TFT Font for Color UI.
   comment: |-
-    TFT Font for Color_UI. Choose one of the following:
+    TFT Font for Color UI. Choose one of the following:
 
     NOTOSANS  - Default font with anti-aliasing. Supports Latin Extended and non-Latin characters. UNIFONT   - Lightweight font, no anti-aliasing. Supports Latin Extended and non-Latin characters. HELVETICA - Lightweight font, no anti-aliasing. Supports Basic Latin (0x0020-0x007F) and Latin-1 Supplement (0x0080-0x00FF) characters only.
+  options: tft_font
+- name: TFT_FONT_LARGE
+  file: Configuration.h
+  type: switch
+  disabled: true
+  requires: TFT_COLOR_UI
+  comment: Use larger fonts for better visibility. (`TFT_RES_1024x600` with NOTOSANS or UNIFONT)
+  options: tft_font
+- name: TFT_NO_TINY_FONT
+  file: Configuration.h
+  type: switch
+  disabled: true
+  requires: TFT_COLOR_UI
+  comment: Eschew the small numerical font used for meshes to recover Flash space.
+  options: tft_font
 - name: TFT_THEME
   file: Configuration.h
   type: enum
@@ -935,9 +1006,13 @@ settings:
   requires: TFT_COLOR_UI
   brief: TFT Theme for Color UI. Choose one of the following or add a new one to 'Marlin/src/lcd/tft/themes' directory.
   comment: |-
-    TFT Theme for Color_UI. Choose one of the following or add a new one to 'Marlin/src/lcd/tft/themes' directory
+    TFT Theme for Color UI. Choose one of the following or add a new one to 'Marlin/src/lcd/tft/themes' directory
 
     BLUE_MARLIN  - Default theme with 'midnight blue' background BLACK_MARLIN - Theme with 'black' background ANET_BLACK   - Theme used for Anet ET4/5
+  options:
+  - value: BLUE_MARLIN
+  - value: BLACK_MARLIN
+  - value: ANET_BLACK
 - name: TFT_SHARED_IO
   file: Configuration.h
   type: switch
@@ -1028,6 +1103,18 @@ settings:
   since: 2.0.9
   brief: The Ender-3 V2 display with Marlin UI in landscape (wide) orientation. Requires Marlin supplied DWIN_SET.
   comment: MarlinUI (landscape orientation)
+- name: USE_STRING_HEADINGS
+  file: Configuration.h
+  type: switch
+  disabled: true
+  requires: DWIN_CREALITY_LCD
+  comment: Use string headings for Creality UI instead of images
+- name: USE_STRING_TITLES
+  file: Configuration.h
+  type: switch
+  disabled: true
+  requires: DWIN_CREALITY_LCD
+  comment: Use string titles for Creality UI instead of images
 - name: TOUCH_SCREEN
   file: Configuration.h
   type: switch
@@ -1126,6 +1213,7 @@ settings:
   default: 10.0
   units: mm
   disabled: true
+  requires: REPRAPWORLD_KEYPAD
   comment: (mm) Distance to move per key-press
 - name: EASYTHREED_UI
   file: Configuration.h
@@ -1133,6 +1221,12 @@ settings:
   disabled: true
   brief: EasyThreeD ET-4000+ with button input and status LED.
   comment: EasyThreeD ET-4000+ with button input and status LED
+- name: DISABLE_REDUCED_ACCURACY_WARNING
+  file: Configuration_adv.h
+  type: switch
+  disabled: true
+  long: Enable this option to suppress the warning given in cases when reduced accuracy is likely to occur.
+  comment: Turn off the display blinking that warns about possible accuracy reduction
 - name: MANUAL_FEEDRATE
   file: Configuration_adv.h
   type: int[]
@@ -1196,6 +1290,11 @@ settings:
   type: int
   default: 440
   requires: BEEP_ON_FEEDRATE_CHANGE
+- name: PROBE_DEPLOY_STOW_MENU
+  file: Configuration_adv.h
+  type: switch
+  requires: HAS_BED_PROBE && HAS_MARLINUI_MENU
+  comment: Show Deploy / Stow Probe options in the Motion menu.
 - name: PROBE_OFFSET_WIZARD
   file: Configuration_adv.h
   type: switch
@@ -1223,42 +1322,40 @@ settings:
   disabled: true
   requires: HAS_BED_PROBE && ANY(HAS_MARLINUI_MENU, HAS_TFT_LVGL_UI) && PROBE_OFFSET_WIZARD
   comment: Set a convenient position to do the calibration (probing point and nozzle/bed-distance)
-- name: PROBE_DEPLOY_STOW_MENU
-  file: Configuration_adv.h
-  type: switch
-  requires: HAS_MARLINUI_MENU && HAS_BED_PROBE
-  comment: Show Deploy / Stow Probe options in the Motion menu.
 - name: X_AXIS_TWIST_COMPENSATION
   file: Configuration_adv.h
   type: switch
   disabled: true
-  requires: HAS_MARLINUI_MENU && HAS_BED_PROBE
-  comment: Add calibration in the Probe Offsets menu to compensate for X-axis twist.
-- name: XATC_START_Z
-  file: Configuration_adv.h
-  type: float
-  default: 0.0
-  requires: HAS_MARLINUI_MENU && HAS_BED_PROBE && X_AXIS_TWIST_COMPENSATION
-  comment: Enable to init the Probe Z-Offset when starting the Wizard. Use a height slightly above the estimated nozzle-to-probe Z offset. For example, with an offset of -5, consider a starting height of -4.
+  requires: HAS_BED_PROBE
+  comment: |-
+    - `M423` X-Axis Twist Compensation
+
+    If probing with an off-center probe produces an unreliable mesh, it may be a twisted X axis. Use this feature to measure and compensate.
 - name: XATC_MAX_POINTS
   file: Configuration_adv.h
   type: int
   default: 3
-  requires: HAS_MARLINUI_MENU && HAS_BED_PROBE && X_AXIS_TWIST_COMPENSATION
+  requires: HAS_BED_PROBE && X_AXIS_TWIST_COMPENSATION
   comment: Number of points to probe in the wizard
+- name: XATC_Z_OFFSETS
+  file: Configuration_adv.h
+  type: int[]
+  default: '{ 0, 0, 0 }'
+  requires: HAS_BED_PROBE && X_AXIS_TWIST_COMPENSATION
+  comment: Z offsets for X axis sample points
+- name: XATC_START_Z
+  file: Configuration_adv.h
+  type: float
+  default: 0.0
+  requires: HAS_BED_PROBE && X_AXIS_TWIST_COMPENSATION && HAS_MARLINUI_MENU
+  comment: Set non-zero to init the Probe Z-Offset when starting the Wizard. Use an offset slightly higher than the estimated nozzle-to-probe Z offset. For example, with an offset of -5, consider a starting offset of -4.
 - name: XATC_Y_POSITION
   file: Configuration_adv.h
   type: enum
   default: Y_CENTER
   units: mm
-  requires: HAS_MARLINUI_MENU && HAS_BED_PROBE && X_AXIS_TWIST_COMPENSATION
+  requires: HAS_BED_PROBE && X_AXIS_TWIST_COMPENSATION && HAS_MARLINUI_MENU
   comment: (mm) Y position to probe
-- name: XATC_Z_OFFSETS
-  file: Configuration_adv.h
-  type: int[]
-  default: '{ 0, 0, 0 }'
-  requires: HAS_MARLINUI_MENU && HAS_BED_PROBE && X_AXIS_TWIST_COMPENSATION
-  comment: Z offsets for X axis sample points
 - name: LCD_INFO_MENU
   file: Configuration_adv.h
   type: switch
@@ -1271,6 +1368,12 @@ settings:
   disabled: true
   requires: HAS_MARLINUI_MENU && LCD_INFO_MENU
   comment: Show bootscreen(s) instead of Printer Info pages
+- name: BUILD_INFO_MENU_ITEM
+  file: Configuration_adv.h
+  type: switch
+  disabled: true
+  requires: HAS_MARLINUI_MENU && LCD_INFO_MENU
+  comment: Add a menu item to display the build date and time
 - name: MANUAL_MOVE_DISTANCE_MM
   file: Configuration_adv.h
   default: 10, 1.0, 0.1
@@ -1340,13 +1443,14 @@ settings:
 - name: BOOT_MARLIN_LOGO_ANIMATED
   file: Configuration_adv.h
   type: switch
+  disabled: true
   requires: HAS_DISPLAY && SHOW_BOOTSCREEN && HAS_MARLINUI_U8GLIB
   comment: Animated Marlin logo. Costs ~3260 (or ~940) bytes of flash.
 - name: SHOW_CUSTOM_BOOTSCREEN
   file: Configuration_adv.h
   type: switch
   disabled: true
-  requires: HAS_DISPLAY && SHOW_BOOTSCREEN && ANY(HAS_MARLINUI_U8GLIB, TOUCH_UI_FTDI_EVE, HAS_MARLINUI_HD44780)
+  requires: HAS_DISPLAY && SHOW_BOOTSCREEN && ANY(HAS_MARLINUI_U8GLIB, TOUCH_UI_FTDI_EVE, HAS_MARLINUI_HD44780, HAS_GRAPHICAL_TFT)
   comment: Show the bitmap in Marlin/_Bootscreen.h on startup.
 - name: CUSTOM_STATUS_SCREEN_IMAGE
   file: Configuration_adv.h
@@ -1365,6 +1469,12 @@ settings:
   type: switch
   requires: HAS_DISPLAY
   comment: Buzzer/speaker default enabled state
+- name: LCD_DOUBLE_BUFFER
+  file: Configuration_adv.h
+  type: switch
+  disabled: true
+  requires: HAS_DISPLAY && U8GLIB_SSD1309
+  comment: Optimize display updates. Costs ~1K of SRAM.
 - name: DOUBLE_LCD_FRAMERATE
   file: Configuration_adv.h
   type: switch
@@ -1508,6 +1618,8 @@ settings:
   file: Configuration_adv.h
   type: int
   units: '%'
+  requires: ANY(HAS_MARLINUI_MENU, DWIN_CREALITY_LCD, DWIN_LCD_PROUI, MALYAN_LCD, TOUCH_SCREEN, ULTIPANEL_FEEDMULTIPLY)
+  comment: Some displays offer Feedrate / Flow editing.
   members:
   - id: MIN
     name: SPEED_EDIT_MIN
@@ -1519,6 +1631,7 @@ settings:
   file: Configuration_adv.h
   type: int
   units: '%'
+  requires: ANY(HAS_MARLINUI_MENU, DWIN_CREALITY_LCD, DWIN_LCD_PROUI, MALYAN_LCD, TOUCH_SCREEN)
   comment: (%) Flow percentage edit range minimum
   members:
   - id: MIN
@@ -1653,6 +1766,11 @@ settings:
   - value: SPI_HALF_SPEED
   - value: SPI_QUARTER_SPEED
   - value: SPI_EIGHTH_SPEED
+- name: REINIT_NOISY_LCD
+  file: Configuration_adv.h
+  type: switch
+  requires: HAS_MEDIA
+  comment: Reinit the LCD after SD Card insert/remove or when entering the menu. Required for some LCDs that use shared SPI with an external SD Card reader.
 - name: SD_DETECT_STATE
   file: Configuration_adv.h
   type: state
@@ -1749,6 +1867,21 @@ settings:
   units: seconds
   requires: HAS_MEDIA && PRINTER_EVENT_LEDS
   comment: (seconds) Time to keep the LED "done" color before restoring normal illumination
+- name: REMAINING_TIME_PRIME
+  file: Configuration_adv.h
+  type: switch
+  disabled: true
+  requires: HAS_MEDIA
+  comment: |-
+    Priming for the Remaining Time estimate
+
+    Long processes at the start of a G-code file can skew the Remaining Time estimate. Enable these options to start this estimation at a later point in the G-code file.
+- name: REMAINING_TIME_AUTOPRIME
+  file: Configuration_adv.h
+  type: switch
+  disabled: true
+  requires: HAS_MEDIA
+  comment: Prime the Remaining Time estimate later (e.g., at the end of 'M109')
 - name: POWER_LOSS_RECOVERY
   file: Configuration_adv.h
   type: switch
@@ -1765,6 +1898,20 @@ settings:
   default: false
   requires: HAS_MEDIA && POWER_LOSS_RECOVERY
   comment: Power-Loss Recovery enabled by default. (Set with 'M413 Sn' & M500)
+- name: PLR_HEAT_BED_ON_REBOOT
+  file: Configuration_adv.h
+  type: switch
+  disabled: true
+  requires: HAS_MEDIA && POWER_LOSS_RECOVERY
+  comment: Heat up bed immediately on reboot to mitigate object detaching/warping.
+- name: PLR_HEAT_BED_EXTRA
+  file: Configuration_adv.h
+  type: int
+  default: 0
+  units: °C
+  disabled: true
+  requires: HAS_MEDIA && POWER_LOSS_RECOVERY
+  comment: (°C) Relative increase of bed temperature for better adhesion (limited by max temp).
 - name: PLR_BED_THRESHOLD
   file: Configuration_adv.h
   type: enum
@@ -1873,12 +2020,18 @@ settings:
     - `SDSORT_USES_STACK` does the same, but uses a local stack-based buffer.
     - `SDSORT_CACHE_NAMES` will retain the sorted file listing in RAM. (Expensive!)
     - `SDSORT_DYNAMIC_RAM` only uses RAM when the SD menu is visible. (Use with caution!)
+- name: SDSORT_QUICK
+  file: Configuration_adv.h
+  type: bool
+  default: true
+  requires: HAS_MEDIA && SDCARD_SORT_ALPHA
+  comment: SD Card Sorting options
 - name: SDSORT_REVERSE
   file: Configuration_adv.h
   type: bool
   default: false
   requires: HAS_MEDIA && SDCARD_SORT_ALPHA
-  comment: SD Card Sorting options
+  comment: Default to sorting file names in reverse order.
 - name: SDSORT_LIMIT
   file: Configuration_adv.h
   type: int
@@ -1897,35 +2050,35 @@ settings:
   default: false
   requires: HAS_MEDIA && SDCARD_SORT_ALPHA
   comment: 'Enable G-code M34 to set sorting behaviors: M34 S&lt;-1|0|1&gt; F&lt;-1|0|1&gt;'
-- name: SDSORT_USES_RAM
-  file: Configuration_adv.h
-  type: bool
-  default: false
-  requires: HAS_MEDIA && SDCARD_SORT_ALPHA
-  comment: Pre-allocate a static array for faster pre-sorting.
 - name: SDSORT_USES_STACK
   file: Configuration_adv.h
   type: bool
   default: false
   requires: HAS_MEDIA && SDCARD_SORT_ALPHA
   comment: Prefer the stack for pre-sorting to give back some SRAM. (Negated by next 2 options.)
-- name: SDSORT_CACHE_NAMES
+- name: SDSORT_USES_RAM
   file: Configuration_adv.h
   type: bool
   default: false
   requires: HAS_MEDIA && SDCARD_SORT_ALPHA
+  comment: Pre-allocate a static array for faster pre-sorting.
+- name: SDSORT_CACHE_NAMES
+  file: Configuration_adv.h
+  type: bool
+  default: false
+  requires: HAS_MEDIA && SDCARD_SORT_ALPHA && SDSORT_USES_RAM
   comment: Keep sorted items in RAM longer for speedy performance. Most expensive option.
 - name: SDSORT_DYNAMIC_RAM
   file: Configuration_adv.h
   type: bool
   default: false
-  requires: HAS_MEDIA && SDCARD_SORT_ALPHA
+  requires: HAS_MEDIA && SDCARD_SORT_ALPHA && SDSORT_USES_RAM && SDSORT_CACHE_NAMES
   comment: Use dynamic allocation (within SD menus). Least expensive option. Set `SDSORT_LIMIT` before use!
 - name: SDSORT_CACHE_VFATS
   file: Configuration_adv.h
   type: int
   default: 2
-  requires: HAS_MEDIA && SDCARD_SORT_ALPHA
+  requires: HAS_MEDIA && SDCARD_SORT_ALPHA && SDSORT_USES_RAM && SDSORT_CACHE_NAMES
   comment: 'Maximum number of 13-byte VFAT entries to use for sorting. Note: Only affects `SCROLL_LONG_FILENAMES` with `SDSORT_CACHE_NAMES` but not `SDSORT_DYNAMIC_RAM`.'
 - name: UTF_FILENAME_SUPPORT
   file: Configuration_adv.h
@@ -2009,7 +2162,7 @@ settings:
 
     INT              --&gt; SD_DETECT_PIN [1]
 
-    SS               --&gt; SDSS
+    SS               --&gt; SD_SS_PIN
 
     [1] On AVR an interrupt-capable pin is best for UHS3 compatibility.
 - name: USE_UHS2_USB
@@ -2048,7 +2201,7 @@ settings:
 - name: USB_CS_PIN
   file: Configuration_adv.h
   type: enum
-  default: SDSS
+  default: SD_SS_PIN
   requires: HAS_MEDIA && USB_FLASH_DRIVE_SUPPORT && !USE_OTG_USB_HOST
 - name: USB_INTR_PIN
   file: Configuration_adv.h
@@ -2103,6 +2256,12 @@ settings:
   disabled: true
   requires: HAS_MEDIA && BINARY_FILE_TRANSFER
   comment: Include extra facilities (e.g., 'M20 F') supporting firmware upload via `BINARY_FILE_TRANSFER`
+- name: OTA_FIRMWARE_UPDATE
+  file: Configuration_adv.h
+  type: switch
+  disabled: true
+  requires: HAS_MEDIA
+  comment: '"Over-the-air" Firmware Update with M936 - Required to set EEPROM flag'
 - name: SDCARD_CONNECTION
   file: Configuration_adv.h
   type: enum
@@ -2141,13 +2300,21 @@ settings:
 - name: DEFAULT_VOLUME
   file: Configuration_adv.h
   type: enum
-  default: SV_SD_ONBOARD
+  default: SD_ONBOARD
   requires: HAS_MEDIA && MULTI_VOLUME
+  options: default_volume
 - name: DEFAULT_SHARED_VOLUME
   file: Configuration_adv.h
   type: enum
-  default: SV_USB_FLASH_DRIVE
+  default: USB_FLASH_DRIVE
   requires: HAS_MEDIA && MULTI_VOLUME
+  options: default_volume
+- name: SD_MAX_READ_ERRORS
+  file: Configuration_adv.h
+  type: int
+  default: 5
+  requires: HAS_MEDIA
+  comment: Maximum number of consecutive SD card read errors before aborting the print Prevents infinite loops when reading from SD card with hardware/communication faults
 - name: NO_SD_HOST_DRIVE
   file: Configuration_adv.h
   type: switch
@@ -2168,6 +2335,7 @@ settings:
 - name: USE_BIG_EDIT_FONT
   file: Configuration_adv.h
   type: switch
+  disabled: true
   requires: HAS_MARLINUI_U8GLIB
   comment: A bigger font is available for edit items. Costs 3120 bytes of flash. Western only. Not available for Cyrillic, Kana, Turkish, Greek, or Chinese.
 - name: USE_SMALL_INFOFONT
@@ -2180,6 +2348,7 @@ settings:
   file: Configuration_adv.h
   type: int
   default: 5
+  units: µs
   disabled: true
   requires: HAS_MARLINUI_U8GLIB && IS_U8GLIB_ST7920
   comment: Enable this option and reduce the value to optimize screen updates. The normal delay is 10µs. Use the lowest value that still gives a reliable display.
@@ -2249,22 +2418,26 @@ settings:
 - name: STATUS_ALT_BED_BITMAP
   file: Configuration_adv.h
   type: switch
+  disabled: true
   requires: HAS_MARLINUI_U8GLIB
   comment: Use the alternative bed bitmap
 - name: STATUS_ALT_FAN_BITMAP
   file: Configuration_adv.h
   type: switch
+  disabled: true
   requires: HAS_MARLINUI_U8GLIB
   comment: Use the alternative fan bitmap
 - name: STATUS_FAN_FRAMES
   file: Configuration_adv.h
   type: int
   default: 3
+  disabled: true
   requires: HAS_MARLINUI_U8GLIB
   comment: Number of fan animation frames
 - name: STATUS_HEAT_PERCENT
   file: Configuration_adv.h
   type: switch
+  disabled: true
   requires: HAS_MARLINUI_U8GLIB
   comment: Only one `STATUS_HEAT_*` option can be enabled
 - name: STATUS_HEAT_POWER
@@ -2276,7 +2449,6 @@ settings:
 - name: MENU_HOLLOW_FRAME
   file: Configuration_adv.h
   type: switch
-  disabled: true
   requires: (HAS_MARLINUI_U8GLIB || IS_DWIN_MARLINUI)
   comment: HAS_MARLINUI_U8GLIB
 - name: OVERLAY_GFX_REVERSE
@@ -2807,114 +2979,14 @@ settings:
   file: Configuration_adv.h
   type: int
   default: 16
+  units: count
   requires: HAS_ADC_BUTTONS
   comment: ADC Button Debounce
-- name: BABYSTEPPING
-  file: Configuration_adv.h
-  type: switch
-  long: 'Babystepping enables [`M290`](/docs/gcode/M290.html) and LCD menu items to move the axes by tiny increments without changing the current position values. This feature is used primarily to adjust the Z axis in the first layer of a print in real-time. *Warning: Does not respect endstops!*'
-  comment: |-
-    Babystepping enables movement of the axes by tiny increments without changing the current position values. This feature is used primarily to adjust the Z axis in the first layer of a print in real-time.
-
-    Warning: Does not respect endstops!
-- name: EP_BABYSTEPPING
+- name: FAST_BUTTON_POLLING
   file: Configuration_adv.h
   type: switch
   disabled: true
-  requires: BABYSTEPPING
-  comment: '- `M293/M294` babystepping with `EMERGENCY_PARSER` support'
-- name: BABYSTEP_WITHOUT_HOMING
-  file: Configuration_adv.h
-  type: switch
-  requires: BABYSTEPPING
-- name: BABYSTEP_ALWAYS_AVAILABLE
-  file: Configuration_adv.h
-  type: switch
-  disabled: true
-  requires: BABYSTEPPING
-  comment: Allow babystepping at all times (not just during movement)
-- name: BABYSTEP_XY
-  file: Configuration_adv.h
-  type: switch
-  requires: BABYSTEPPING
-  comment: Also enable X/Y Babystepping. Not supported on DELTA!
-- name: BABYSTEP_INVERT_Z
-  file: Configuration_adv.h
-  type: switch
-  disabled: true
-  requires: BABYSTEPPING
-  comment: Enable if Z babysteps should go the other way
-- name: BABYSTEP_MILLIMETER_UNITS
-  file: Configuration_adv.h
-  type: switch
-  disabled: true
-  requires: BABYSTEPPING
-  comment: Specify BABYSTEP_MULTIPLICATOR_(XY|Z) in mm instead of micro-steps
-- name: BABYSTEP_MULTIPLICATOR_Z
-  file: Configuration_adv.h
-  type: int
-  default: 1
-  units: steps or mm
-  requires: BABYSTEPPING
-  comment: (steps or mm) Steps or millimeter distance for each Z babystep
-- name: BABYSTEP_MULTIPLICATOR_XY
-  file: Configuration_adv.h
-  type: int
-  default: 1
-  units: steps or mm
-  requires: BABYSTEPPING
-  comment: (steps or mm) Steps or millimeter distance for each XY babystep
-- name: DOUBLECLICK_FOR_Z_BABYSTEPPING
-  file: Configuration_adv.h
-  type: switch
-  requires: BABYSTEPPING
-  comment: Double-click on the Status Screen for Z Babystepping.
-- name: DOUBLECLICK_MAX_INTERVAL
-  file: Configuration_adv.h
-  type: int
-  default: 1250
-  requires: BABYSTEPPING && DOUBLECLICK_FOR_Z_BABYSTEPPING
-  comment: 'Maximum interval between clicks, in milliseconds. Note: Extra time may be added to mitigate controller latency.'
-- name: MOVE_Z_WHEN_IDLE
-  file: Configuration_adv.h
-  type: switch
-  requires: BABYSTEPPING && DOUBLECLICK_FOR_Z_BABYSTEPPING
-  comment: Jump to the move Z menu on double-click when printer is idle.
-- name: MOVE_Z_IDLE_MULTIPLICATOR
-  file: Configuration_adv.h
-  type: int
-  default: 1
-  requires: BABYSTEPPING && DOUBLECLICK_FOR_Z_BABYSTEPPING && MOVE_Z_WHEN_IDLE
-  comment: Multiply 1mm by this factor for the move step size.
-- name: BABYSTEP_DISPLAY_TOTAL
-  file: Configuration_adv.h
-  type: switch
-  requires: BABYSTEPPING
-  comment: Display total babysteps since last G28
-- name: BABYSTEP_ZPROBE_OFFSET
-  file: Configuration_adv.h
-  type: switch
-  disabled: true
-  requires: BABYSTEPPING
-  comment: Combine M851 Z and Babystepping
-- name: BABYSTEP_GLOBAL_Z
-  file: Configuration_adv.h
-  type: switch
-  disabled: true
-  requires: BABYSTEPPING
-  comment: Combine M424 Z and Babystepping
-- name: BABYSTEP_HOTEND_Z_OFFSET
-  file: Configuration_adv.h
-  type: switch
-  disabled: true
-  requires: BABYSTEPPING && ANY(BABYSTEP_ZPROBE_OFFSET, BABYSTEP_GLOBAL_Z) && BABYSTEP_ZPROBE_OFFSET
-  comment: For multiple hotends, babystep relative Z offsets
-- name: BABYSTEP_GFX_OVERLAY
-  file: Configuration_adv.h
-  type: switch
-  disabled: true
-  requires: BABYSTEPPING && ANY(BABYSTEP_ZPROBE_OFFSET, BABYSTEP_GLOBAL_Z)
-  comment: Enable graphical overlay on Z-offset editor
+  comment: Poll buttons at ~1kHz on 8-bit AVR. Set to 'false' for slow polling on 32-bit.
 lists:
   dgus_lcd_ui:
   - value: ORIGIN
@@ -2924,7 +2996,15 @@ lists:
   - value: RELOADED
   - value: IA_CREALITY
   - value: E3S1PRO
-  - value: CREALITY_TOUCH
+  - value: CR10SPROV2
+  - value: SERMOON_D1
+  tft_font:
+  - value: NOTOSANS
+  - value: UNIFONT
+  - value: HELVETICA
+  default_volume:
+  - value: SD_ONBOARD
+  - value: USB_FLASH_DRIVE
 ---
 
 Options in the `lcd` section of the Marlin configuration files.

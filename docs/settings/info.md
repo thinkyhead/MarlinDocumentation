@@ -7,7 +7,7 @@ settings:
 - name: STRING_CONFIG_H_AUTHOR
   file: Configuration.h
   type: string
-  default: '"(Chris Pepper)"'
+  default: '"(MarlinFirmware)"'
   brief: Author of the configuration file.
   long: |-
     This option exists to provide information about who last modified the configuration. It is displayed in the identifier string sent to the host when Marlin first boots up, and it may also be displayed on the LCD Info Screen.

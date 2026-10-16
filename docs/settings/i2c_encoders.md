@@ -13,7 +13,7 @@ settings:
 
     Wiki: https://wiki.aus3d.com.au/Magnetic_Encoder
 
-    Github: https://github.com/Aus3D/MagneticEncoder
+    GitHub: https://github.com/Aus3D/MagneticEncoder
 
     Supplier: https://aus3d.com.au/products/magnetic-encoder-module Alternative Supplier: https://reliabuild3d.com/
 
@@ -119,7 +119,7 @@ settings:
   file: Configuration_adv.h
   type: enum
   requires: I2C_POSITION_ENCODERS
-  comment: Type of error error correction.
+  comment: Type of error correction.
   members:
   - id: '1'
     name: I2CPE_ENC_1_EC_METHOD

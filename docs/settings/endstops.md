@@ -257,7 +257,7 @@ settings:
   type: switch
   disabled: true
   long: Enable this option to keep the endstops on (by default) even when not homing. Override at any time with [`M120`](/docs/gcode/M120.html), [`M121`](/docs/gcode/M121.html).
-  comment: If you want endstops to stay on (by default) even when not homing enable this option. Override at any time with M120, M121.
+  comment: If you want endstops to stay on (by default) even when not homing, enable this option. Override at any time with M120, M121.
 ---
 
 Options in the `endstops` section of the Marlin configuration files.

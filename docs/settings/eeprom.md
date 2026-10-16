@@ -7,6 +7,7 @@ settings:
 - name: EEPROM_SETTINGS
   file: Configuration.h
   type: switch
+  disabled: true
   long: |-
     Commands like [`M92`](/docs/gcode/M092.html) only change the settings in volatile memory, and these settings are lost when the machine is powered off. With this option enabled, Marlin uses the built-in EEPROM to preserve settings across reboots. Settings saved to EEPROM (with [`M500`](/docs/gcode/M500.html)) are loaded automatically whenever the machine restarts (and in most setups, when connecting to a host), overriding the defaults set in the configuration files. This option is highly recommended, as it makes configurations easier to manage.
 

@@ -205,6 +205,14 @@ settings:
   units: RPM
   requires: ANY(SPINDLE_FEATURE, LASER_FEATURE) && SPINDLE_FEATURE && SPINDLE_LASER_USE_PWM
   comment: (RPM) M3/M4 speed/power default (with no arguments)
+- name: DEFAULT_ACCELERATION_SPINDLE
+  file: Configuration_adv.h
+  type: int
+  default: 1000
+  units: °/s/s
+  disabled: true
+  requires: ANY(SPINDLE_FEATURE, LASER_FEATURE) && SPINDLE_FEATURE && SPINDLE_LASER_USE_PWM
+  comment: (°/s/s) Default spindle acceleration (speed change with time)
 - name: LASER_TEST_PULSE_*
   file: Configuration_adv.h
   type: int
@@ -361,19 +369,12 @@ settings:
 - name: CNC_COORDINATE_SYSTEMS
   file: Configuration_adv.h
   type: switch
+  disabled: true
   long: Enables [`G53`](/docs/gcode/G053.html) and [`G54`-`G59.3`](/docs/gcode/G054-G059.html) commands to select coordinate systems, plus [`G92.1`](/docs/gcode/G010.html) to reset the current workspace to native machine space. Workspaces set with this feature are also saved to EEPROM.
   comment: |-
     CNC Coordinate Systems
 
     Enables G53 and G54-G59.3 commands to select coordinate systems and G92.1 to reset the workspace to native machine space.
-- name: CNC_DRILLING_CYCLE
-  file: Configuration_adv.h
-  type: switch
-  disabled: true
-  comment: |-
-    CNC Drilling Cycle - UNDER DEVELOPMENT
-
-    Enables G81 to perform a drilling cycle. Currently only supports a single cycle, no G-code chaining.
 ---
 
 Options in the `cnc` section of the Marlin configuration files.

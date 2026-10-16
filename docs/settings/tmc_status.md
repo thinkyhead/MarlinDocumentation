@@ -20,8 +20,9 @@ settings:
   file: Configuration_adv.h
   type: int
   default: 50
+  units: mA
   requires: HAS_TRINAMIC_CONFIG && MONITOR_DRIVER_STATUS
-  comment: '[mA]'
+  comment: (mA) Do not exceed the desired minimum current
 - name: REPORT_CURRENT_CHANGE
   file: Configuration_adv.h
   type: switch

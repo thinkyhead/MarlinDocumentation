@@ -25,6 +25,9 @@ This is a one-time bootstrap aid; omit it once the old site is retired.
 
 Usage:
   _tools/gen_settings.py --schema schema_grouped.json --section temperature [--legacy ../MarlinDocumentation/_setting]
+
+After a schema change moves options between sections, snapshot docs/settings first and pass
+--prior <snapshot> on every run so curated fields follow their options to the new page.
 """
 
 import argparse, json, os, re, sys
@@ -405,12 +408,22 @@ def write_if_changed(path, text):
   if not path.exists() or path.read_text(encoding='utf-8') != text:
     path.write_text(text, encoding='utf-8')
 
+def load_prior(pdir):
+  """name -> entry (with curated fields) from every settings page in a snapshot directory."""
+  out = {}
+  for f in sorted(Path(pdir).glob('*.md')):
+    fm, _ = load_page(f)
+    for s in fm.get('settings') or []:
+      if any(k in s for k in CURATED): out.setdefault(s['name'], s)
+  return out
+
 def main():
   ap = argparse.ArgumentParser()
   ap.add_argument('--schema', required=True)
   ap.add_argument('--section', required=True)
   ap.add_argument('--legacy', help='old site _setting dir (bootstrap only)')
   ap.add_argument('--title')
+  ap.add_argument('--prior', help='snapshot of docs/settings from before a schema change: curated fields of options that moved to another page are carried over')
   a = ap.parse_args()
 
   schema = json.loads(Path(a.schema).read_text(encoding='utf-8'))
@@ -420,9 +433,10 @@ def main():
   fm, body = load_page(path)
   prev = { s['name']: s for s in fm.get('settings') or [] }
   legacy = load_legacy(a.legacy) if a.legacy else {}
+  prior = load_prior(a.prior) if a.prior else {}
 
   # Options with curated text keep their own entry rather than being folded into a group
-  protected = { n for n, s in prev.items() if any(k in s for k in CURATED) } | set(legacy)
+  protected = { n for n, s in {**prior, **prev}.items() if any(k in s for k in CURATED) } | set(legacy)
   entries = collect(schema, a.section, protected)
   if not entries: sys.exit(f"No options found for section '{a.section}'")
 
@@ -431,7 +445,7 @@ def main():
   for e in entries:
     e.pop('_sid', None)
     for m in e.get('members', []): m.pop('_sid', None)
-    old = prev.get(e['name'], {})
+    old = prev.get(e['name']) or prior.get(e['name'], {})
     cur = { k: old[k] for k in CURATED if k in old }
     if cur: kept += 1
     elif e['name'] in legacy:

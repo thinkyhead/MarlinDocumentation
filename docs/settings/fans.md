@@ -32,6 +32,62 @@ settings:
   disabled: true
   long: If `SOFT_PWM_SCALE` is set to a value higher than 0, dithering can be used to mitigate the associated resolution loss. If enabled, some of the PWM cycles are stretched so on average the desired duty cycle is attained.
   comment: If `SOFT_PWM_SCALE` is set to a value higher than 0, dithering can be used to mitigate the associated resolution loss. If enabled, some of the PWM cycles are stretched so on average the desired duty cycle is attained.
+- name: PART_COOLING_FAN*_PIN
+  file: Configuration_adv.h
+  type: enum
+  comment: |-
+    Part Cooling Fan Pins
+
+    Override the default part cooling fan pins for each fan index. Allows remapping which physical fan pin is used for part cooling. By default: FAN0 -&gt; FAN0_PIN, FAN1 -&gt; `FAN1_PIN`, etc.
+  members:
+  - id: '0'
+    name: PART_COOLING_FAN0_PIN
+    default: FAN0_PIN
+    disabled: true
+  - id: '1'
+    name: PART_COOLING_FAN1_PIN
+    default: FAN1_PIN
+    disabled: true
+  - id: '2'
+    name: PART_COOLING_FAN2_PIN
+    default: FAN2_PIN
+    disabled: true
+  - id: '3'
+    name: PART_COOLING_FAN3_PIN
+    default: FAN3_PIN
+    disabled: true
+  - id: '4'
+    name: PART_COOLING_FAN4_PIN
+    default: FAN4_PIN
+    disabled: true
+  - id: '5'
+    name: PART_COOLING_FAN5_PIN
+    default: FAN5_PIN
+    disabled: true
+  - id: '6'
+    name: PART_COOLING_FAN6_PIN
+    default: FAN6_PIN
+    disabled: true
+  - id: '7'
+    name: PART_COOLING_FAN7_PIN
+    default: FAN7_PIN
+    disabled: true
+  - id: '8'
+    name: PART_COOLING_FAN8_PIN
+    default: FAN8_PIN
+    disabled: true
+  - id: '9'
+    name: PART_COOLING_FAN9_PIN
+    default: FAN9_PIN
+    disabled: true
+  - id: '10'
+    name: PART_COOLING_FAN10_PIN
+    default: FAN10_PIN
+    disabled: true
+  - id: '11'
+    name: PART_COOLING_FAN11_PIN
+    default: FAN11_PIN
+    disabled: true
 - name: USE_CONTROLLER_FAN
   file: Configuration_adv.h
   type: switch

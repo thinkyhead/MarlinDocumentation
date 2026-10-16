@@ -7,6 +7,7 @@ settings:
 - name: ADVANCED_PAUSE_FEATURE
   file: Configuration_adv.h
   type: switch
+  disabled: true
   long: Experimental feature for filament change support and parking the nozzle when paused. Adds the [`M600`](/docs/gcode/M600.html) command to perform a filament change. With `PARK_HEAD_ON_PAUSE` enabled also adds the [`M125`](/docs/gcode/M125.html) command to pause printing and park the nozzle. Requires an LCD display. Note that [`M600`](/docs/gcode/M600.html) is required for the default `FILAMENT_RUNOUT_SCRIPT`. Requires LCD display and `NOZZLE_PARK_FEATURE`.
   comment: |-
     Advanced Pause for Filament Change
@@ -184,16 +185,19 @@ settings:
 - name: PARK_HEAD_ON_PAUSE
   file: Configuration_adv.h
   type: switch
+  disabled: true
   requires: ADVANCED_PAUSE_FEATURE
   comment: Park the nozzle during pause and filament change.
 - name: HOME_BEFORE_FILAMENT_CHANGE
   file: Configuration_adv.h
   type: switch
+  disabled: true
   requires: ADVANCED_PAUSE_FEATURE
   comment: If needed, home before parking for filament change
 - name: FILAMENT_LOAD_UNLOAD_GCODES
   file: Configuration_adv.h
   type: switch
+  disabled: true
   requires: ADVANCED_PAUSE_FEATURE
   comment: Add M701/M702 Load/Unload G-codes, plus Load/Unload in the LCD Prepare menu.
 - name: FILAMENT_UNLOAD_ALL_EXTRUDERS

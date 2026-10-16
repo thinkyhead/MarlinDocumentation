@@ -126,17 +126,6 @@ settings:
   disabled: true
   requires: Z2_DRIVER_TYPE
   comment: Other Z axes have their own endstops
-- name: E_DUAL_STEPPER_DRIVERS
-  file: Configuration_adv.h
-  type: switch
-  disabled: true
-  comment: Drive the E axis with two synchronized steppers
-- name: INVERT_E1_VS_E0_DIR
-  file: Configuration_adv.h
-  type: switch
-  disabled: true
-  requires: E_DUAL_STEPPER_DRIVERS
-  comment: E direction signals are opposites
 ---
 
 Options in the `multi stepper` section of the Marlin configuration files.

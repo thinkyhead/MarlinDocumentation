@@ -7,6 +7,7 @@ settings:
 - name: PHOTO_GCODE
   file: Configuration_adv.h
   type: switch
+  disabled: true
   long: Add the [`M240`](/docs/gcode/M240.html) to take a photo. The photo can be triggered by a digital pin or a physical movement.
   comment: |-
     Photo G-code
@@ -16,6 +17,7 @@ settings:
   file: Configuration_adv.h
   type: array
   default: '{ X_MAX_POS - 5, Y_MAX_POS, 0 }'
+  disabled: true
   requires: PHOTO_GCODE
   comment: A position to move to (and raise Z) before taking the photo
 - name: PHOTO_DELAY_MS
@@ -23,6 +25,7 @@ settings:
   type: int
   default: 100
   units: ms
+  disabled: true
   requires: PHOTO_GCODE
   comment: (ms) Duration to pause before moving back (M240 P)
 - name: PHOTO_RETRACT_MM
@@ -43,7 +46,7 @@ settings:
   comment: |-
     Canon RC-1 or homebrew digital camera trigger
 
-    Data from: https://www.doc-diy.net/photo/rc-1_hacked/
+    Data from: https://web.archive.org/web/20250327153953/www.doc-diy.net/photo/rc-1_hacked/
 - name: CHDK_PIN
   file: Configuration_adv.h
   type: int
