@@ -452,6 +452,24 @@
       features:
       - Linear Advance
       - Runout sensor
+  - model: KobraMax
+    configs:
+    - path: AnyCubic/KobraMax
+      name: Anycubic Kobra Max
+      config_url: https://github.com/MarlinFirmware/Configurations/tree/import-2.1.x/config/examples/AnyCubic/KobraMax
+      kinematics: Cartesian
+      type_page: cartesian
+      board: TRIGORILLA_F1_V1
+      drivers:
+      - TMC2208_STANDALONE
+      extruders: 1
+      volume: 400 × 400 × 450 mm
+      probe: Nozzle
+      leveling: Bilinear
+      features:
+      - Input shaping
+      - Linear Advance
+      - Runout sensor
   - model: Kossel
     configs:
     - path: delta/Anycubic/Kossel
@@ -1350,6 +1368,24 @@
       extruders: 1
       volume: 300 × 300 × 400 mm
       probe: Fixed (inductive/capacitive)
+      leveling: Bilinear
+      display: DGUS_LCD_UI
+      features:
+      - Linear Advance
+      - Runout sensor
+  - model: CR-10S Pro V2
+    configs:
+    - path: Creality/CR-10S Pro V2
+      name: CR-10S Pro V2
+      config_url: https://github.com/MarlinFirmware/Configurations/tree/import-2.1.x/config/examples/Creality/CR-10S%20Pro%20V2
+      kinematics: Cartesian
+      type_page: cartesian
+      board: RAMPS_CREALITY
+      drivers:
+      - TMC2208_STANDALONE
+      extruders: 1
+      volume: 300 × 300 × 400 mm
+      probe: BLTouch-type
       leveling: Bilinear
       display: DGUS_LCD_UI
       features:
@@ -2699,6 +2735,21 @@
       display: DGUS_LCD_UI
       features:
       - Runout sensor
+  - model: Sermoon D1
+    configs:
+    - path: Creality/Sermoon D1
+      name: Sermoon D1
+      config_url: https://github.com/MarlinFirmware/Configurations/tree/import-2.1.x/config/examples/Creality/Sermoon%20D1
+      kinematics: Cartesian
+      type_page: cartesian
+      board: CREALITY_V431_D
+      drivers:
+      - A4988
+      extruders: 1
+      volume: 290 × 270 × 320 mm
+      display: DGUS_LCD_UI
+      features:
+      - Runout sensor
 - vendor: CTC
   slug: ctc
   models:
@@ -2899,6 +2950,60 @@
       volume: 235 × 235 × 250 mm
       leveling: UBL
       display: MKS_ROBIN_TFT35
+      features:
+      - Linear Advance
+      - Runout sensor
+  - model: Neptune 3 Max
+    configs:
+    - path: Elegoo/Neptune 3 Max
+      name: Neptune 3 Max
+      config_url: https://github.com/MarlinFirmware/Configurations/tree/import-2.1.x/config/examples/Elegoo/Neptune%203%20Max
+      kinematics: Cartesian
+      type_page: cartesian
+      board: MKS_E3D_V2
+      drivers:
+      - A4988
+      extruders: 1
+      volume: 430 × 430 × 506 mm
+      probe: Fixed (inductive/capacitive)
+      leveling: Bilinear
+      display: ELEGOO_NEPTUNE_3_TFT
+      features:
+      - Linear Advance
+      - Runout sensor
+  - model: Neptune 3 Plus
+    configs:
+    - path: Elegoo/Neptune 3 Plus
+      name: Neptune 3 Plus
+      config_url: https://github.com/MarlinFirmware/Configurations/tree/import-2.1.x/config/examples/Elegoo/Neptune%203%20Plus
+      kinematics: Cartesian
+      type_page: cartesian
+      board: MKS_E3D_V2
+      drivers:
+      - A4988
+      extruders: 1
+      volume: 330 × 330 × 410 mm
+      probe: Fixed (inductive/capacitive)
+      leveling: Bilinear
+      display: ELEGOO_NEPTUNE_3_TFT
+      features:
+      - Linear Advance
+      - Runout sensor
+  - model: Neptune 3 Pro
+    configs:
+    - path: Elegoo/Neptune 3 Pro
+      name: Neptune 3 Pro
+      config_url: https://github.com/MarlinFirmware/Configurations/tree/import-2.1.x/config/examples/Elegoo/Neptune%203%20Pro
+      kinematics: Cartesian
+      type_page: cartesian
+      board: MKS_E3D_V2
+      drivers:
+      - A4988
+      extruders: 1
+      volume: 235 × 234 × 283 mm
+      probe: Fixed (inductive/capacitive)
+      leveling: Bilinear
+      display: ELEGOO_NEPTUNE_3_TFT
       features:
       - Linear Advance
       - Runout sensor
@@ -4000,8 +4105,8 @@
     - path: SCARA/MP_SCARA
       name: SCARA
       config_url: https://github.com/MarlinFirmware/Configurations/tree/import-2.1.x/config/examples/SCARA/MP_SCARA
-      kinematics: Cartesian
-      type_page: cartesian
+      kinematics: SCARA
+      type_page: scara
       board: RAMPS_14_EFB
       drivers:
       - A4988
@@ -4714,16 +4819,6 @@
       drivers:
       - TMC2209
       volume: 433 × 487 × 63 mm
-  - model: Lumen_REV5
-    configs:
-    - path: Opulo/Lumen_REV5
-      config_url: https://github.com/MarlinFirmware/Configurations/tree/import-2.1.x/config/examples/Opulo/Lumen_REV5
-      kinematics: Cartesian
-      type_page: cartesian
-      board: OPULO_LUMEN_REV5
-      drivers:
-      - TMC2209
-      volume: 433 × 487 × 63 mm
 - vendor: ORD Bot
   slug: ord-bot
   models:
@@ -4804,6 +4899,24 @@
 - vendor: Prusa
   slug: prusa
   models:
+  - model: MINI
+    configs:
+    - path: Prusa/MINI
+      name: Prusa MINI
+      config_url: https://github.com/MarlinFirmware/Configurations/tree/import-2.1.x/config/examples/Prusa/MINI
+      kinematics: Cartesian
+      type_page: cartesian
+      board: PRUSA_BUDDY
+      drivers:
+      - TMC2209
+      extruders: 1
+      volume: 180 × 180 × 185 mm
+      probe: Fixed (inductive/capacitive)
+      leveling: Bilinear
+      features:
+      - Input shaping
+      - Linear Advance
+      - Runout sensor
   - model: MK3
     configs:
     - path: Prusa/MK3
