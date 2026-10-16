@@ -36,3 +36,7 @@ We need Features to be organized into sections based on the `@section` annotatio
 Each display that Marlin supports can have a page with a description of the display, its features or "stats", and how to configure it. We can link to these pages from the G-code and Feature pages that relate to them. For some displays we can display a 3D interactive model of the display, just for fun.
 
 These large areas of the documentation cannot have links for everything within on the left side. At most we can list the sections.
+
+## Site Tools
+
+See `_tools/README.md` for the generators (settings, G-code index, printer directory) and the front-facing prose style.

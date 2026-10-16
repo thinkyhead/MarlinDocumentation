@@ -165,3 +165,43 @@ or stub redirect pages for:
 
 Still open: review pass (runout_sensor.md, mined long: text, Z_PROBE_LOW_POINT anchor guess), settings reorganization,
 `since` via git blame, drop bootstrap gems, html-proofer, visual check of tools pages (Bootstrap markup under JTD), commit.
+
+## 10. Content plan: narrative, user-centric, illustrated (added 2026-09-29)
+
+Migration is mechanically complete; the next phase is making the front-facing material readable.
+Source material is the Marlin wiki (`~/wiki/projects/marlin`), which must be corrected first (see
+2026-09-29 lint in the wiki log). Reference layers (`docs/settings/`, `docs/gcode/`) stay generated and exact;
+narrative layers (Basics, Features, Printers, Configuration guide) link down into them.
+
+### Style rules
+- Narrative first: open each page with what the reader is trying to do and when the feature applies,
+  then how it works, then how to configure/tune it, then pitfalls. Option and G-code detail links to the
+  settings/G-code reference instead of being restated.
+- Plain language, short paragraphs, user-facing. Developer/history material (e.g. LIN_ADVANCE v1.0 vs v1.5
+  notes, author asides) moves to Development or is dropped.
+- Images: about one per four paragraphs. Diagrams where they explain (kinematics, probe offsets, mesh inset,
+  pressure advance curve, homing sequence, wiring); a good photo of the relevant printer type or part where
+  they don't. Every image needs alt text and a credit/licence note (`assets/images/CREDITS.md`).
+- Each page states requirements (board class, driver type, conflicting options) near the top.
+
+### Printer-type pages (new section, e.g. `docs/printers/`)
+One narrative page per kinematic type Marlin supports, each with photo(s), a motion diagram, the settings
+that matter, homing/leveling notes, and links to example configs:
+- [ ] Cartesian (bed-slinger and fixed-bed) — 363 of 415 example configs
+- [ ] CoreXY / Markforged XY — 17
+- [ ] CoreXZ / CoreYZ — 2
+- [ ] Delta — 29
+- [ ] SCARA (Morgan, MP) and TPARA — 1
+- [ ] Polar, Polargraph — 1
+- [ ] Belt printer (BELTPRINTER)
+- [ ] Multi-toolhead: IDEX / Dual X Carriage, switching toolheads, MMU
+- [ ] Non-printing machines: laser/spindle (CNC), foam cutter (FOAMCUTTER_XYUV) — 2+3
+
+### Appendix: printer directory
+- [ ] `docs/appendix/printers/`: one entry per vendor (100) and model (415 example configs in
+  `MarlinFirmware/Configurations/config/examples`), generated from the example configs: kinematics, board,
+  drivers, probe, leveling, display, build volume, link to the config folder. A generator script
+  (`_tools/gen_printers.py`) owns the data; humans own the summary and photo.
+- [ ] Photos: only 2 example folders include images, so we need a sourcing plan (vendor press kits with
+  permission, community submissions via PR, CC-licensed images). Record the source for every image.
+- [ ] Cross-link each printer entry to its board in `appendix/boards.md` and its type page.
