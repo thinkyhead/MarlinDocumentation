@@ -19,6 +19,7 @@ exclude:
   - dev-notes.md
   - AGENTS.md
   - docs/gcode/AGENTS.md
+  - assets/images/CREDITS.md
   - notes
   - .hermes-tmp.*
 
@@ -44,6 +45,9 @@ callouts:
   warning:
     title: Warning
     color: yellow
+  more:
+    title: Want to Know More?
+    color: blue
 
 search_enabled: true
 search.button: true
@@ -156,6 +160,12 @@ defaults:
   - # Feature overview pages
     scope:
       path: 'docs/features'
+    values:
+      layout: article
+
+  - # Printer type pages
+    scope:
+      path: 'docs/printers'
     values:
       layout: article
 

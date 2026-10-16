@@ -437,6 +437,32 @@ footer p em {
 // Callouts ({: .note } etc.; colors from site.callouts): faint tint so they stand out in both themes
 blockquote.note, blockquote.warning, blockquote.important, blockquote.highlight { background: var(--marlin-setting-even-bg); }
 
+// "Want to Know More?" ({: .more }): optional depth (the how and why). Readers can skip it, so it is
+// tinted blue and set slightly smaller than body text.
+blockquote.more {
+  font-size: 0.94em;
+  background: rgba(44, 132, 250, 0.08);
+  border-left-color: #6aa8ff;
+  &::before, > .more-title { color: #8cbcff; }
+}
+blockquote.note, p.note {
+  &::before, > .note-title { color: #8cbcff; }
+}
+[data-color-scheme="light"] {
+  blockquote.more {
+    background: rgba(44, 132, 250, 0.05);
+    border-left-color: #183385;
+    &::before, > .more-title { color: #183385; }
+  }
+  blockquote.note, p.note {
+    &::before, > .note-title { color: #183385; }
+  }
+}
+
+// Appendix printer directory
+table.printer-facts { min-width: 0; th { width: 9rem; white-space: nowrap; } }
+img.printer-photo { max-width: 40%; }
+
 // Usage parameter spans
 .optional {
     opacity: 0.85;
@@ -548,3 +574,22 @@ blockquote.note, blockquote.warning, blockquote.important, blockquote.highlight 
 }
 
 @import "./custom/tools";
+
+// Printer directory: config tables fold under their board/variant name on longer vendor pages
+details.printer-config {
+  margin: .25rem 0;
+  > summary { cursor: pointer; font-weight: 500; padding: .2rem 0; }
+  > summary:hover { color: $link-color; }
+  &[open] > summary { margin-bottom: .25rem; }
+  .table-wrapper, > table { margin-top: 0; }
+}
+
+// Inline images (ported from the old site's .floater/.framed). Markup: {: .float-right .framed } or {: .floater.framed }
+.floater { float: left; margin: 0 1em 1em 0; &.right { float: right; margin: 0 0 1em 1em; } }
+img.float-right { margin: 0 0 1em 1em; }
+img.floater, img.float-right { max-width: 45%; height: auto; }
+img.framed { border: 4px solid #3a3a44; border-radius: 2px; }
+[data-color-scheme="light"] img.framed { border-color: #d8d8de; }
+@media (max-width: 40rem) {
+  img.floater, img.float-right { float: none !important; display: block; max-width: 100%; margin: 0 auto 1em; }
+}
