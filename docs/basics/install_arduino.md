@@ -2,7 +2,7 @@
 title: Arduino IDE
 description: Build and install Marlin for AVR, Due, and Teensy++ boards using Arduino IDE. Barely supported; Auto Build Marlin is recommended.
 parent: Build & Install
-nav_order: 2
+nav_order: 5
 layout: article
 toc: true
 back_to_top: true
@@ -12,7 +12,7 @@ back_to_top: true
 
 {: .warning }
 > Building with Arduino IDE is **barely supported** now. We recommend
-> [Auto Build Marlin](/docs/basics/install.html#auto-build-marlin-recommended), or
+> [Auto Build Marlin](/docs/basics/install_abm.html), or
 > [PlatformIO](install_platformio_vscode.html) if you want to choose the environment yourself. Expect to
 > work out problems on your own if you use Arduino IDE.
 

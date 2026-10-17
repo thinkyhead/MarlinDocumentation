@@ -38,7 +38,7 @@ See the official [Dev Containers documentation](//code.visualstudio.com/docs/dev
 3. When the build completes, VSCode connects to the container automatically.
 
 You can now work with the project just as you would locally, including building with
-[Auto Build Marlin](/docs/basics/install.html#auto-build-marlin-recommended). From now on VSCode reuses the dev
+[Auto Build Marlin](/docs/basics/install_abm.html). From now on VSCode reuses the dev
 container whenever you open the folder.
 
 Bind-mounting the local filesystem into a container is convenient, but has some performance overhead on Windows and

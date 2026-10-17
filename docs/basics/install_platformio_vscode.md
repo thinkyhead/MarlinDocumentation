@@ -2,7 +2,7 @@
 title: PlatformIO in VSCode
 description: Build and install Marlin with the PlatformIO IDE extension in Visual Studio Code, choosing the build environment yourself.
 parent: Build & Install
-nav_order: 1
+nav_order: 2
 layout: article
 toc: true
 back_to_top: true
@@ -11,7 +11,7 @@ back_to_top: true
 # Building Marlin with PlatformIO in VSCode
 
 [PlatformIO](//platformio.org/install/ide?install=vscode) turns VSCode into a complete IDE for compiling and developing Marlin.
-[Auto Build Marlin](/docs/basics/install.html#auto-build-marlin-recommended) runs PlatformIO for you and picks the
+[Auto Build Marlin](/docs/basics/install_abm.html) runs PlatformIO for you and picks the
 build environment for your board. This page covers using PlatformIO directly, which is useful when you want to
 choose the environment yourself or use PlatformIO's own tools.
 
