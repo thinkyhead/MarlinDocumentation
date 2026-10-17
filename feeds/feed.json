@@ -1,0 +1,83 @@
+---
+# Search index for the Auto Build Marlin (ABM) VS Code extension, which downloads
+# https://marlinfw.org/feeds/feed.json and searches it in its Docs panel.
+# This is a compatibility contract: see _tools/check_feed.py before changing it.
+#
+# One JSON array. Entries of the same "class" must be contiguous (ABM prints a heading when the class
+# changes). Each entry has: title, content, excerpt, link (root-relative: ABM prefixes https://marlinfw.org),
+# class, and optionally group, since, requires (comma separated), exp, tags.
+# "content" is the indexify-reduced search text. It must not contain backticks, "$" or "{" (ABM injects the
+# feed into a JavaScript template literal).
+layout: null
+permalink: /feeds/feed.json
+sitemap: false
+search_exclude: true
+---
+{%- assign first = true -%}
+{%- assign all_pages = site.pages | sort: 'url' -%}
+[
+{%- comment -%} G-code: "G0, G1 : Linear Move" {%- endcomment -%}
+{%- for p in all_pages -%}
+  {%- if p.codes[0] and p.path contains 'docs/gcode/' -%}
+  {%- capture text -%}
+    {{ p.codes | join: ' ' }} {{ p.short_title }} {{ p.brief }} {{ p.content }}
+    {% for prm in p.parameters %}{{ prm.tag }} {{ prm.description }} {% for v in prm.values %}{{ v.tag }} {% endfor %}{% endfor %}
+    {% for n in p.notes %}{{ n }} {% endfor %}
+  {%- endcapture -%}
+  {%- unless first %},{% endunless %}
+  {
+    "title": {{ p.codes | join: ", " | append: " : " | append: p.short_title | jsonify }},
+    "content": {{ text | indexify | jsonify }},
+    "excerpt": {{ p.brief | plain_excerpt | jsonify }},
+    "link": {{ p.url | jsonify }},
+    {%- if p.experimental %}"exp": true,{% endif %}
+    {%- if p.since %}"since": {{ p.since | jsonify }},{% endif %}
+    {%- if p.group %}"group": {{ p.group | join: ", " | jsonify }},{% endif %}
+    {%- if p.requires %}"requires": {{ p.requires | join: ", " | remove: "`" | jsonify }},{% endif %}
+    "class": "gcode"
+  }
+  {%- assign first = false -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- comment -%} Settings: one entry per option, linking to its anchor on the settings page {%- endcomment -%}
+{%- for p in all_pages -%}
+  {%- if p.settings and p.path contains 'docs/settings/' -%}
+  {%- for s in p.settings -%}
+    {%- assign blurb = s.brief | default: s.comment | default: s.shared_comment -%}
+    {%- capture text -%}{{ s.name }} {{ blurb }} {{ s.long }} {% for m in s.members %}{{ m.name }} {% endfor %}{%- endcapture -%}
+    {%- unless first %},{% endunless %}
+  {
+    "title": {{ s.name | jsonify }},
+    "content": {{ text | indexify | jsonify }},
+    "excerpt": {{ blurb | plain_excerpt | jsonify }},
+    "link": {{ p.url | append: '#' | append: s.name | replace: '*', 'N' | jsonify }},
+    {%- if s.since %}"since": {{ s.since | jsonify }},{% endif %}
+    "group": {{ p.title | jsonify }},
+    "class": "setting"
+  }
+    {%- assign first = false -%}
+  {%- endfor -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- comment -%} Prose sections, in the order ABM shows them {%- endcomment -%}
+{%- assign sections = "docs/features/|feat,docs/printers/|printers,docs/basics/|basics,docs/development/|devel,docs/configuration/|config,docs/appendix/|appendix" | split: ',' -%}
+{%- for sec in sections -%}
+  {%- assign parts = sec | split: '|' -%}
+  {%- for p in all_pages -%}
+    {%- if p.path contains parts[0] and p.title and p.redirect_to == nil and p.search_exclude != true and p.nav_exclude != true -%}
+    {%- capture text -%}{{ p.title }} {{ p.description }} {{ p.content }}{%- endcapture -%}
+    {%- unless first %},{% endunless %}
+  {
+    "title": {{ p.title | jsonify }},
+    "content": {{ text | indexify | jsonify }},
+    "excerpt": {{ p.description | plain_excerpt | jsonify }},
+    "link": {{ p.url | replace: 'index.html', '' | jsonify }},
+    "class": {{ parts[1] | jsonify }}
+  }
+    {%- assign first = false -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endfor %}
+]

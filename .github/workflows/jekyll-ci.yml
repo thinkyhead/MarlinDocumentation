@@ -34,3 +34,4 @@ jobs:
       run: |
         python3 _tools/check_site.py --built
         python3 _tools/check_links.py
+        python3 _tools/check_feed.py

@@ -10,6 +10,7 @@ Run everything from the site root. Rebuild with `bundle exec jekyll build`, then
 | gen_printers.py | Configurations/config/examples | _data/printers.yml, docs/appendix/printers/<vendor>.md (only when missing) | printers.yml: no. Vendor pages: yes |
 | migrate_features.py | old site | docs/features | One-shot migration |
 | check_links.py | _site | report | n/a |
+| check_feed.py | _site/feeds/feed.json | report | n/a. Guards the Auto Build Marlin search feed, see below |
 | check_site.py | source tree (and _site with `--built`) | report | n/a. Gates every commit, see below |
 | install_hooks.sh | n/a | git config `core.hooksPath` | n/a |
 
@@ -23,6 +24,16 @@ Run everything from the site root. Rebuild with `bundle exec jekyll build`, then
 - `parent:` must match an existing page title whose page sets `has_children: true`.
 - CI (`jekyll-ci.yml`) runs the static checks, the build, the `--built` checks, and `check_links.py`.
 - Commit with `--no-verify` only for an emergency, and fix it in the next commit.
+
+## Search feed for Auto Build Marlin (feeds/feed.json)
+
+The Auto Build Marlin VS Code extension downloads `https://marlinfw.org/feeds/feed.json` and searches it in its Docs panel (`abm/docs.js`, `abm/js/docsview.js` in the AutoBuildMarlin repo). The new site must keep publishing that exact path and format:
+
+- A JSON array of `{ title, content, excerpt, link, class }`, plus optional `group`, `since`, `requires` (comma separated string), `exp`. `link` is root-relative because ABM prefixes `https://marlinfw.org`.
+- Entries of one `class` stay together: ABM prints a heading whenever the class changes. Classes: `gcode` (one per G-code page, "G0, G1 : Linear Move"), `setting` (one per option, linking to its anchor), `feat`, `printers`, `basics`, `devel`, `config`, `appendix`.
+- `content` is the `indexify` word list. No backticks or `${` in any text, because ABM injects the feed into a JavaScript template literal. `plain_excerpt` (in `_plugins/marlinfw_filter.rb`) cleans excerpts.
+- `python3 _tools/check_feed.py` checks all of this after a build, including that every link and anchor exists. CI runs it.
+- Changing the shape needs a matching change in the extension. ABM headings for new classes live in `section_head` in `docsview.js`.
 
 ## Printer directory (gen_printers.py)
 

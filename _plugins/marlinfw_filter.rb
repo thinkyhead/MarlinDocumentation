@@ -1,5 +1,34 @@
 module Jekyll
   module MarlinSiteFilter
+    def indexify(input)
+      # Reduce text down to searchable terms
+      some = input.downcase
+      some = some.gsub(/<(script|style|form)\b[^>]*?>.*?<\/\1>/mi, '')
+      some = some.gsub(/(<[^>]*>|$$.+$$)/, '')
+      some = some.gsub(/(en|dis)abled\(([^\)]+)\)/i, '\2')
+      some = some.gsub(/!\[[^\]]+\]\([^\)]+\)(\s*\{[^\}]+\})?/, ' ')
+      some = some.gsub(/\[([^\]]+)\]\([^\)]+\)(\s*\{[^\}]+\})?/, '\1')
+      some = some.gsub(/(#define|alert (info|warning)|endalert)/, '')
+      some = some.gsub(/\\[nrt]|[^0-9a-z'_ ]/, ' ')
+      some = some.gsub(/((ca|is|wo)?n't|'re|'s)/, '')
+      some = some.gsub(/\b[a-z]{,2}\b/, '')
+      some = some.gsub(/\b(a(ll|nd|re)|also|(be)?cause|b.t|cannot|d(id|oes)|end|even|for|from|g[eiou]t|ha(d|s|ve)?|how|[iou]nto|its|odd|out|use[ds]?|life|may(be)?|man?y|more|much|nbsp|not|pre|see|since|sign(ificant(ly)?)?|some(what)?|such|t?here|this|tha[nt]|th[eo]se|the([mny]|ir|re|y)?|too|true|(was|were)|wh(at|en|ere|ich|o|y)|will|with(out)?|other|users|people|(al)?though|your?|n?one|two|via)\b/, '')
+      some = some.gsub(/( '|' )/, '')
+      #some = some.gsub(/\b(([a-z]{,3})?_[a-z0-9]{,3})\b/, '')
+      some = some.gsub(/\b(\d+(kb?)?|0x\h+)\b/, '')
+      some = some.gsub(/([[:punct:]]|:| [a-z])[ \t\n]+|[\n\r]+/, ' ')
+      some = some.split(' ').compact.uniq.join(' ')
+      some
+    end
+
+    # Plain one-line text from Markdown/HTML, for the search feed's "excerpt" (no backticks, links or markup).
+    def plain_excerpt(input, length = 200)
+      t = input.to_s.gsub(/<[^>]*>/, ' ')
+      t = t.gsub(/!\[[^\]]*\]\([^\)]*\)/, ' ').gsub(/\[([^\]]+)\]\([^\)]*\)/, '\\1')
+      t = t.gsub(/[`*]|\{:[^}]*\}|\$\{/, '').gsub(/(^|\s)_+|_+(\s|$)/, '\\1 ').gsub(/\s+/, ' ').strip
+      t.length > length ? t[0, length - 1].sub(/\s+\S*$/, '') + '…' : t
+    end
+
     def linkify(input)
       re1 = /([GM])(\d)\b/
       re2 = /([GM])(\d\d)\b/
