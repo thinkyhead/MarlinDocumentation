@@ -261,9 +261,20 @@ body.has-toc #table-of-contents.page .toc-h3 a {
         .main-content-wrap {
             display: grid;
             grid-template-columns: 1fr 14rem;
-            grid-template-areas: "main-column toc-column";
+            grid-template-areas:
+                "crumbs crumbs"
+                "main-column toc-column";
             align-items: start;
             gap: 0 3rem;
+        }
+
+        // Breadcrumbs span the top row, above both the content and the TOC column.
+        // (Without an area they were auto-placed into a row below the content.)
+        // The usual negative bottom margin only suits the single-column flow: here it would
+        // pull the content row up underneath the breadcrumbs.
+        .breadcrumb-nav {
+            grid-area: crumbs;
+            margin-bottom: 0.5rem;
         }
 
         .main-content {
