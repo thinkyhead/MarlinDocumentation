@@ -1,13 +1,12 @@
 ---
 title:       Marlin Features
-parent:      Marlin Basics
+parent:      Introduction
 description: 'Features of Marlin Firmware'
 nav_order:   3
 regenerate:  true
 layout:      article
 nav_enabled: true
 gh_edit_link: true
-nav_enabled: true
 nav_stroke: false
 toc: false
 #permalink:   /docs/basics/features.html

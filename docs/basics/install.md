@@ -1,6 +1,6 @@
 ---
 title: Build & Install
-description: Building and installing Marlin Firmware from source with Auto Build Marlin in VSCode or with the CLI.
+description: "Getting Marlin onto your printer with pre-built firmware, Auto Build Marlin in VSCode (recommended), PlatformIO, or the command line."
 layout: article
 nav_order: 4
 nav_enabled: true
@@ -13,11 +13,27 @@ back_to_top: true
 
 # Build & Install Marlin
 
-Building Marlin is easier than ever, but maybe you can skip it. Starting with Marlin 2.1.3 we providie pre-built firmware binaries for many popular printers based on configurations contributed by users like you. Check the [MarlinBuilds](//github.com/MarlinFirmware/MarlinBuilds) repository to see if your printer is listed. For most printers you can simply download the firmware file, copy it to your SD card, and restart the printer to install it.
+Building Marlin is easier than ever, and you may be able to skip it. Pick the way that suits you:
+
+| Way | Best for |
+|-----|----------|
+| [Pre-built firmware](#pre-built-firmware) | The quickest start, if your printer is listed |
+| [Auto Build Marlin](#auto-build-marlin-recommended) | **Recommended.** A custom build for your machine, with one-button building in VSCode |
+| [Online build service](#online-build-service-coming-soon) | A build made on this website, with nothing to install. Coming soon |
+| [PlatformIO](install_platformio_vscode.html), [Dev Container](install_devcontainer_vscode.html) and the [command line](#building-from-the-cli) | Choosing the environment yourself, automation, and servers |
+| [Arduino IDE](install_arduino.html) | Barely supported. Use it only if you have no other choice |
+
+## Pre-built Firmware
+
+Starting with Marlin 2.1.3 we provide pre-built firmware binaries for many popular printers, based on configurations contributed by users like you. Check the [MarlinBuilds](//github.com/MarlinFirmware/MarlinBuilds) repository to see if your printer is listed. For most printers you can simply download the firmware file, copy it to your SD card, and restart the printer to install it.
 
 ## Custom Marlin Build
 
-For a Marlin firmware perfectly tailored to your machine, periperals, and preferences you will need to build it yourself.  Download Marlin and a set of example configurations, adjust the settings, build, and install. Use the **Auto Build Marlin** Visual Studio Code extension to simplify the process. This provides a one-button interface to build and upload Marlin to your selected `MOTHERBOARD`.
+For a Marlin firmware perfectly tailored to your machine, peripherals, and preferences you will need to build it yourself. Download Marlin and a set of example configurations, adjust the settings, build, and install. The **Auto Build Marlin** Visual Studio Code extension simplifies the process with a one-button interface to build and upload Marlin to your selected `MOTHERBOARD`.
+
+## Online Build Service (Coming Soon)
+
+We're working on a build system you can use from this website. You'll choose or upload a configuration, and the site will build the firmware for you to download. It isn't available yet. Until it is, use Auto Build Marlin.
 
 ## Prerequisites
 
@@ -31,7 +47,7 @@ Before building, you'll need:
 
 ## Auto Build Marlin (Recommended)
 
-*Auto Build Marlin* is a Visual Studio Code extension that simplifies building and uploading Marlin. It removes the need to edit `platformio.ini` directly or scroll through a long list of environments — just click one Build button.
+*Auto Build Marlin* (ABM) is the recommended way to build Marlin. It's a Visual Studio Code extension that simplifies building and uploading Marlin. It removes the need to edit `platformio.ini` directly or scroll through a long list of environments — just click one Build button.
 
 ### 1. Install Visual Studio Code
 
@@ -79,7 +95,7 @@ Click **Build** to test your configuration first. If you see errors, review the 
 
 ## Build Output
 
-The build produces firmware files in the `.pio/build/<environment>/` directory. Use the "Auto Reveal Build" checkbox or click the build summary to reveal the firmware file. The exact files produced depend on your board:
+The build produces firmware files in the `.pio/build/<environment>/` directory. By default, Auto Build Marlin reveals the built firmware in your file manager when the build finishes, so you don't need to dig through `.pio`. You can turn this off with the "Auto Reveal Build" checkbox, and click the build summary to reveal the firmware file again at any time. The exact files produced depend on your board:
 
 - **AVR boards** (e.g., RAMPS, MKS Gen L) produce a `.hex` file. This must be uploaded to the board over USB using the Upload command (i.e., `avrdude`).
 - **32-bit ARM boards** (e.g., BTT SKR, MKS Robin) produce a `firmware.bin` file. Copy this file to the onboard SD card and restart the printer. The bootloader will detect the new file and flash it automatically. Some boards require a specific filename — check your board's documentation.
@@ -93,12 +109,13 @@ After a successful install, the `firmware.bin` file may be renamed to `FIRMWARE.
 - **Save all files** before starting a build. The compiler may not see unsaved changes.
 - **Read the first error** in the build log. It's usually the main error. Subsequent errors are often cascading noise.
 - **Build warnings** about code style or unused variables can usually be ignored. Warnings from `Warnings.cpp` are informational.
+- **Not sure it worked?** After the build, look for the firmware file in the folder that Auto Build Marlin reveals.
 - **Need help?** Join the [Marlin Discord](https://discord.com/servers/marlin-firmware-461605380783472640) for community support.
 
 ## Other Ways to Build
 
 - [PlatformIO in VSCode](install_platformio_vscode.html): choose the build environment yourself in `platformio.ini`
-- [Arduino IDE](install_arduino.html): AVR, Due, and Teensy++ 2.0 boards only
+- [Arduino IDE](install_arduino.html): barely supported, for AVR, Due, and Teensy++ 2.0 boards only. Prefer Auto Build Marlin or PlatformIO
 - [VSCode Dev Container](install_devcontainer_vscode.html): a pre-configured Docker build environment
 
 ## Building from the CLI

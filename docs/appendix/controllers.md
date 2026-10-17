@@ -210,9 +210,10 @@ groups:
       url: reprapworld.com/electronics/3d-printer-modules/autonomous-printing/graphical-lcd-screen-v1-0/
 
     - name: VIKI2
-      description: Panucatt Viki2 Graphic LCD
       url: www.panucatt.com
       description: |
+        Panucatt Viki2 Graphic LCD:
+
         - 128×64 pixel LCD panel
         - SD Card reader
         - Reset button

@@ -7,6 +7,7 @@ nav_order: 3
 # Theme Options
 nav_enabled: true
 nav_stroke: false
+has_children: true
 toc: true
 back_to_top: true
 ---

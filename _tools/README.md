@@ -10,6 +10,19 @@ Run everything from the site root. Rebuild with `bundle exec jekyll build`, then
 | gen_printers.py | Configurations/config/examples | _data/printers.yml, docs/appendix/printers/<vendor>.md (only when missing) | printers.yml: no. Vendor pages: yes |
 | migrate_features.py | old site | docs/features | One-shot migration |
 | check_links.py | _site | report | n/a |
+| check_site.py | source tree (and _site with `--built`) | report | n/a. Gates every commit, see below |
+| install_hooks.sh | n/a | git config `core.hooksPath` | n/a |
+
+## Site integrity checks (check_site.py)
+
+    _tools/install_hooks.sh         # once per clone: runs the static checks before every commit
+    python3 _tools/check_site.py            # static: about 2 seconds, no build needed
+    python3 _tools/check_site.py --built    # after a build: every child page is in its sidebar, no stray dividers
+
+- Frontmatter and `_data`/`_config.yml` must be valid YAML with no duplicate keys. A stray `: ` in an unquoted value (usually a `description:`) makes Jekyll drop the whole frontmatter silently: the page loses its title, parent and nav_order and falls out of the sidebar. Quote any value that contains a colon.
+- `parent:` must match an existing page title whose page sets `has_children: true`.
+- CI (`jekyll-ci.yml`) runs the static checks, the build, the `--built` checks, and `check_links.py`.
+- Commit with `--no-verify` only for an emergency, and fix it in the next commit.
 
 ## Printer directory (gen_printers.py)
 
