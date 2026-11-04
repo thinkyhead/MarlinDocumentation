@@ -1,0 +1,43 @@
+---
+title:        'Ringing Tower Generator'
+description:  'Generate a ringing tower as G-code, with Input Shaping frequency steps'
+parent: Tools
+nav_order: 3
+layout: tool
+---
+<script src="./ringing-tower.js"></script>
+<script type="module" src="./ringing-tower-page.js"></script>
+
+<div id="ringing-tower" class="tool-page">
+  <h1>Ringing Tower Generator</h1>
+  <p>Generate G-code for a ringing tower made for your printer. The frequency of the Input Shaper changes every few millimeters of height, so after printing you can look for the height where the ringing is smallest and read the best frequency from the table. No slicer or model file is needed.</p>
+
+  <div id="rt-preview" class="rt-preview" aria-label="3D preview of the ringing tower on the print bed"></div>
+
+  <form id="rt-form" class="rt-form" onsubmit="return false"></form>
+
+  <ul id="rt-warnings" class="rt-warnings" hidden></ul>
+
+  <h2>Frequency by height</h2>
+  <pre id="rt-table" class="rt-table"></pre>
+
+  <div class="rt-actions">
+    <button id="rt-download" type="button">Download G-code</button>
+    <button id="rt-reset" type="button">Reset to defaults</button>
+    <span id="rt-info"></span>
+  </div>
+
+  <h2>G-code</h2>
+  <textarea id="rt-gcode" class="rt-gcode" rows="16" readonly></textarea>
+</div>
+
+<style>
+  /* Minimal working styles; the tool styles in _sass/custom/tools.scss take over later. */
+  .rt-preview { position: sticky; top: 0; z-index: 5; height: 360px; background: #1c1f24; border-radius: 4px; }
+  .rt-form fieldset { margin: 1rem 0; }
+  .rt-field { display: flex; flex-wrap: wrap; align-items: baseline; gap: .5rem; margin: .25rem 0; }
+  .rt-field label { min-width: 12rem; }
+  .rt-help { flex-basis: 100%; font-size: .85em; opacity: .7; }
+  .rt-warnings { color: #b45309; }
+  .rt-gcode { width: 100%; font-family: monospace; }
+</style>
