@@ -19,7 +19,7 @@ layout: tool
   <ul id="rt-warnings" class="rt-warnings" hidden></ul>
 
   <h2>Frequency by height</h2>
-  <pre id="rt-table" class="rt-table"></pre>
+  <pre id="rt-table" class="rt-table">Generating…</pre>
 
   <div class="rt-actions">
     <button id="rt-download" type="button">Download G-code</button>
@@ -29,15 +29,16 @@ layout: tool
 
   <h2>G-code</h2>
   <textarea id="rt-gcode" class="rt-gcode" rows="16" readonly></textarea>
+
+  <h2>Before you print</h2>
+  <ul class="rt-notes">
+    <li><strong>Not yet tested on a printer.</strong> This G-code has not been run on a real printer yet. Start with a short test tower and check the result before you print a full one.</li>
+    <li><strong>Smooth patterns need a slower speed.</strong> Sine, half sine and triangle patterns are built from many 1 mm segments. At high speed, Marlin's planner minimum segment time (<code>M205 B</code>, 20000 µs by default) can slow these segments down and blur the pattern. Use a lower Print speed for these patterns, or lower <code>M205 B</code> if your firmware allows it.</li>
+    <li><strong>CoreXY.</strong> Set rotation to 45 to isolate the A and B motors. This has not been tested on CoreXY printers yet.</li>
+    <li><strong>Retraction and Z-hop are simple.</strong> Each layer is one path, and the tool retracts only on long travels.</li>
+  </ul>
+
+  <p class="rt-seealso">See also: the <a href="/tools/input_shaping/freq-calibr.html">Input Shaping Calibration Pattern</a>, which finds resonance frequencies with a different pattern. That tool is by KimmoHop, based on work by @tombrazier (GPLv3). The Ringing Tower Generator is a new implementation.</p>
 </div>
 
-<style>
-  /* Minimal working styles; the tool styles in _sass/custom/tools.scss take over later. */
-  .rt-preview { position: sticky; top: 0; z-index: 5; height: 360px; background: #1c1f24; border-radius: 4px; }
-  .rt-form fieldset { margin: 1rem 0; }
-  .rt-field { display: flex; flex-wrap: wrap; align-items: baseline; gap: .5rem; margin: .25rem 0; }
-  .rt-field label { min-width: 12rem; }
-  .rt-help { flex-basis: 100%; font-size: .85em; opacity: .7; }
-  .rt-warnings { color: #b45309; }
-  .rt-gcode { width: 100%; font-family: monospace; }
-</style>
+

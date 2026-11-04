@@ -13,8 +13,9 @@
  * Bed X is three.js X, bed Y is three.js -Z (the front of the bed faces the viewer), and Z is up.
  * Each layer is colored by its shaper frequency, from blue (low) to red (high).
  */
-import * as THREE from '/assets/javascript/three/three-lite.min.js';
-import { OrbitControls } from '/assets/javascript/three/three-lite.min.js';
+// Relative to this module, so the import works under any site baseurl.
+import * as THREE from '../../assets/javascript/three/three-lite.min.js';
+import { OrbitControls } from '../../assets/javascript/three/three-lite.min.js';
 
 function hue(t) { return new THREE.Color().setHSL((1 - t) * 0.66, 0.9, 0.5); }
 
