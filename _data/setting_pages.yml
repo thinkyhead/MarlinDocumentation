@@ -260,8 +260,10 @@ CHAMBER_VENT_SERVO_NR: temperature
 CHAMELEON_ASSIST_FEEDRATE: multi_material
 CHAMELEON_BUTTON_AXIS: multi_material
 CHAMELEON_BUTTON_POS: multi_material
+CHAMELEON_CUT_GCODE: multi_material
 CHAMELEON_CUT_MS: multi_material
 CHAMELEON_CUT_RETRACT_MM: multi_material
+CHAMELEON_END_GCODE: multi_material
 CHAMELEON_EXTRUDER_TO_HOTEND_MM: multi_material
 CHAMELEON_FAST_FEEDRATE: multi_material
 CHAMELEON_HOME_FIRST: multi_material
@@ -274,6 +276,7 @@ CHAMELEON_PULSE_MS: multi_material
 CHAMELEON_RELEASE_MM: multi_material
 CHAMELEON_SETTLE_MS: multi_material
 CHAMELEON_SLOW_FEEDRATE: multi_material
+CHAMELEON_START_GCODE: multi_material
 CHAMELEON_TIP_SEQUENCE: multi_material
 CHAMELEON_TOOLCHANGE_X: multi_material
 CHAMELEON_TOOLCHANGE_Y: multi_material
@@ -1513,7 +1516,7 @@ MKS_ROBIN_TFT_V1_1R: lcd
 MKS_TS24_R_V2_1: lcd
 MKS_TS35_V2_0: lcd
 MKS_WIFI_AP_MODE: network
-MKS_WIFI_MODULE: lcd
+MKS_WIFI_MODULE: network
 MMU2_C0_RETRY: multi_material
 MMU2_CAN_LOAD_DEVIATION: multi_material
 MMU2_CAN_LOAD_FEEDRATE: multi_material
@@ -1534,6 +1537,7 @@ MMU3_HAS_CUTTER: multi_material
 MMU3_LOAD_TO_NOZZLE_FEED_RATE: multi_material
 MMU3_LOAD_TO_NOZZLE_SEQUENCE: multi_material
 MMU3_MAX_RETRIES: multi_material
+MMU3_RAMMING_SEQUENCE: multi_material
 MMU3_RETRY_UNLOAD_TO_FINDA_FEED_RATE: multi_material
 MMU3_RETRY_UNLOAD_TO_FINDA_LENGTH: multi_material
 MMU3_SPOOL_JOIN_CONSUMES_ALL_FILAMENT: multi_material

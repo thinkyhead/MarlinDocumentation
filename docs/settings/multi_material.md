@@ -148,7 +148,7 @@ settings:
     name: MMU3_LOAD_TO_NOZZLE_SEQUENCE
     default: '{ _MMU_EXTRUDER_PTFE_LENGTH,      MMM_TO_MMS(810) }, /* (13.5 mm/s) Fast load ahead of heatbreak */ { _MMU_EXTRUDER_HEATBREAK_LENGTH, MMM_TO_MMS(198) }  /* ( 3.3 mm/s) Slow load after heatbreak */'
     requires: (HAS_PRUSA_MMU2 || HAS_PRUSA_MMU3) && HAS_PRUSA_MMU3
-    comment: (13.5 mm/s) Fast load ahead of heatbreak */ { _MMU_EXTRUDER_HEATBREAK_LENGTH, MMM_TO_MMS(198) }  /* ( 3.3 mm/s) Slow load after heatbreak */
+    comment: MMU3 sequences use mm/sec. Not compatible with MMU2 which use mm/min.
 - name: MMU2_RAMMING_SEQUENCE
   file: Configuration_adv.h
   type: array
@@ -361,19 +361,19 @@ settings:
     SpoolJoin normally triggers when FINDA sensor untriggers while printing. This is the default behaviour and it doesn't consume all the filament before triggering a filament change. This leaves some filament in the current slot and before switching to the next slot it is unloaded.
 
     Enabling this option will trigger the filament change when both FINDA and Filament Runout Sensor triggers during the print and it allows the filament in the current slot to be completely consumed before doing the filament change. But this can cause problems as a little bit of filament will be left between the extruder gears (thinking that the filament sensor is triggered through the gears) and the end of the PTFE tube and can cause filament load issues.
+- name: MMU3_RAMMING_SEQUENCE
+  file: Configuration_adv.h
+  type: array
+  default: '{ 0.2816,  MMM_TO_MMS(1339.0) }, { 0.3051,  MMM_TO_MMS(1451.0) }, { 0.3453,  MMM_TO_MMS(1642.0) }, { 0.3990,  MMM_TO_MMS(1897.0) }, { 0.4761,  MMM_TO_MMS(2264.0) }, { 0.5767,  MMM_TO_MMS(2742.0) }, { 0.5691,  MMM_TO_MMS(3220.0) }, { 0.1081,  MMM_TO_MMS(3220.0) }, { 0.7644,  MMM_TO_MMS(3635.0) }, { 0.8248,  MMM_TO_MMS(3921.0) }, { 0.8483,  MMM_TO_MMS(4033.0) }, { -15.0,   MMM_TO_MMS(6000.0) }, { -24.5,   MMM_TO_MMS(1200.0) }, {  -7.0,   MMM_TO_MMS( 600.0) }, {  -3.5,   MMM_TO_MMS( 360.0) }, {  20.0,   MMM_TO_MMS( 454.0) }, { -20.0,   MMM_TO_MMS( 303.0) }, { -35.0,   MMM_TO_MMS(2000.0) }'
+  requires: (HAS_PRUSA_MMU2 || HAS_PRUSA_MMU3) && HAS_PRUSA_MMU3
+  block_clause: '!HAS_PRUSA_MMU1 && !HAS_PRUSA_MMU2S'
 - name: MMU2_EXTRUDER_SENSOR
   file: Configuration_adv.h
   type: switch
   disabled: true
-  requires: (HAS_PRUSA_MMU2 || HAS_PRUSA_MMU3) && HAS_PRUSA_MMU3
-  block_clause: '!HAS_PRUSA_MMU1 && !HAS_PRUSA_MMU2S'
+  requires: (HAS_PRUSA_MMU2 || HAS_PRUSA_MMU3)
+  block_clause: '!HAS_PRUSA_MMU1 && !HAS_PRUSA_MMU2S && !HAS_PRUSA_MMU3'
   comment: |-
-    #define MMU3_RAMMING_SEQUENCE { 0.2816,  MMM_TO_MMS(1339.0) }, { 0.3051,  MMM_TO_MMS(1451.0) }, { 0.3453,  MMM_TO_MMS(1642.0) }, { 0.3990,  MMM_TO_MMS(1897.0) }, { 0.4761,  MMM_TO_MMS(2264.0) }, { 0.5767,  MMM_TO_MMS(2742.0) }, { 0.5691,  MMM_TO_MMS(3220.0) }, { 0.1081,  MMM_TO_MMS(3220.0) }, { 0.7644,  MMM_TO_MMS(3635.0) }, { 0.8248,  MMM_TO_MMS(3921.0) }, { 0.8483,  MMM_TO_MMS(4033.0) }, { -15.0,   MMM_TO_MMS(6000.0) }, { -24.5,   MMM_TO_MMS(1200.0) }, {  -7.0,   MMM_TO_MMS( 600.0) }, {  -3.5,   MMM_TO_MMS( 360.0) }, {  20.0,   MMM_TO_MMS( 454.0) }, { -20.0,   MMM_TO_MMS( 303.0) }, { -35.0,   MMM_TO_MMS(2000.0) }
-
-    #else // MMU2 (not MMU2S)
-
-    /**
-
     MMU2 Extruder Sensor
 
     Support for a Průša (or other) IR Sensor to detect filament near the extruder and make loading more reliable. Suitable for an extruder equipped with a filament sensor less than 38mm from the gears.
@@ -383,8 +383,8 @@ settings:
   file: Configuration_adv.h
   type: int
   default: 5
-  requires: (HAS_PRUSA_MMU2 || HAS_PRUSA_MMU3) && HAS_PRUSA_MMU3 && MMU2_EXTRUDER_SENSOR
-  block_clause: '!HAS_PRUSA_MMU1 && !HAS_PRUSA_MMU2S'
+  requires: (HAS_PRUSA_MMU2 || HAS_PRUSA_MMU3) && MMU2_EXTRUDER_SENSOR
+  block_clause: '!HAS_PRUSA_MMU1 && !HAS_PRUSA_MMU2S && !HAS_PRUSA_MMU3'
   comment: Number of times to try loading filament before failure
 - name: CHAMELEON_BUTTON_AXIS
   file: Configuration_adv.h
@@ -543,7 +543,28 @@ settings:
   type: array
   default: '{ 180,  +20, 1500 }, /* Cool to 180C to prevent swelling, then ram */ {   0,   -5,  500 }, { 165,   +5, 1500 }, {   0,   -1,  500 }, { 155,   +1, 1500 }, {   0,  -25,  500 }, { 150,  +24, 1500 }, /* Last tip dip with a cold tip */ {   0,  -24, 1500 }, { 180,  -80,  500 }  /* Heat up again and back out of the extruder */'
   requires: HAS_CHAMELEON
-  comment: Cool to 180C to prevent swelling, then ram */ {   0,   -5,  500 }, { 165,   +5, 1500 }, {   0,   -1,  500 }, { 155,   +1, 1500 }, {   0,  -25,  500 }, { 150,  +24, 1500 }, /* Last tip dip with a cold tip */ {   0,  -24, 1500 }, { 180,  -80,  500 }  /* Heat up again and back out of the extruder */
+  comment: Tip shaping. Not needed with a 3DClippy filament cutter, so comment this out. Each step is { temp, extrude, feedrate }. If 'temp' is non-zero Marlin waits for the hotend to reach it before the move. The hotend returns to its target temperature afterward. Cold extrusion is allowed during the sequence.
+- name: CHAMELEON_START_GCODE
+  file: Configuration_adv.h
+  type: string
+  default: '"M106 S255"'
+  disabled: true
+  requires: HAS_CHAMELEON
+  comment: Optional G-code to run at each stage of an unload (e.g., for a cooling fan or a mechanical cutter)
+- name: CHAMELEON_CUT_GCODE
+  file: Configuration_adv.h
+  type: string
+  default: '"M280 P0 S90"'
+  disabled: true
+  requires: HAS_CHAMELEON
+  comment: After the cut retract, before tip shaping
+- name: CHAMELEON_END_GCODE
+  file: Configuration_adv.h
+  type: string
+  default: '"M106 S0"'
+  disabled: true
+  requires: HAS_CHAMELEON
+  comment: After the new filament is loaded
 ---
 
 Options in the `multi-material` section of the Marlin configuration files.

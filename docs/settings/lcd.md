@@ -654,6 +654,11 @@ settings:
     - Download https://www.crealitycloud.com/downloads/firmware/sermoon-series/sermoon-d1
     - Copy the DWIN_SET folder from the firmware package to the SD card.
 
+    SERMOON_V1 (T5L)
+
+    - Download https://www.crealitycloud.com/downloads/firmware/sermoon-series/sermoon-v1
+    - Copy the DWIN_SET folder from the firmware package to the SD card.
+
     Flash display with DGUS Displays for Marlin:
 
     - Format the SD card to FAT32 with an allocation size of 4kb.
@@ -749,6 +754,16 @@ settings:
     Elegoo Neptune 3 Pro / Plus / Max TJC Touch Screen
 
     Requires a 6x6 (Pro), 7x7 (Plus), or 7x9 (Max) bilinear leveling grid.
+- name: PANELDUE
+  file: Configuration.h
+  type: switch
+  disabled: true
+  comment: |-
+    PanelDue touch controller by Duet3D (PanelDueFirmware 3.2 or newer)
+
+    - <https://docs.duet3d.com/User_manual/Connecting_hardware/Display_PanelDue>
+
+    Connect the PanelDue to a free UART and define LCD_SERIAL_PORT with its index. The PanelDue baud rate must be set to 57600, or define `LCD_BAUDRATE` to match.
 - name: EXTENSIBLE_UI
   file: Configuration.h
   type: switch
@@ -1009,10 +1024,7 @@ settings:
     TFT Theme for Color UI. Choose one of the following or add a new one to 'Marlin/src/lcd/tft/themes' directory
 
     BLUE_MARLIN  - Default theme with 'midnight blue' background BLACK_MARLIN - Theme with 'black' background ANET_BLACK   - Theme used for Anet ET4/5
-  options:
-  - value: BLUE_MARLIN
-  - value: BLACK_MARLIN
-  - value: ANET_BLACK
+  options: tft_theme
 - name: TFT_SHARED_IO
   file: Configuration.h
   type: switch
@@ -1020,19 +1032,14 @@ settings:
   requires: TFT_COLOR_UI
   brief: I/O is shared between TFT display and other devices. Disable async data transfer.
   comment: I/O is shared between TFT display and other devices. Disable async data transfer.
+  options: tft_theme
 - name: COMPACT_MARLIN_BOOT_LOGO
   file: Configuration.h
   type: switch
   requires: TFT_COLOR_UI
   brief: Use compressed data to save Flash space.
   comment: Use compressed data to save Flash space
-- name: MKS_WIFI_MODULE
-  file: Configuration.h
-  type: switch
-  disabled: true
-  requires: TFT_LVGL_UI
-  brief: Use the onboard MKS WiFi module.
-  comment: MKS WiFi module
+  options: tft_theme
 - name: TFT_ROTATION
   file: Configuration.h
   type: enum
@@ -2998,10 +3005,15 @@ lists:
   - value: E3S1PRO
   - value: CR10SPROV2
   - value: SERMOON_D1
+  - value: SERMOON_V1
   tft_font:
   - value: NOTOSANS
   - value: UNIFONT
   - value: HELVETICA
+  tft_theme:
+  - value: BLUE_MARLIN
+  - value: BLACK_MARLIN
+  - value: ANET_BLACK
   default_volume:
   - value: SD_ONBOARD
   - value: USB_FLASH_DRIVE
