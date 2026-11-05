@@ -29,6 +29,7 @@ settings:
     | `PRUSA_MMU3` | Průša MMU3  (Requires MK3S extruder with motion sensor and MMU firmware version 3.x.x, EXTRUDERS = 5) |
     | `EXTENDABLE_EMU_MMU2` | MMU with configurable number of filaments (ERCF, SMuFF or similar with Průša MMU2 compatible firmware) |
     | `EXTENDABLE_EMU_MMU2S` | MMUS with configurable number of filaments (ERCF, SMuFF or similar with Průša MMU2 compatible firmware) |
+    | `CHAMELEON` | 3D Chameleon Mk4 (EXTRUDERS = 2 to 4). A single button is pressed by an axis move. |
 
     Requires `NOZZLE_PARK_FEATURE` to park print head in case MMU unit fails. See additional options in Configuration_adv.h.
 - name: E_MUX*_PIN
@@ -385,6 +386,164 @@ settings:
   requires: (HAS_PRUSA_MMU2 || HAS_PRUSA_MMU3) && HAS_PRUSA_MMU3 && MMU2_EXTRUDER_SENSOR
   block_clause: '!HAS_PRUSA_MMU1 && !HAS_PRUSA_MMU2S'
   comment: Number of times to try loading filament before failure
+- name: CHAMELEON_BUTTON_AXIS
+  file: Configuration_adv.h
+  type: enum
+  default: X_AXIS
+  units: X_AXIS, Y_AXIS, Z_AXIS
+  requires: HAS_CHAMELEON
+  comment: |-
+    3D Chameleon Mk4 (https://www.3dchameleon.com)
+
+    The Chameleon's one button is pressed by moving a printer axis into it. Hold times select the filament and run its feed motor, so timing matters. Use the "Mk4 G-code Generator" values from the Chameleon site as a guide.
+- name: CHAMELEON_BUTTON_POS
+  file: Configuration_adv.h
+  type: enum
+  default: X_MAX_POS
+  units: mm
+  requires: HAS_CHAMELEON
+  comment: (mm) Axis position where the button is fully pressed (within the axis limits)
+- name: CHAMELEON_PRESS_MM
+  file: Configuration_adv.h
+  type: int
+  default: 3
+  units: mm
+  requires: HAS_CHAMELEON
+  comment: (mm) Standby this far short of the button, toward the middle of the axis
+- name: CHAMELEON_PRESS_FEEDRATE
+  file: Configuration_adv.h
+  type: int
+  default: 2000
+  units: mm/min
+  requires: HAS_CHAMELEON
+  comment: (mm/min) Speed of button presses
+- name: CHAMELEON_TRAVEL_FEEDRATE
+  file: Configuration_adv.h
+  type: int
+  default: 5000
+  units: mm/min
+  requires: HAS_CHAMELEON
+  comment: (mm/min) Speed of moves to and from the standby position
+- name: CHAMELEON_TOOLCHANGE_*
+  file: Configuration_adv.h
+  type: enum
+  requires: HAS_CHAMELEON
+  comment: Where to wait while changing. The button axis is set by `CHAMELEON_BUTTON_POS`. Z is only raised, never lowered. These are ignored for the button axis.
+  members:
+  - id: X
+    name: CHAMELEON_TOOLCHANGE_X
+    default: X_CENTER
+    disabled: true
+  - id: Y
+    name: CHAMELEON_TOOLCHANGE_Y
+    default: Y_CENTER
+    disabled: true
+  - id: Z
+    name: CHAMELEON_TOOLCHANGE_Z
+    default: Z_MAX_POS
+    disabled: true
+- name: CHAMELEON_PULSE_MS
+  file: Configuration_adv.h
+  type: int
+  default: 500
+  units: ms
+  requires: HAS_CHAMELEON
+  comment: Timing. Press a number of pulses to select a filament (1 = T0, 2 = T1, ...). If the wrong filament is selected, adjust the pulse time to match your Chameleon.
+- name: CHAMELEON_CUT_MS
+  file: Configuration_adv.h
+  type: int
+  default: 2000
+  units: ms
+  requires: HAS_CHAMELEON
+  comment: (ms) After selecting, wait for the cutter and the selector to finish
+- name: CHAMELEON_UNLOAD_MS
+  file: Configuration_adv.h
+  type: int
+  default: 4000
+  units: ms
+  requires: HAS_CHAMELEON
+  comment: (ms) Hold to pull the old filament back out of the Y adapter
+- name: CHAMELEON_LOAD_MS
+  file: Configuration_adv.h
+  type: int
+  default: 4000
+  units: ms
+  requires: HAS_CHAMELEON
+  comment: (ms) Hold to push the new filament to the extruder, including the assist
+- name: CHAMELEON_SETTLE_MS
+  file: Configuration_adv.h
+  type: int
+  default: 400
+  units: ms
+  requires: HAS_CHAMELEON
+  comment: (ms) Wait after releasing the button
+- name: CHAMELEON_HOME_MS
+  file: Configuration_adv.h
+  type: int
+  default: 2000
+  units: ms
+  requires: HAS_CHAMELEON
+  comment: (ms) Wait for the selector to home
+- name: CHAMELEON_HOME_FIRST
+  file: Configuration_adv.h
+  type: switch
+  requires: HAS_CHAMELEON
+  comment: Home the selector before the first load. (The Chameleon starts out empty.)
+- name: CHAMELEON_EXTRUDER_TO_HOTEND_MM
+  file: Configuration_adv.h
+  type: int
+  default: 86
+  units: mm
+  requires: HAS_CHAMELEON
+  comment: Extruder moves
+- name: CHAMELEON_CUT_RETRACT_MM
+  file: Configuration_adv.h
+  type: int
+  default: 20
+  units: mm
+  requires: HAS_CHAMELEON
+  comment: (mm) Initial retract, to make room for the cut
+- name: CHAMELEON_RELEASE_MM
+  file: Configuration_adv.h
+  type: int
+  default: -30
+  units: mm
+  requires: HAS_CHAMELEON
+  comment: (mm) Final move to clear the extruder. Use a positive value with a mechanical cutter.
+- name: CHAMELEON_LOAD_ASSIST_MM
+  file: Configuration_adv.h
+  type: int
+  default: 25
+  units: mm
+  requires: HAS_CHAMELEON
+  comment: (mm) Extruder move to catch the filament as the Chameleon lets go
+- name: CHAMELEON_ASSIST_FEEDRATE
+  file: Configuration_adv.h
+  type: int
+  default: 1500
+  units: mm/min
+  requires: HAS_CHAMELEON
+  shared_comment: Extruder moves
+- name: CHAMELEON_SLOW_FEEDRATE
+  file: Configuration_adv.h
+  type: int
+  default: 500
+  units: mm/min
+  requires: HAS_CHAMELEON
+  shared_comment: Extruder moves
+- name: CHAMELEON_FAST_FEEDRATE
+  file: Configuration_adv.h
+  type: int
+  default: 2000
+  units: mm/min
+  requires: HAS_CHAMELEON
+  shared_comment: Extruder moves
+- name: CHAMELEON_TIP_SEQUENCE
+  file: Configuration_adv.h
+  type: array
+  default: '{ 180,  +20, 1500 }, /* Cool to 180C to prevent swelling, then ram */ {   0,   -5,  500 }, { 165,   +5, 1500 }, {   0,   -1,  500 }, { 155,   +1, 1500 }, {   0,  -25,  500 }, { 150,  +24, 1500 }, /* Last tip dip with a cold tip */ {   0,  -24, 1500 }, { 180,  -80,  500 }  /* Heat up again and back out of the extruder */'
+  requires: HAS_CHAMELEON
+  comment: Cool to 180C to prevent swelling, then ram */ {   0,   -5,  500 }, { 165,   +5, 1500 }, {   0,   -1,  500 }, { 155,   +1, 1500 }, {   0,  -25,  500 }, { 150,  +24, 1500 }, /* Last tip dip with a cold tip */ {   0,  -24, 1500 }, { 180,  -80,  500 }  /* Heat up again and back out of the extruder */
 ---
 
 Options in the `multi-material` section of the Marlin configuration files.
